@@ -36,7 +36,7 @@ const Hexagon = props => {
         />
       )}
       <div style={{...props.style}} className="hexagon">
-        <div className="inner-hexagon" />
+        <div className="inner-hexagon desert" />
         <div className="row">
           <div className="side side-1" />
           <div className="side side-2" />

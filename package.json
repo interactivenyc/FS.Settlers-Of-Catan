@@ -43,7 +43,7 @@
     "express": "^4.16.3",
     "express-session": "^1.15.1",
     "history": "^4.6.3",
-    "morgan": "^1.8.1",
+    "morgan": "^1.9.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "pg": "^6.1.2",
@@ -97,6 +97,7 @@
     "redux-mock-store": "^1.5.3",
     "style-loader": "^0.23.1",
     "supertest": "^3.1.0",
+    "url-loader": "^1.1.2",
     "webpack": "^4.16.4",
     "webpack-cli": "^3.1.0"
   }
