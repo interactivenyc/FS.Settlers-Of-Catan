@@ -1,0 +1,140 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: pink;
+}
+
+.board {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hexagon-container {
+  position: relative;
+}
+
+.hexagon {
+  position: relative;
+  height: 150px;
+  width: 150px;
+  background-color: blue;
+  display: flex;
+  flex-direction: column;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.inner-hexagon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  height: 140px;
+  width: 140px;
+  z-index: 999;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.row {
+  flex: 1;
+  display: flex;
+}
+
+.row-middle {
+  flex: 2;
+}
+
+.side {
+  flex: 1;
+}
+
+.side-left {
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+}
+
+.side-right {
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.side-1 {
+  background-color: green;
+}
+.side-2 {
+  background-color: blue;
+}
+.side-3 {
+  background-color: red;
+}
+.side-4 {
+  background-color: white;
+}
+.side-5 {
+  background-color: orange;
+}
+.side-6 {
+  background-color: brown;
+}
+
+.city {
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 9;
+}
+
+.city-1 {
+  top: 25%;
+  transform: translate(-50%, -50%);
+}
+
+.city-2 {
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.city-3 {
+  top: 25%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.city-4 {
+  top: 75%;
+  transform: translate(-50%, -50%);
+}
+
+.city-5 {
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.city-6 {
+  top: 75%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.board-row {
+  display: flex;
+}
+
+.board-row-1 {
+  transform: translateY(50%);
+}
+.board-row-2 {
+  transform: translateY(25%);
+}
+.board-row-4 {
+  transform: translateY(-25%);
+}
+.board-row-5 {
+  transform: translateY(-50%);
+}
