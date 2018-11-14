@@ -3,6 +3,7 @@ class Board {
     this.resources = {}
     this.vertices = {}
     this.edges = {}
+    this.robberLocation = {}
     this.makeResources()
   }
 
@@ -31,14 +32,14 @@ class Board {
     this.resources[51] = new Resource(5, 1, 5, "mountain", this)
     this.resources[52] = new Resource(5, 2, 2, "field", this)
     this.resources[53] = new Resource(5, 3, 6, "forest", this)
+
+    this.robberLocation = this.resources[31]
   }
 
   getStringFromCoordinate(row, column) {
     return row.toString() + ',' + column.toString()
   }
 }
-
-
 
 class Resource {
   constructor(row, column, diceTarget, type, board) {
