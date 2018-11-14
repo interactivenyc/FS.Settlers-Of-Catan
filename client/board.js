@@ -32,13 +32,17 @@ class Board {
     this.resources[52] = new Resource(5, 2, "forest", this)
     this.resources[53] = new Resource(5, 3, "pasture", this)
   }
+
+  getStringFromCoordinate(row, column) {
+    return row.toString() + ',' + column.toString()
+  }
 }
 
 
 
 class Resource {
   constructor(row, column, type, board) {
-    this.id = row.toString() + column.toString()
+    this.id = board.getStringFromCoordinate(row, column)
     this.row = row
     this.column = column
     this.type = type
@@ -46,7 +50,7 @@ class Resource {
     this.vertices = []
     this.setVertices(board)
     this.edges = []
-    this.setEdges()
+    this.setEdges(board)
   }
 
   setVertices(board) {
@@ -59,7 +63,7 @@ class Resource {
   }
 
   getOrCreateVertex(row, column, board) {
-    const existingVertex = board.vertices[row.toString()+column.toString()]
+    const existingVertex = board.vertices[board.getStringFromCoordinate(row, column)]
     if (existingVertex){
       this.vertices.push(existingVertex)
     } else {
@@ -67,22 +71,45 @@ class Resource {
     }
   }
 
-  setEdges() {
-
+  setEdges(board) {
+    this.getOrCreateEdge((this.row*2 - 1), (this.column*2 - 1), board)
+    this.getOrCreateEdge((this.row*2 - 1), (this.column*2 - 1), board)
+    this.getOrCreateEdge((this.row*2), (this.column*2), board)
+    this.getOrCreateEdge((this.row*2), (this.column*2), board)
+    this.getOrCreateEdge((this.row*2 + 1), (this.column*2 + 1), board)
+    this.getOrCreateEdge((this.row*2 + 1), (this.column*2 + 1), board)
   }
+
+  getOrCreateEdge(row, column, board) {
+    const existingEdge = board.edges[board.getStringFromCoordinate(row, column)]
+    if (existingEdge) {
+      this.edges.push(existingEdge)
+    } else {
+      this.edges.push(new Edge(row, column, board))
+    }
+  }
+
   
 }
 
-
-
 class Vertex {
   constructor(row, column, board) {
-    this.id = row.toString() + column.toString()
+    this.id = board.getStringFromCoordinate(row, column)
     this.row = row
     this.column = column
     this.player = null
     this.locationType = null
     board.vertices[this.id] = this
+  }
+}
+
+class Edge {
+  constructor(row, column, board) {
+    this.id = board.getStringFromCoordinate(row, column)
+    this.row = row
+    this.column = column
+    this.player = null
+    board.edges[this.id] = this
   }
 }
 
