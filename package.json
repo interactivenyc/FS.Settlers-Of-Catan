@@ -1,5 +1,5 @@
 {
-  "name": "boilermaker",
+  "name": "settlers-of-catan",
   "version": "1.0.0",
   "description": "Some boilerplate code to get you started - get shakin'!",
   "engines": {
@@ -13,13 +13,13 @@
     "heroku-token": "script/encrypt-heroku-auth-token",
     "lint": "eslint ./ --ignore-path .gitignore",
     "lint-fix": "npm run lint -- --fix",
-    "precommit": "# lint-staged # un-comment to enable",
+    "precommit": "lint-staged # un-comment to enable",
     "prepare": "if [ -d .git ]; then npm-merge-driver install; fi",
     "prettify": "prettier --write \"**/*.{js,jsx,json,css,scss,md}\"",
     "postinstall": "touch secrets.js",
     "seed": "node script/seed.js",
     "start": "node server",
-    "start-dev": "NODE_ENV='development' npm run build-client-watch & NODE_ENV='development' npm run start-server",
+    "start-dev": "killall -9 node; NODE_ENV='development' npm run build-client-watch & NODE_ENV='development' npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
     "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register"
   },
@@ -42,8 +42,9 @@
     "connect-session-sequelize": "^4.1.0",
     "express": "^4.16.3",
     "express-session": "^1.15.1",
+    "gulp": "^3.9.1",
     "history": "^4.6.3",
-    "morgan": "^1.8.1",
+    "morgan": "^1.9.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "pg": "^6.1.2",
@@ -78,6 +79,7 @@
     "babel-eslint": "^8.2.6",
     "babel-loader": "^8.0.0-beta.4",
     "chai": "^3.5.0",
+    "css-loader": "^1.0.1",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^4.19.1",
@@ -86,6 +88,7 @@
     "eslint-plugin-react": "^7.10.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
+    "mini-css-extract-plugin": "^0.4.4",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.3",
     "npm-merge-driver": "^2.3.5",
@@ -93,8 +96,10 @@
     "react-test-renderer": "^16.4.2",
     "redux-devtools-extension": "^2.13.5",
     "redux-mock-store": "^1.5.3",
+    "style-loader": "^0.23.1",
     "supertest": "^3.1.0",
+    "url-loader": "^1.1.2",
     "webpack": "^4.16.4",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.2"
   }
 }

@@ -1,0 +1,139 @@
+.board-container {
+  background-color: #2f3542;
+  width: 100%;
+  height: 100%;
+}
+
+.board {
+  position: relative;
+  background-color: #1e90ff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: perspective(800px) rotateX(30deg) translateY(-30%);
+  box-shadow: 0px 50px 50px 10px rgba(0, 0, 0, 0.3);
+  /* clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); */
+}
+
+.hexagon-container {
+  position: relative;
+}
+
+.hexagon {
+  position: relative;
+  height: 192px;
+  width: 164px;
+  background-color: #eccc68;
+  display: flex;
+  flex-direction: column;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.inner-hexagon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* background-color: #eccc68; */
+  height: 90%;
+  width: 90%;
+  z-index: 999;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.hexagon-image {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.desert {
+  background-image: url('../../../public/images/resources/desert.png');
+  background-repeat: no-repeat;
+}
+.field {
+  background-image: url('../../../public/images/resources/field.png');
+}
+.forest {
+  background-image: url('../../../public/images/resources/forest.png');
+}
+.hill {
+  background-image: url('../../../public/images/resources/hill.png');
+}
+.mountain {
+  background-image: url('../../../public/images/resources/mountain.png');
+}
+.pasture {
+  background-image: url('../../../public/images/resources/pasture.png');
+}
+
+.row {
+  flex: 1;
+  display: flex;
+}
+
+.row-middle {
+  flex: 2;
+}
+
+.side {
+  flex: 1;
+}
+
+.side-left {
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+}
+
+.side-right {
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.side {
+  background-color: #eccc68;
+}
+
+.city {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 9;
+}
+
+.city-1 {
+  top: 25%;
+  transform: translate(-50%, -50%);
+}
+
+.city-2 {
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.city-3 {
+  top: 25%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.city-4 {
+  top: 75%;
+  transform: translate(-50%, -50%);
+}
+
+.city-5 {
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.city-6 {
+  top: 75%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.board-row {
+  display: flex;
+}
