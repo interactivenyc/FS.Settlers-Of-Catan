@@ -9,9 +9,12 @@ export class GameLobby extends React.Component {
 
     this.state = {
       inLobby: false,
-      userLobby: {}
+      userLobby: {},
+      activeGames: {}
     }
     this.setupSocket()
+    this.clickUser = this.clickUser.bind(this)
+    this.clickGame = this.clickGame.bind(this)
   }
 
   setupSocket() {
@@ -21,10 +24,22 @@ export class GameLobby extends React.Component {
       console.log('[ GameLobby ] player-joined')
     })
 
-    socket.on('lobby-joined', userLobby => {
-      console.log('[ GameLobby ] lobby-joined userLobby', userLobby)
+    socket.on('lobby-joined', (userLobby, activeGames) => {
+      console.log(
+        '[ GameLobby ] lobby-joined userLobby/activeGames',
+        userLobby,
+        activeGames
+      )
       this.setState({
-        userLobby
+        userLobby,
+        activeGames
+      })
+    })
+
+    socket.on('game-joined', activeGames => {
+      console.log('[ GameLobby ] game-joined')
+      this.setState({
+        activeGames
       })
     })
 
@@ -33,6 +48,11 @@ export class GameLobby extends React.Component {
       this.setState({
         userLobby
       })
+    })
+
+    socket.on('disconnect', () => {
+      console.log(`Connection ${socket.id} was lost - rejoining`)
+      socket.emit('join-lobby', this.props.user)
     })
   }
 
@@ -50,13 +70,57 @@ export class GameLobby extends React.Component {
     console.log('[ GameLobby ] componentDidMount', this.props)
   }
 
+  clickUser(e) {
+    console.log('[ GameLobby ] clickUser', e.target.innerHTML)
+  }
+  clickGame(e) {
+    console.log(
+      '[ GameLobby ] clickGame',
+      e.target.getAttribute('gameid'),
+      this.state.activeGames
+    )
+    socket.emit('join-game', e.target.getAttribute('gameid'))
+  }
+
   render() {
     return (
       <React.Fragment>
         <h1>Lobby</h1>
-        {Object.keys(this.state.userLobby).map(key => {
-          return <div key={key}>{this.state.userLobby[key].email}</div>
-        })}
+        <table id="userLobby" className="tableDisplay">
+          <tbody>
+            <tr>
+              <th>Waiting For Game</th>
+            </tr>
+            {Object.keys(this.state.userLobby).map(key => {
+              return (
+                <tr key={key}>
+                  <td onClick={this.clickUser}>
+                    {this.state.userLobby[key].email}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+
+        <p />
+
+        <table id="games" className="tableDisplay">
+          <tbody>
+            <tr>
+              <th>Active Games Waiting For Players</th>
+            </tr>
+            {Object.keys(this.state.activeGames).map(key => {
+              return (
+                <tr key={key}>
+                  <td gameid={key} onClick={this.clickGame}>{`${key} (${
+                    Object.keys(this.state.activeGames[key]).length
+                  })`}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </React.Fragment>
     )
   }
