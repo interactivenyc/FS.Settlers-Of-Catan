@@ -14,19 +14,19 @@ const Hexagon = props => {
       {props.anchor && (
         <div
           className="city city-3"
-          style={{transform: `translate(${50 + props.cityAdjust}%, -50%)`}}
+          style={{transform: `translate(${props.anchorAdjust}%, -50%)`}}
         />
       )}
       {props.bottomLeftAnchor && (
         <div
           className="city city-4"
-          style={{transform: `translate(${50 + props.cityAdjust}%, -50%)`}}
+          style={{transform: `translate(${-50 + props.cityAdjust}%, -50%)`}}
         />
       )}
       {props.bottomRightAnchor && (
         <div
           className="city city-6"
-          style={{transform: `translate(${50 + props.cityAdjust}%, -50%)`}}
+          style={{transform: `translate(${props.anchorAdjust || 0}%, -50%)`}}
         />
       )}
       {props.bottomAnchor && (
@@ -36,7 +36,7 @@ const Hexagon = props => {
         />
       )}
       <div style={{...props.style}} className="hexagon">
-        <div className="inner-hexagon desert" />
+        <div className={`inner-hexagon hexagon-image ${props.image}`} />
         <div className="row">
           <div className="side side-1" />
           <div className="side side-2" />
