@@ -1,8 +1,8 @@
 body {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   background-color: pink;
 }
 
@@ -34,10 +34,14 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: black;
-  height: 140px;
-  width: 140px;
+  height: 135px;
+  width: 135px;
   z-index: 999;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.desert {
+  background-image: url('../../../public/images/resources/desert.png');
 }
 
 .row {
@@ -81,8 +85,8 @@ body {
 }
 
 .city {
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   position: absolute;
   background-color: white;
   border-radius: 50%;
@@ -124,17 +128,4 @@ body {
 
 .board-row {
   display: flex;
-}
-
-.board-row-1 {
-  transform: translateY(50%);
-}
-.board-row-2 {
-  transform: translateY(25%);
-}
-.board-row-4 {
-  transform: translateY(-25%);
-}
-.board-row-5 {
-  transform: translateY(-50%);
 }
