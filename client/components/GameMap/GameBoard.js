@@ -1,12 +1,13 @@
 import React from 'react'
 import MapRow from './MapRow'
 import Hexagon from './Hexagon.js'
+import {gameOptions} from './gameOptions'
 
 const GameBoard = ({adjust, handleClick}) => {
   return (
     <div className="board" onClick={e => handleClick(e)}>
       <MapRow style={{transform: 'translateY(60%)'}}>
-        <Hexagon image="mountain" />
+        <Hexagon gameOptions={gameOptions.row1.hex1} image="mountain" />
         <Hexagon
           image="pasture"
           style={{transform: 'translateX(-5%)'}}
