@@ -49,6 +49,7 @@
 
 .desert {
   background-image: url('../../../public/images/resources/desert.png');
+  background-repeat: no-repeat;
 }
 .field {
   background-image: url('../../../public/images/resources/field.png');
