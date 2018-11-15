@@ -19,3 +19,8 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.tableDisplay,
+.tableDisplay th {
+  border: 1px solid black;
+}

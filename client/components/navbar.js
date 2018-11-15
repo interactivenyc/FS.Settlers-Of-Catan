@@ -28,9 +28,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
   // </div>
   <div>
     <div className="ui text menu">
-      <div className="item">
-        <img src="/images/new-school.jpg" />
-      </div>
+      <div className="item">{/* <img src="/images/new-school.jpg" /> */}</div>
       <a className="browse item">
         Menu
         <i className="dropdown icon" />
