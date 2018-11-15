@@ -5,11 +5,11 @@ import './GameMap.css'
 class GameMap extends Component {
   handleClick = e => {
     if (e.target.classList.contains('inner-hexagon')) {
-      console.log('clicked resource')
+      console.log('clicked resource', e.target.id)
     } else if (e.target.classList.contains('side')) {
-      console.log('clicked side')
+      console.log('clicked side', e.target.id)
     } else if (e.target.classList.contains('city')) {
-      console.log('clicked city')
+      console.log('clicked city', e.target.id)
     }
   }
   render() {

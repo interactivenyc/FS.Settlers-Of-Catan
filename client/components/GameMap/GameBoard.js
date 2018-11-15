@@ -9,11 +9,13 @@ const GameBoard = ({adjust, handleClick}) => {
       <MapRow style={{transform: 'translateY(60%)'}}>
         <Hexagon gameOptions={gameOptions.row1.hex1} image="mountain" />
         <Hexagon
+          gameOptions={gameOptions.row1.hex2}
           image="pasture"
           style={{transform: 'translateX(-5%)'}}
           cityAdjust={adjust}
         />
         <Hexagon
+          gameOptions={gameOptions.row1.hex3}
           image="forest"
           style={{transform: 'translateX(-10%)'}}
           cityAdjust={adjust * 2}
@@ -22,18 +24,21 @@ const GameBoard = ({adjust, handleClick}) => {
         />
       </MapRow>
       <MapRow style={{transform: 'translateY(30%)'}}>
-        <Hexagon image="field" />
+        <Hexagon gameOptions={gameOptions.row2.hex1} image="field" />
         <Hexagon
+          gameOptions={gameOptions.row2.hex2}
           image="hill"
           style={{transform: 'translateX(-5%)'}}
           cityAdjust={adjust}
         />
         <Hexagon
+          gameOptions={gameOptions.row2.hex3}
           image="field"
           style={{transform: 'translateX(-10%)'}}
           cityAdjust={adjust * 2}
         />
         <Hexagon
+          gameOptions={gameOptions.row2.hex4}
           image="hill"
           style={{transform: 'translateX(-15%)'}}
           cityAdjust={adjust * 3}
@@ -42,23 +47,31 @@ const GameBoard = ({adjust, handleClick}) => {
         />
       </MapRow>
       <MapRow>
-        <Hexagon image="field" bottomLeftAnchor />
         <Hexagon
+          gameOptions={gameOptions.row3.hex1}
+          image="field"
+          bottomLeftAnchor
+        />
+        <Hexagon
+          gameOptions={gameOptions.row3.hex2}
           image="forest"
           style={{transform: 'translateX(-5%)'}}
           cityAdjust={adjust}
         />
         <Hexagon
+          gameOptions={gameOptions.row3.hex3}
           image="desert"
           style={{transform: 'translateX(-10%)'}}
           cityAdjust={adjust * 2}
         />
         <Hexagon
+          gameOptions={gameOptions.row3.hex4}
           image="forest"
           style={{transform: 'translateX(-15%)'}}
           cityAdjust={adjust * 3}
         />
         <Hexagon
+          gameOptions={gameOptions.row3.hex5}
           image="mountain"
           style={{transform: 'translateX(-20%)'}}
           cityAdjust={adjust * 4}
@@ -68,18 +81,25 @@ const GameBoard = ({adjust, handleClick}) => {
         />
       </MapRow>
       <MapRow style={{transform: 'translateY(-30%)'}}>
-        <Hexagon image="forest" bottomLeftAnchor />
         <Hexagon
+          gameOptions={gameOptions.row4.hex1}
+          image="forest"
+          bottomLeftAnchor
+        />
+        <Hexagon
+          gameOptions={gameOptions.row4.hex2}
           image="mountain"
           style={{transform: 'translateX(-5%)'}}
           cityAdjust={adjust}
         />
         <Hexagon
+          gameOptions={gameOptions.row4.hex3}
           image="pasture"
           style={{transform: 'translateX(-10%)'}}
           cityAdjust={adjust * 2}
         />
         <Hexagon
+          gameOptions={gameOptions.row4.hex4}
           image="field"
           style={{transform: 'translateX(-15%)'}}
           cityAdjust={adjust * 3}
@@ -90,6 +110,7 @@ const GameBoard = ({adjust, handleClick}) => {
       </MapRow>
       <MapRow style={{transform: 'translateY(-60%)'}}>
         <Hexagon
+          gameOptions={gameOptions.row5.hex1}
           image="hill"
           bottomLeftAnchor
           bottomRightAnchor
@@ -97,6 +118,7 @@ const GameBoard = ({adjust, handleClick}) => {
           anchorAdjust={adjust * -1}
         />
         <Hexagon
+          gameOptions={gameOptions.row5.hex2}
           image="field"
           style={{transform: 'translateX(-5%)'}}
           cityAdjust={adjust}
@@ -104,6 +126,7 @@ const GameBoard = ({adjust, handleClick}) => {
           bottomAnchor
         />
         <Hexagon
+          gameOptions={gameOptions.row5.hex3}
           image="pasture"
           style={{transform: 'translateX(-10%)'}}
           cityAdjust={adjust * 2}
