@@ -16,12 +16,12 @@ install:
 before_script:
   - psql -c 'create database "settlers-of-catan-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy:
+  - npm run build-client # make the bundle
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: settlers-of-fullstack# see README
+  api_key:
+    secure: SyIfWmqaBSjKYwiGtsQs3Eqaj/nz40fjrhuWq7MOvKoEBvf6U8lbQy20IUFm8Ty3CmL3RIQqSpnFk4s6QeKhx5f2/JWblCFadrLDXBCuZvlYvmcZrWYpL1ZLm2TGdLpN/hrxDPjxXQWsBBsTbuNmqk37pEjaCpcHY2R1n1+55HF1uVmK2tPqVq0ON5Mh38cfuW3NqoyCDA8NCOQLrHiJVehAr+yFl8HLZ+ulWMA8iOQJ5A7DgQ3WnxUAkgDOWfK+QDTdGDBJW+JUiQkgIr7sLQz//6qc2QQ08t5w0mgnhBTAAY91I4unOHPu5vWsu+YlU0oCUHHEVQ5qAKOeyXlLyF4EIERyqqDMl2RJug+vhioJk5kxIWAvsvg/5nQeqUkeO65cJaPSBaAU5M80r3mEv486TUUpCCFeGqY2pXXS20KJexDaVFJMNKIObpV1MQxq6/z3gRgGi+ENYbgD3zv7AzRf+OsFJsfd/WYlsJuZKI/rXjBmLKBG3lq/TyAyllN9bqVIqLuDXGSo3/AVAdZ8ZvzO+sQX9jwRSmpvJZdSWSXOr2Jd5xiotoAWz+sBKzdStpsRkhD9CwsR1ioeTOfo+kwOshI+zXofMYcVjvr2c/RCDWT8GKYBOgYQjdgMa59dx/IeGaYhE20hruj7Z6tTGyqa+AlxL33j10WXSpuL9FE= # see README
