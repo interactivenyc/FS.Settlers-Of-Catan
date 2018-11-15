@@ -1,6 +1,11 @@
 import React from 'react'
 
 const Hexagon = props => {
+  let resource
+  if (props.gameOptions) {
+    resource = props.gameOptions.resource
+  }
+
   return (
     <div className="hexagon-container">
       <div
@@ -36,7 +41,10 @@ const Hexagon = props => {
         />
       )}
       <div style={{...props.style}} className="hexagon">
-        <div className={`inner-hexagon hexagon-image ${props.image}`} />
+        <div
+          id={resource}
+          className={`inner-hexagon hexagon-image ${props.image}`}
+        />
         <div className="row">
           <div className="side side-1" />
           <div className="side side-2" />
