@@ -42,6 +42,7 @@ body {
 
 .desert {
   background-image: url('../../../public/images/resources/desert.png');
+  background-repeat: no-repeat;
 }
 
 .row {
