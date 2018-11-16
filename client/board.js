@@ -1,5 +1,3 @@
-import {debug} from 'util'
-
 class Board {
   constructor() {
     this.resources = {}
@@ -247,6 +245,12 @@ class Resource {
       this.edges.push(new Edge(row, column, board))
     }
   }
+
+  toJSON() {
+    delete this.vertices
+    delete this.edges
+    return this
+  }
 }
 
 class Vertex {
@@ -259,6 +263,11 @@ class Vertex {
     this.edges = []
     board.vertices[this.id] = this
   }
+
+  toJSON() {
+    delete this.edges
+    return this
+  }
 }
 
 class Edge {
@@ -270,6 +279,12 @@ class Edge {
     this.vertices = []
     board.edges[this.id] = this
   }
+
+  toJSON() {
+    delete this.vertices
+    return this
+  }
 }
 
 const board = new Board()
+console.log(JSON.stringify(board, null, 2))
