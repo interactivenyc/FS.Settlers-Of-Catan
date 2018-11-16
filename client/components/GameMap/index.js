@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import GameBoard from './GameBoard'
 import './GameMap.css'
 import {connect} from 'react-redux'
+import {changeVertexThunk} from '../../store/actions'
 
 class GameMap extends Component {
   handleClick = e => {
@@ -11,6 +12,7 @@ class GameMap extends Component {
       console.log('clicked side', e.target.id)
     } else if (e.target.classList.contains('city')) {
       console.log('clicked city', e.target.id)
+      this.props.changeVertexThunk(e.target.id)
     }
   }
   render() {
@@ -28,4 +30,4 @@ class GameMap extends Component {
 
 const mapStateToProps = state => ({board: state.board})
 
-export default connect(mapStateToProps, null)(GameMap)
+export default connect(mapStateToProps, {changeVertexThunk})(GameMap)

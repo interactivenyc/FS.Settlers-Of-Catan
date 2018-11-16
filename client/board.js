@@ -256,7 +256,7 @@ class Vertex {
     this.column = column
     this.player = null
     this.locationType = null
-    this.color = 'green'
+    this.color = null
     this.edges = []
     board.vertices[this.id] = this
   }
