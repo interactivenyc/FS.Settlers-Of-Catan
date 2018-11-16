@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import socket from '../socket'
+import './GameLobby.css'
 
 export class GameLobby extends React.Component {
   constructor(props) {
