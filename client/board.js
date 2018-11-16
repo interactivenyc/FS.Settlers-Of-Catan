@@ -1,6 +1,6 @@
 import {debug} from 'util'
 
-class Board {
+export default class Board {
   constructor() {
     this.resources = {}
     this.vertices = {}
@@ -256,6 +256,7 @@ class Vertex {
     this.column = column
     this.player = null
     this.locationType = null
+    this.color = 'green'
     this.edges = []
     board.vertices[this.id] = this
   }
@@ -267,9 +268,8 @@ class Edge {
     this.row = row
     this.column = column
     this.player = null
+    this.color = null
     this.vertices = []
     board.edges[this.id] = this
   }
 }
-
-const board = new Board()

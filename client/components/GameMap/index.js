@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import GameBoard from './GameBoard'
 import './GameMap.css'
+import {connect} from 'react-redux'
 
 class GameMap extends Component {
   handleClick = e => {
@@ -15,10 +16,16 @@ class GameMap extends Component {
   render() {
     return (
       <div className="board-container">
-        <GameBoard adjust={-25} handleClick={this.handleClick} />
+        <GameBoard
+          adjust={-25}
+          handleClick={this.handleClick}
+          board={this.props.board}
+        />
       </div>
     )
   }
 }
 
-export default GameMap
+const mapStateToProps = state => ({board: state.board})
+
+export default connect(mapStateToProps, null)(GameMap)
