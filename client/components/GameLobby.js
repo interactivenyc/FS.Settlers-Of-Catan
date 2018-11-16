@@ -121,6 +121,36 @@ export class GameLobby extends React.Component {
             })}
           </tbody>
         </table>
+
+        <p />
+
+        <table id="games" className="tableDisplay">
+          <tbody>
+            <tr>
+              <th>User Lobby JSON</th>
+            </tr>
+            <tr>
+              <td>
+                <pre>{JSON.stringify(this.state.userLobby, null, 2)}</pre>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p />
+
+        <table id="games" className="tableDisplay">
+          <tbody>
+            <tr>
+              <th>Active Games JSON</th>
+            </tr>
+            <tr>
+              <td>
+                <pre>{JSON.stringify(this.state.activeGames, null, 2)}</pre>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </React.Fragment>
     )
   }
