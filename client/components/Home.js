@@ -14,7 +14,7 @@ export default class Home extends React.Component {
             alt=""
           />
         </div>
-        <div className="titleDiv">The Settler's of Fullstack</div>
+        <div className="titleDiv">The Settlers of Fullstack</div>
       </div>
     )
   }

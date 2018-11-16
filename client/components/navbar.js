@@ -40,7 +40,7 @@ const Navbar = ({isLoggedIn, handleClick}) => {
           How to Play
         </Link>
       </div>
-      <div className="navItemRight">Settler's of Fullstack</div>
+      <div className="navItemRight">Settlers of Fullstack</div>
     </nav>
   )
 }
