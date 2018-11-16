@@ -1,9 +1,19 @@
+.board-container {
+  background-color: #2f3542;
+  width: 100%;
+  height: 100%;
+}
+
 .board {
   position: relative;
+  background-color: #1e90ff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transform: perspective(800px) rotateX(30deg) translateY(-30%);
+  box-shadow: 0px 50px 50px 10px rgba(0, 0, 0, 0.3);
+  /* clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); */
 }
 
 .hexagon-container {
@@ -12,9 +22,9 @@
 
 .hexagon {
   position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: blue;
+  height: 192px;
+  width: 164px;
+  background-color: #eccc68;
   display: flex;
   flex-direction: column;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
@@ -25,16 +35,36 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: black;
-  height: 135px;
-  width: 135px;
+  /* background-color: #eccc68; */
+  height: 90%;
+  width: 90%;
   z-index: 999;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.hexagon-image {
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .desert {
   background-image: url('../../../public/images/resources/desert.png');
   background-repeat: no-repeat;
+}
+.field {
+  background-image: url('../../../public/images/resources/field.png');
+}
+.forest {
+  background-image: url('../../../public/images/resources/forest.png');
+}
+.hill {
+  background-image: url('../../../public/images/resources/hill.png');
+}
+.mountain {
+  background-image: url('../../../public/images/resources/mountain.png');
+}
+.pasture {
+  background-image: url('../../../public/images/resources/pasture.png');
 }
 
 .row {
@@ -58,23 +88,8 @@
   clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 
-.side-1 {
-  background-color: green;
-}
-.side-2 {
-  background-color: blue;
-}
-.side-3 {
-  background-color: red;
-}
-.side-4 {
-  background-color: white;
-}
-.side-5 {
-  background-color: orange;
-}
-.side-6 {
-  background-color: brown;
+.side {
+  background-color: #eccc68;
 }
 
 .city {
