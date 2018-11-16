@@ -9,11 +9,5 @@ export const setUserColor = color => ({type: SET_USER_COLOR, color})
 
 // Board action Types
 export const GET_BOARD = 'GET_BOARD'
-export const CHANGE_VERTEX_COLOR = 'CHANGE_VERTEX_COLOR'
 
 export const getBoard = board => ({type: GET_BOARD, board})
-export const changeVertexColor = (id, color) => ({
-  type: CHANGE_VERTEX_COLOR,
-  color,
-  id
-})
