@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import socket from '../socket'
+import './GameLobby.css'
 
 export class GameLobby extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export class GameLobby extends React.Component {
       activeGames: {}
     }
     this.setupSocket()
+    this.tryJoinLobby = this.tryJoinLobby.bind(this)
     this.clickUser = this.clickUser.bind(this)
     this.clickGame = this.clickGame.bind(this)
   }
@@ -57,6 +59,15 @@ export class GameLobby extends React.Component {
   }
 
   componentDidUpdate() {
+    this.tryJoinLobby()
+  }
+
+  componentDidMount() {
+    console.log('[ GameLobby ] componentDidMount', this.props)
+    this.tryJoinLobby()
+  }
+
+  tryJoinLobby() {
     if (this.props.user && this.state.inLobby === false) {
       console.log('[ GameLobby ] join-lobby')
       this.setState({
@@ -64,10 +75,6 @@ export class GameLobby extends React.Component {
       })
       socket.emit('join-lobby', this.props.user)
     }
-  }
-
-  componentDidMount() {
-    console.log('[ GameLobby ] componentDidMount', this.props)
   }
 
   clickUser(e) {
