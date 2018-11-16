@@ -1,6 +1,6 @@
 module.exports = io => {
   let userLobby = {}
-  let activeGames = {default: {}}
+  let activeGames = {'Default Game': {}}
 
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
@@ -8,7 +8,7 @@ module.exports = io => {
 
     socket.on('join-lobby', user => {
       userLobby[socket.id] = user
-      console.log('userLobby', userLobby)
+      console.log('userLobby', userLobby, '\nactiveGames', activeGames)
       io.sockets.emit('lobby-joined', userLobby, activeGames)
     })
 

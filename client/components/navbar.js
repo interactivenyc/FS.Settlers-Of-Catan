@@ -18,7 +18,7 @@ const Navbar = ({isLoggedIn, handleClick}) => {
       </div>
       {isLoggedIn ? (
         <div className="navItem">
-          <Link to="/" className="navItem link">
+          <Link to="/lobby" className="navItem link">
             Join Game
           </Link>
           <Link to="/" onClick={handleClick} className="navItem link">
