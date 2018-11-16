@@ -3,41 +3,47 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import './navbar.css'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
-  // <div>
-  //   <h1>BOILERMAKER</h1>
-  //   <nav>
-  //     {isLoggedIn ? (
-  //       <div>
-  //         {/* The navbar will show these links after you log in */}
-  //         <Link to="/home">Home</Link>
-  //         <a href="#" onClick={handleClick}>
-  //           Logout
-  //         </a>
-  //       </div>
-  //     ) : (
-  //       <div>
-  //         {/* The navbar will show these links before you log in */}
-  //         <Link to="/login">Login</Link>
-  //         <Link to="/signup">Sign Up</Link>
-  //       </div>
-  //     )}
-  //   </nav>
-  //   <hr />
-  // </div>
-  <div>
-    <div className="ui text menu">
-      <div className="item">
-        <img src="/images/new-school.jpg" />
+const Navbar = ({isLoggedIn, handleClick}) => {
+  return (
+    <nav id="navbar">
+      <div className="navItem">
+        <img src="http://www.bsbc.nb.ca/wp-content/uploads/2015/03/KolonistenVanCatan-twitter.png" />
       </div>
-      <a className="browse item">
-        Menu
-        <i className="dropdown icon" />
-      </a>
-    </div>
-  </div>
-)
+      <div className="navItem">
+        <Link to="/" className="navItem link">
+          Home
+        </Link>
+      </div>
+      {isLoggedIn ? (
+        <div className="navItem">
+          <Link to="/lobby" className="navItem link">
+            Join Game
+          </Link>
+          <Link to="/" onClick={handleClick} className="navItem link">
+            Logout
+          </Link>
+        </div>
+      ) : (
+        <div className="navItem">
+          <Link to="/login" className="navItem link">
+            Login
+          </Link>
+          <Link to="/signup" className="navItem link">
+            Signup
+          </Link>
+        </div>
+      )}
+      <div className="navItem">
+        <Link to="/" className="navItem link">
+          How to Play
+        </Link>
+      </div>
+      <div className="navItemRight">Settlers of Fullstack</div>
+    </nav>
+  )
+}
 
 /**
  * CONTAINER
