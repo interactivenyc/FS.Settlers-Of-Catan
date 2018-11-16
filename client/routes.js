@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome} from './components'
 import GameMap from './components/GameMap'
 import GameLobby from './components/GameLobby'
-import {me} from './store'
+import {me} from './store/actions'
 
 /**
  * COMPONENT
