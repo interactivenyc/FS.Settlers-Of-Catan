@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import GameBoard from './GameBoard'
-import './GameMap.css'
+// import './GameMap.css'
 
 class GameMap extends Component {
   handleClick = e => {
