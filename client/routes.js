@@ -6,6 +6,7 @@ import {Login, Signup, UserHome} from './components'
 import GameMap from './components/GameMap'
 import GameLobby from './components/GameLobby'
 import {me} from './store'
+import Home from './components/Home'
 
 /**
  * COMPONENT
@@ -32,7 +33,7 @@ class Routes extends Component {
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
+        <Route component={Home} />
       </Switch>
     )
   }
