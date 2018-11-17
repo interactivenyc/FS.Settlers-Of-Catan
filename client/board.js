@@ -1,10 +1,24 @@
+const fs = require('fs')
+const path = require('path')
+
 class Board {
-  constructor() {
+  constructor(initialData) {
+    console.log('new Board()')
+
+    this.initialData = initialData
+
     this.resources = {}
     this.vertices = {}
     this.edges = {}
     this.robberLocation = {}
-    this.makeResources()
+
+    if (initialData) {
+      console.log('initialData Loaded - process')
+      this.deserializeData(initialData)
+    } else {
+      console.log('makeResources()')
+      this.makeResources()
+    }
     this.orderedVertices = [
       '1,1',
       '1,2',
@@ -65,6 +79,58 @@ class Board {
     this.edgesFromVertices()
   }
 
+  /* eslint-disable complexity */
+  deserializeData(data) {
+    console.log('deserializeData')
+
+    let jsonData = JSON.parse(data)
+
+    console.log('CREATE ALL UNIQUE OBJECTS')
+
+    for (let prop in jsonData.resources) {
+      if (jsonData.resources.hasOwnProperty(prop)) {
+        let resource = jsonData.resources[prop]
+        // console.log('resource', resource)
+
+        this.resources[resource.id] = new Resource(
+          resource.row,
+          resource.column,
+          resource.type,
+          resource.diceTarget,
+          this
+        )
+      }
+    }
+
+    for (let prop in jsonData.vertices) {
+      if (jsonData.vertices.hasOwnProperty(prop)) {
+        let vertex = jsonData.vertices[prop]
+        // console.log('vertex', vertex)
+
+        this.vertices[vertex.id] = new Vertex(vertex.row, vertex.column, this)
+      }
+    }
+
+    for (let prop in jsonData.edges) {
+      if (jsonData.edges.hasOwnProperty(prop)) {
+        let edge = jsonData.edges[prop]
+        // console.log('edge', edge)
+
+        this.edges[edge.id] = new Edge(edge.row, edge.column, this)
+      }
+    }
+
+    console.log('ESTABLISH THEIR RELATIONSHIPS')
+
+    for (let prop in this.resources) {
+      if (this.resources.hasOwnProperty(prop)) {
+        let resource = this.resources[prop]
+        resource.setVertices(this)
+        resource.setEdges(this)
+      }
+    }
+  }
+
   makeResources() {
     this.resources[11] = new Resource(1, 1, 11, 'forest', this)
     this.resources[12] = new Resource(1, 2, 12, 'pasture', this)
@@ -102,35 +168,39 @@ class Board {
     let firstOffset = 0
     let secondOffset = 1
     for (const vertexCoordinates in this.orderedVertices) {
-      const vertex = this.vertices[this.orderedVertices[vertexCoordinates]]
-      const potentialEdges = this.findPotentialEdges(
-        edgeRow,
-        vertex,
-        firstOffset,
-        secondOffset
-      )
-      for (const edgeCoords in potentialEdges) {
-        let isEdge = this.findEdge(potentialEdges[edgeCoords], vertex)
-        if (isEdge) {
-          vertex.edges.push(isEdge)
-        }
-      }
-      if (!(this.vertexColumnsMap[vertex.row] === vertex.column)) {
-        if (edgeRow <= 5) {
-          if (vertex.column % 2 === 0) {
-            secondOffset++
-          } else {
-            firstOffset++
+      if (this.orderedVertices.hasOwnProperty(vertexCoordinates)) {
+        const vertex = this.vertices[this.orderedVertices[vertexCoordinates]]
+        const potentialEdges = this.findPotentialEdges(
+          edgeRow,
+          vertex,
+          firstOffset,
+          secondOffset
+        )
+        for (const edgeCoords in potentialEdges) {
+          if (potentialEdges.hasOwnProperty(edgeCoords)) {
+            let isEdge = this.findEdge(potentialEdges[edgeCoords], vertex)
+            if (isEdge) {
+              vertex.edges.push(isEdge)
+            }
           }
-        } else if (vertex.column % 2 === 0) {
-          firstOffset++
-        } else {
-          secondOffset++
         }
-      } else {
-        firstOffset = 0
-        secondOffset = 1
-        edgeRow += 2
+        if (!(this.vertexColumnsMap[vertex.row] === vertex.column)) {
+          if (edgeRow <= 5) {
+            if (vertex.column % 2 === 0) {
+              secondOffset++
+            } else {
+              firstOffset++
+            }
+          } else if (vertex.column % 2 === 0) {
+            firstOffset++
+          } else {
+            secondOffset++
+          }
+        } else {
+          firstOffset = 0
+          secondOffset = 1
+          edgeRow += 2
+        }
       }
     }
   }
@@ -182,9 +252,9 @@ class Resource {
     this.type = type
     this.diceTarget = diceTarget
     this.vertices = []
-    this.setVertices(board)
+    if (!board.initialData) this.setVertices(board) // don't do this if deserializing with initialData
     this.edges = []
-    this.setEdges(board)
+    if (!board.initialData) this.setEdges(board) // don't do this if deserializing with initialData
   }
 
   setVertices(board) {
@@ -286,5 +356,23 @@ class Edge {
   }
 }
 
-const board = new Board()
-console.log(JSON.stringify(board, null, 2))
+let board
+
+board = new Board()
+console.log('Board', board)
+
+// console.log(JSON.stringify(board, null, 2))
+
+var initialData = fs.readFile(
+  path.join(__dirname, 'board.json'),
+  'utf8',
+  (err, data) => {
+    if (err) {
+      console.error(err)
+    } else {
+      // console.log('initialData: ', data)
+      board = new Board(data)
+      // console.log('Board', board)
+    }
+  }
+)
