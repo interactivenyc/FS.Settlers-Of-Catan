@@ -90,8 +90,6 @@ class Board {
     for (let prop in jsonData.resources) {
       if (jsonData.resources.hasOwnProperty(prop)) {
         let resource = jsonData.resources[prop]
-        // console.log('resource', resource)
-
         this.resources[resource.id] = new Resource(
           resource.row,
           resource.column,
@@ -105,8 +103,6 @@ class Board {
     for (let prop in jsonData.vertices) {
       if (jsonData.vertices.hasOwnProperty(prop)) {
         let vertex = jsonData.vertices[prop]
-        // console.log('vertex', vertex)
-
         this.vertices[vertex.id] = new Vertex(vertex.row, vertex.column, this)
       }
     }
@@ -114,8 +110,6 @@ class Board {
     for (let prop in jsonData.edges) {
       if (jsonData.edges.hasOwnProperty(prop)) {
         let edge = jsonData.edges[prop]
-        // console.log('edge', edge)
-
         this.edges[edge.id] = new Edge(edge.row, edge.column, this)
       }
     }
@@ -356,23 +350,30 @@ class Edge {
   }
 }
 
-let board
+/**
+ * Use these lines to create a new Board from scratch
+ */
 
-board = new Board()
-console.log('Board', board)
-
+// let board
+// board = new Board()
+// console.log('Board', board)
 // console.log(JSON.stringify(board, null, 2))
 
-var initialData = fs.readFile(
-  path.join(__dirname, 'board.json'),
-  'utf8',
-  (err, data) => {
-    if (err) {
-      console.error(err)
-    } else {
-      // console.log('initialData: ', data)
-      board = new Board(data)
-      // console.log('Board', board)
-    }
-  }
-)
+/**
+ * Use these lines to read serialized data from board.json
+ * and re-create Board with that data being passed in
+ */
+
+// var initialData = fs.readFile(
+//   path.join(__dirname, 'board.json'),
+//   'utf8',
+//   (err, data) => {
+//     if (err) {
+//       console.error(err)
+//     } else {
+//       board = new Board(data)
+//       // console.log('Board', board)
+//       // console.log(JSON.stringify(board, null, 2))
+//     }
+//   }
+// )
