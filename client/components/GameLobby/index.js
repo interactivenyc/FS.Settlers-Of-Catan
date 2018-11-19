@@ -179,12 +179,12 @@ export class GameLobby extends React.Component {
       })
     })
 
-    socket.on('start-game', () => {
-      console.log('[ GameLobby ] start-game')
+    socket.on('start-game', board => {
+      console.log('[ GameLobby ] start-game', unescape(board))
       this.setState({
         gameId: ''
       })
-      this.props.history.push('/map')
+      this.props.history.push('/game')
     })
 
     socket.on('disconnect', () => {

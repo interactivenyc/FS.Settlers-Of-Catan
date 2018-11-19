@@ -1,6 +1,14 @@
+const Board = require('./board.js')
+
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
+  let board = new Board()
+  const maxUsers = 2
+
+  /**
+   * THESE ARE VARS USED BY RYAN - TO INTEGRATE
+   */
   let number = 1
   let colors = {
     1: 'red',
@@ -8,8 +16,6 @@ module.exports = io => {
     3: 'blue',
     4: 'orange'
   }
-
-  const maxUsers = 2
 
   function log(msg) {
     console.log('[ server socket ]', msg)
@@ -37,7 +43,7 @@ module.exports = io => {
       const userKeys = Object.keys(activeGames[gameId])
       if (userKeys.length === maxUsers) {
         userKeys.forEach(socketId => {
-          io.to(socketId).emit('start-game')
+          io.to(socketId).emit('start-game', JSON.stringify(board))
           delete activeGames[gameId][socketId]
           delete userLobby[socketId]
           io.sockets.emit('update-lobby', userLobby, activeGames)
@@ -57,6 +63,22 @@ module.exports = io => {
       io.sockets.emit('lobby-left', userLobby)
     })
 
+    socket.on('delete-user-from-game', (email, gameId) => {
+      console.log('delete-user-from-game', email, gameId)
+
+      let game = activeGames[gameId]
+      for (let key in game) {
+        if (game[key].email === email) {
+          log('deleting user from game', game[key])
+          delete game[key]
+        }
+      }
+    })
+
+    /**
+     * THESE ARE NEW FUNCTIONS FROM RYAN TO INTEGRATE
+     */
+
     socket.on('dispatch', value => {
       socket.broadcast.emit('dispatch', value)
     })
@@ -75,18 +97,6 @@ module.exports = io => {
           number: number,
           color: colors[number++]
         })
-      }
-    })
-
-    socket.on('delete-user-from-game', (email, gameId) => {
-      console.log('delete-user-from-game', email, gameId)
-
-      let game = activeGames[gameId]
-      for (let key in game) {
-        if (game[key].email === email) {
-          log('deleting user from game', game[key])
-          delete game[key]
-        }
       }
     })
   })
