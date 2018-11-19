@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import GameMap from '../GameMap'
 import Dice from '../Dice'
+import socket from '../socket'
 
 class GameController extends Component {
   constructor(props) {
@@ -9,16 +10,17 @@ class GameController extends Component {
     this.state = {
       die1: 0,
       die2: 0,
-      diceTotal: 0,
-      trading: true
+      diceTotal: 0
     }
+    socket.on('send-card-to-user', () => {
+      console.log('player received card')
+      socket.emit('get-dev-card')
+    })
   }
 
   componentDidMount() {
     this.rollDice()
-    this.setState({
-      trading: true
-    })
+    socket.emit('send-card-to-user')
   }
 
   rollDice = () => {
@@ -36,6 +38,7 @@ class GameController extends Component {
           die2={this.state.die2}
           diceTotal={this.state.diceTotal}
         />
+
         <GameMap />
       </div>
     )
