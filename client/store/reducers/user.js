@@ -8,8 +8,7 @@ export default function(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
-    case ASSIGN_PLAYER:
-      return {...state, color: action.color, playerNumber: action.number}
+
     default:
       return state
   }

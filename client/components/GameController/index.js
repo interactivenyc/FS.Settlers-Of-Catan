@@ -4,6 +4,7 @@ import GameMap from '../GameMap'
 import Dice from '../Dice'
 import socket from '../../socket'
 import DevDeck from '../DevDeck'
+import * as actions from '../../store/actions'
 
 class GameController extends Component {
   constructor(props) {
@@ -40,11 +41,17 @@ class GameController extends Component {
           diceTotal={this.state.diceTotal}
           visible={this.state.visible}
         />
-        <DevDeck />
+        <DevDeck playerHand={this.props.playerHand} />
         <GameMap />
       </Fragment>
     )
   }
 }
 
-export default GameController
+const mapStateToProps = state => ({
+  playerHand: state.playerState.playerHand
+})
+
+export default connect(mapStateToProps, {playCard: actions.playCard})(
+  GameController
+)
