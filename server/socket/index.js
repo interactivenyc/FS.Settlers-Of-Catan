@@ -45,9 +45,9 @@ module.exports = io => {
     })
 
     socket.on('assignPlayer', () => {
-      // if (number <= 4) {
-      io.sockets.emit('assignPlayer', {number: 1, color: colors[1]})
-      // }
+      if (number <= 4) {
+        io.sockets.emit('assignPlayer', {number, color: colors[number++]})
+      }
     })
   })
 }

@@ -19,7 +19,7 @@ class GameMap extends Component {
 
     socket.on('assignPlayer', ({number, color}) => {
       if (!this.props.user.color) store.dispatch(assignPlayer(number, color))
-      if (number === 1) socket.emit('startGame')
+      if (number === 4) socket.emit('startGame')
     })
   }
 
