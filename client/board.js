@@ -310,11 +310,11 @@ class Resource {
     }
   }
 
-  toJSON() {
-    delete this.vertices
-    delete this.edges
-    return this
-  }
+  // toJSON() {
+  //   delete this.vertices
+  //   delete this.edges
+  //   return this
+  // }
 }
 
 class Vertex {
@@ -323,15 +323,16 @@ class Vertex {
     this.row = row
     this.column = column
     this.player = null
+    this.color = null
     this.locationType = null
     this.edges = []
     board.vertices[this.id] = this
   }
 
-  toJSON() {
-    delete this.edges
-    return this
-  }
+  // toJSON() {
+  //   delete this.edges
+  //   return this
+  // }
 }
 
 class Edge {
@@ -339,15 +340,16 @@ class Edge {
     this.id = board.getStringFromCoordinate(row, column)
     this.row = row
     this.column = column
+    this.color = null
     this.player = null
     this.vertices = []
     board.edges[this.id] = this
   }
 
-  toJSON() {
-    delete this.vertices
-    return this
-  }
+  // toJSON() {
+  //   delete this.vertices
+  //   return this
+  // }
 }
 
 export default Board

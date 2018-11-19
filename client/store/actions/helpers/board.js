@@ -16,10 +16,9 @@ export const getEdgeNeighborsColor = (edge, board) => {
 
 // Gets currently selected vertice neighbors and returns them in array
 export const getVerticeNeighbors = (vertice, board) => {
-  console.log('THIS IS THE VERTICE VALUE', vertice, board)
   const edges = vertice.edges
 
-  console.log(edges)
+  console.log('EDGES', edges)
 
   return edges.map(
     curEdge =>
@@ -31,7 +30,6 @@ export const getVerticeNeighbors = (vertice, board) => {
 
 // at least one edge needs to share the current player color
 export const validateChangeEdge = (user, edge, neighbors, board) => {
-  console.log('VALIDATING', neighbors)
   return neighbors.some(neighbor => {
     const isValid = neighbor === user.color && !edge.color && neighbor
     const isEmpty =
@@ -39,13 +37,11 @@ export const validateChangeEdge = (user, edge, neighbors, board) => {
       (board.vertices[edge.vertices[0].id].color === user.color ||
         board.vertices[edge.vertices[1].id].color === user.color)
 
-    console.log('isEmpty', isEmpty)
     return isValid || isEmpty
   })
 }
 
 // all adjacent vertices must have not settlements
 export const validateChangeVertice = (user, vertice, neighbors) => {
-  console.log('VALIDATING', neighbors)
   return neighbors.every(neighbor => neighbor.color === null)
 }
