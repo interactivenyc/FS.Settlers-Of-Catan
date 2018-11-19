@@ -11,7 +11,7 @@ export class GameLobby extends React.Component {
     this.state = {
       inLobby: false,
       socketId: '',
-      activeGame: '',
+      gameId: '',
       userLobby: {},
       activeGames: {}
     }
@@ -19,6 +19,7 @@ export class GameLobby extends React.Component {
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
     this.clickUser = this.clickUser.bind(this)
     this.clickGame = this.clickGame.bind(this)
+    this.resetAllGames = this.resetAllGames.bind(this)
   }
 
   componentDidMount() {
@@ -40,6 +41,10 @@ export class GameLobby extends React.Component {
     }
   }
 
+  resetAllGames() {
+    socket.emit('reset-all-games')
+  }
+
   clickUser(e) {
     console.log('[ GameLobby ] clickUser', e.target.innerHTML)
   }
@@ -50,6 +55,9 @@ export class GameLobby extends React.Component {
       e.target.getAttribute('gameid'),
       this.state.activeGames
     )
+    this.setState({
+      gameId: e.target.getAttribute('gameid')
+    })
     socket.emit('join-game', e.target.getAttribute('gameid'))
   }
 
@@ -107,30 +115,40 @@ export class GameLobby extends React.Component {
             </tr>
           </tbody>
         </table>
+
+        <p />
+
+        <button type="button" onClick={this.resetAllGames}>
+          Reset All Games
+        </button>
       </React.Fragment>
     )
   }
 
   setupSocket() {
-    console.log('[ GameLobby ] setupSocket', socket.id)
+    // console.log('[ GameLobby ] setupSocket', socket.id)
 
     socket.on('player-joined', () => {
       console.log('[ GameLobby ] player-joined')
     })
 
-    socket.on('lobby-joined', (userLobby, activeGames) => {
-      console.log(
-        '[ GameLobby ] lobby-joined userLobby/activeGames',
-        userLobby,
-        activeGames
-      )
+    socket.on('update-lobby', (userLobby, activeGames, userEmail) => {
+      console.log('[ GameLobby ] update-lobby', userEmail)
 
+      /**
+       * If the user has lost their connection accidentally, reset
+       * their socketId, and re-join a game if they had
+       * previously selected one
+       */
       if (this.state.socketId !== socket.id && this.state.socketId !== '') {
         console.log(
           '[ GameLobby ] SOCKET ID HAS CHANGED',
           this.state.socketId,
           socket.id
         )
+        if (this.state.gameId != '') {
+          socket.emit('join-game', this.state.gameId)
+        }
       }
 
       this.setState({
@@ -147,16 +165,45 @@ export class GameLobby extends React.Component {
       })
     })
 
+    socket.on('games-reset', activeGames => {
+      console.log('[ GameLobby ] games-reset')
+      this.setState({
+        activeGames
+      })
+    })
+
     socket.on('lobby-left', userLobby => {
-      console.log('[ GameLobby ] lobby-left userLobby', userLobby)
+      console.log('[ GameLobby ] lobby-left')
       this.setState({
         userLobby
       })
     })
 
+    socket.on('start-game', () => {
+      console.log('[ GameLobby ] start-game')
+      this.setState({
+        gameId: ''
+      })
+      this.props.history.push('/map')
+    })
+
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} was lost - rejoining`)
+
+      /**
+       * If the user's connection is lost accidentally,
+       * rejoin the lobby, and tell the server to delete
+       * the user from the active game. Game will be rejoined
+       * automatically if this.state.gameId exists.
+       */
       socket.emit('join-lobby', this.props.user)
+      if (this.state.gameId !== '') {
+        socket.emit(
+          'delete-user-from-game',
+          this.props.user.email,
+          this.state.gameId
+        )
+      }
     })
   }
 }
