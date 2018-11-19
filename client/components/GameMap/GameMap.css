@@ -1,17 +1,18 @@
 .board-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   background-color: #2f3542;
-  width: 100%;
-  height: 100%;
 }
 
 .board {
-  position: relative;
+  min-width: 1025px;
   background-color: #1e90ff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transform: perspective(800px) rotateX(30deg) translateY(-30%);
+  transform: perspective(800px) rotateX(30deg) translateY(-15%);
   box-shadow: 0px 50px 50px 10px rgba(0, 0, 0, 0.3);
   /* clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); */
 }
@@ -35,10 +36,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* background-color: #eccc68; */
+  background-color: #eccc68;
   height: 90%;
   width: 90%;
-  z-index: 999;
+  z-index: 1;
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
@@ -78,6 +79,7 @@
 
 .side {
   flex: 1;
+  background-color: #eccc68;
 }
 
 .side-left {
@@ -88,17 +90,13 @@
   clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 
-.side {
-  background-color: #eccc68;
-}
-
 .city {
   height: 30px;
   width: 30px;
   position: absolute;
   background-color: white;
   border-radius: 50%;
-  z-index: 9;
+  z-index: 4;
 }
 
 .city-1 {
@@ -113,8 +111,8 @@
 
 .city-3 {
   top: 25%;
-  right: 0;
-  transform: translate(50%, -50%);
+  left: 100%;
+  transform: translate(-50%, -50%);
 }
 
 .city-4 {
@@ -130,10 +128,134 @@
 
 .city-6 {
   top: 75%;
-  right: 0;
-  transform: translate(50%, -50%);
+  left: 100%;
+  transform: translate(-50%, -50%);
 }
 
 .board-row {
   display: flex;
+}
+
+.game-modle {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -200%);
+  width: 800px;
+  height: 400px;
+  border: 3px solid #ecf0f1;
+  color: #ecf0f1;
+  background-color: rgba(52, 73, 94, 0.8);
+  border-radius: 10px;
+  z-index: 10;
+  transition: all 0.5s;
+}
+
+.game-modle-active {
+  transform: translate(-50%, -50%);
+}
+
+.game-controller {
+  display: flex;
+  bottom: 1%;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  border: 3px solid #ecf0f1;
+  background-color: rgba(52, 73, 94, 0.5);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.section-resources {
+  display: flex;
+}
+
+.resource-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  color: #ecf0f1;
+}
+
+.resource {
+  width: 45px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-btns {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-container {
+  position: absolute;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-between;
+  /* height: 50%; */
+  width: 100%;
+  padding: 10px;
+}
+
+.player {
+  background-color: rgba(52, 73, 94, 0.8);
+  border-radius: 10px;
+  display: flex;
+  z-index: 3;
+}
+
+.user {
+  height: 80px;
+  width: 80px;
+  border-radius: 10px;
+  background-image: url('../../../public/images/user.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.score {
+  color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3px;
+}
+
+.player-1 {
+  border: 3px solid var(--color-red);
+}
+.player-2 {
+  border: 3px solid var(--color-green);
+}
+.player-3 {
+  border: 3px solid var(--color-blue);
+}
+.player-4 {
+  border: 3px solid var(--color-orange);
+}
+
+.active-1 {
+  background-color: var(--color-red-transparent);
+}
+.active-2 {
+  background-color: var(--color-green-transparent);
+}
+.active-3 {
+  background-color: var(--color-blue-transparent);
+}
+.active-4 {
+  background-color: var(--color-orange-transparent);
+}
+
+.cur-player {
+  outline: 5px solid #ecf0f1;
 }

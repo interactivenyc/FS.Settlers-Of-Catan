@@ -1,6 +1,14 @@
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
+  let number = 1
+  let colors = {
+    1: 'red',
+    2: 'green',
+    3: 'blue',
+    4: 'orange'
+  }
+
   const maxUsers = 2
 
   function log(msg) {
@@ -47,6 +55,27 @@ module.exports = io => {
       console.log(`Connection ${socket.id} has left the building`)
       delete userLobby[socket.id]
       io.sockets.emit('lobby-left', userLobby)
+    })
+
+    socket.on('dispatch', value => {
+      socket.broadcast.emit('dispatch', value)
+    })
+
+    socket.on('startGame', () => {
+      io.sockets.emit('dispatch', {
+        type: 'START_GAME',
+        modle: false,
+        playerTurn: 1
+      })
+    })
+
+    socket.on('assignPlayer', () => {
+      if (number <= 4) {
+        io.sockets.emit('assignPlayer', {
+          number: number,
+          color: colors[number++]
+        })
+      }
     })
 
     socket.on('delete-user-from-game', (email, gameId) => {
