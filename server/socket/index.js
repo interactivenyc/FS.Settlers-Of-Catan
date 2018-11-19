@@ -39,6 +39,13 @@ module.exports = io => {
   }
 
   generateDeck()
+  let number = 1
+  let colors = {
+    1: 'red',
+    2: 'green',
+    3: 'blue',
+    4: 'orange'
+  }
 
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
@@ -66,6 +73,27 @@ module.exports = io => {
       console.log(`Connection ${socket.id} has left the building`)
       delete userLobby[socket.id]
       io.sockets.emit('lobby-left', userLobby)
+    })
+
+    socket.on('dispatch', value => {
+      socket.broadcast.emit('dispatch', value)
+    })
+
+    socket.on('startGame', () => {
+      io.sockets.emit('dispatch', {
+        type: 'START_GAME',
+        modle: false,
+        playerTurn: 1
+      })
+    })
+
+    socket.on('assignPlayer', () => {
+      if (number <= 4) {
+        io.sockets.emit('assignPlayer', {
+          number: number,
+          color: colors[number++]
+        })
+      }
     })
   })
 }
