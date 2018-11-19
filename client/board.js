@@ -186,9 +186,9 @@ class Board {
               firstOffset++
             }
           } else if (vertex.column % 2 === 0) {
-            firstOffset++
-          } else {
             secondOffset++
+          } else {
+            firstOffset++
           }
         } else {
           firstOffset = 0
