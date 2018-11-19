@@ -40,7 +40,7 @@ module.exports = io => {
           io.to(socketId).emit('start-game')
           delete activeGames[gameId][socketId]
           delete userLobby[socketId]
-          io.sockets.emit('updateLobby', userLobby, activeGames)
+          io.sockets.emit('update-lobby', userLobby, activeGames)
         })
       }
     })
