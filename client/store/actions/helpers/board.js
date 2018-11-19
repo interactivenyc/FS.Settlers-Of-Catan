@@ -16,6 +16,7 @@ export const getEdgeNeighborsColor = (edge, board) => {
 
 // Gets currently selected vertice neighbors and returns them in array
 export const getVerticeNeighbors = (vertice, board) => {
+  console.log('THIS IS THE VERTICE VALUE', vertice, board)
   const edges = vertice.edges
 
   console.log(edges)
