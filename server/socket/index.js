@@ -1,6 +1,41 @@
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
+  let gameDecks = {}
+
+  //Fisher-Yates Shuffle
+  function shuffle(array) {
+    var currentIndex = array.length,
+      temporaryValue,
+      randomIndex
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
+    }
+
+    return array
+  }
+
+  function generateDeck() {
+    const cards = ['monopoly', 'monopoly', 'road', 'road', 'plenty', 'plenty']
+    for (let i = 0; i < 14; i++) {
+      cards.push('knight')
+    }
+    for (let i = 0; i < 5; i++) {
+      cards.push('vp')
+    }
+    shuffle(cards)
+    return cards
+  }
+
+  function getRandomCard(gameId) {
+    return gameDecks.gameId.pop()
+  }
 
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
@@ -17,6 +52,11 @@ module.exports = io => {
       activeGames[gameId][socket.id] = userLobby[socket.id]
       console.log('join-game activeGames', activeGames)
       io.sockets.emit('game-joined', activeGames)
+    })
+
+    socket.on('get-dev-card', (user, gameId) => {
+      let card = this.getRandomCard(gameId)
+      io.sockets.emit('send-card-to-user', card)
     })
 
     socket.on('disconnect', () => {

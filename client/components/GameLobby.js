@@ -56,6 +56,11 @@ export class GameLobby extends React.Component {
       console.log(`Connection ${socket.id} was lost - rejoining`)
       socket.emit('join-lobby', this.props.user)
     })
+
+    socket.on('send-card-to-user', () => {
+      console.log('player received card')
+      socket.emit('get-dev-card')
+    })
   }
 
   componentDidUpdate() {

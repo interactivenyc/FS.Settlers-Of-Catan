@@ -9,12 +9,16 @@ class GameController extends Component {
     this.state = {
       die1: 0,
       die2: 0,
-      diceTotal: 0
+      diceTotal: 0,
+      trading: true
     }
   }
 
   componentDidMount() {
     this.rollDice()
+    this.setState({
+      trading: true
+    })
   }
 
   rollDice = () => {
