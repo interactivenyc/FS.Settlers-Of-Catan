@@ -1,4 +1,4 @@
-import {GET_USER, REMOVE_USER, SET_USER_COLOR} from '../actions'
+import {GET_USER, REMOVE_USER, ASSIGN_PLAYER} from '../actions'
 
 const defaultUser = {}
 
@@ -8,8 +8,8 @@ export default function(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
-    case SET_USER_COLOR:
-      return {...state, color: action.color}
+    case ASSIGN_PLAYER:
+      return {...state, color: action.color, playerNumber: action.number}
     default:
       return state
   }
