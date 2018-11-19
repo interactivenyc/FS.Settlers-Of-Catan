@@ -1,5 +1,42 @@
-/* 
+.die-container {
+  display: flex;
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.die-1 {
+  background-image: url('../../public/images/Dice/Dice-1.png');
+}
+
+.die-2 {
+  background-image: url('../../public/images/Dice/Dice-2.png');
+}
+
+.die-3 {
+  background-image: url('../../public/images/Dice/Dice-3.png');
+}
+
+.die-4 {
+  background-image: url('../../public/images/Dice/Dice-4.png');
+}
+
+.die-5 {
+  background-image: url('../../public/images/Dice/Dice-5.png');
+}
+
+.die-6 {
+  background-image: url('../../public/images/Dice/Dice-6.png');
+}
+
 .die {
-    height:10px;
-    width:10px
-} */
+  height: 100px;
+  width: 100px;
+  background-color: green;
+  margin: 10px;
+  border-radius: 5px;
+  background-size: cover;
+}
+
+.active {
+  opacity: 1;
+}

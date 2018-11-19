@@ -22,6 +22,7 @@ module.exports = io => {
   }
 
   function generateDeck() {
+    console.log('generate deck')
     const cards = ['monopoly', 'monopoly', 'road', 'road', 'plenty', 'plenty']
     for (let i = 0; i < 14; i++) {
       cards.push('knight')
@@ -30,12 +31,14 @@ module.exports = io => {
       cards.push('vp')
     }
     shuffle(cards)
-    return cards
+    gameDecks.defaultGame = cards
   }
 
   function getRandomCard(gameId) {
-    return gameDecks.gameId.pop()
+    return gameDecks[gameId].pop()
   }
+
+  generateDeck()
 
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
@@ -54,8 +57,8 @@ module.exports = io => {
       io.sockets.emit('game-joined', activeGames)
     })
 
-    socket.on('get-dev-card', (user, gameId) => {
-      let card = this.getRandomCard(gameId)
+    socket.on('get-dev-card', gameId => {
+      let card = getRandomCard(gameId)
       io.sockets.emit('send-card-to-user', card)
     })
 

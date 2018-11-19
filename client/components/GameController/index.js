@@ -1,8 +1,9 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import {connect} from 'react-redux'
 import GameMap from '../GameMap'
 import Dice from '../Dice'
-import socket from '../socket'
+import socket from '../../socket'
+import DevDeck from '../DevDeck'
 
 class GameController extends Component {
   constructor(props) {
@@ -10,17 +11,18 @@ class GameController extends Component {
     this.state = {
       die1: 0,
       die2: 0,
-      diceTotal: 0
+      diceTotal: 0,
+      visible: false
     }
-    socket.on('send-card-to-user', () => {
-      console.log('player received card')
-      socket.emit('get-dev-card')
+    socket.on('send-card-to-user', card => {
+      console.log('player received card', card)
     })
   }
 
   componentDidMount() {
     this.rollDice()
-    socket.emit('send-card-to-user')
+    this.setState({visible: true})
+    socket.emit('get-dev-card', 'defaultGame')
   }
 
   rollDice = () => {
@@ -31,16 +33,16 @@ class GameController extends Component {
 
   render() {
     return (
-      <div>
-        <h1> Game Controller </h1>
+      <Fragment>
         <Dice
           die1={this.state.die1}
           die2={this.state.die2}
           diceTotal={this.state.diceTotal}
+          visible={this.state.visible}
         />
-
+        <DevDeck />
         <GameMap />
-      </div>
+      </Fragment>
     )
   }
 }

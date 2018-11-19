@@ -1,7 +1,7 @@
 import React from 'react'
-import './Dice.css'
+import './DevDeck.css'
 
-const Dice = props => {
+const DevDeck = props => {
   return (
     <div className={`die-container ${props.visible && 'active'}`}>
       <div className={`die die-${props.die1}`} />
@@ -11,4 +11,4 @@ const Dice = props => {
   )
 }
 
-export default Dice
+export default DevDeck

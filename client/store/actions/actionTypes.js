@@ -11,3 +11,9 @@ export const setUserColor = color => ({type: SET_USER_COLOR, color})
 export const GET_BOARD = 'GET_BOARD'
 
 export const getBoard = board => ({type: GET_BOARD, board})
+
+//DevDeck/Player Hand action Types
+export const GET_CARD = 'GET_CARD'
+export const DELETE_CARD = 'DELETE_CARD'
+export const addCard = card => ({type: ADD_CARD, card})
+export const deleteCard = () => ({type: DELETE_CARD})
