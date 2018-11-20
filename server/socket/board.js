@@ -90,11 +90,11 @@ class Board {
     for (let prop in jsonData.resources) {
       if (jsonData.resources.hasOwnProperty(prop)) {
         let resource = jsonData.resources[prop]
-        this.resources[resource.id] = new Resource(
+        this.resources[prop] = new Resource(
           resource.row,
           resource.column,
-          resource.type,
           resource.diceTarget,
+          resource.type,
           this
         )
       }
@@ -103,14 +103,27 @@ class Board {
     for (let prop in jsonData.vertices) {
       if (jsonData.vertices.hasOwnProperty(prop)) {
         let vertex = jsonData.vertices[prop]
-        this.vertices[vertex.id] = new Vertex(vertex.row, vertex.column, this)
+        this.vertices[vertex.id] = new Vertex(
+          vertex.row,
+          vertex.column,
+          this,
+          vertex.player,
+          vertex.color,
+          vertex.locationType
+        )
       }
     }
 
     for (let prop in jsonData.edges) {
       if (jsonData.edges.hasOwnProperty(prop)) {
         let edge = jsonData.edges[prop]
-        this.edges[edge.id] = new Edge(edge.row, edge.column, this)
+        this.edges[edge.id] = new Edge(
+          edge.row,
+          edge.column,
+          this,
+          edge.color,
+          edge.player
+        )
       }
     }
 
@@ -318,13 +331,20 @@ class Resource {
 }
 
 class Vertex {
-  constructor(row, column, board) {
+  constructor(
+    row,
+    column,
+    board,
+    player = null,
+    color = null,
+    locationType = null
+  ) {
     this.id = board.getStringFromCoordinate(row, column)
     this.row = row
     this.column = column
-    this.player = null
-    this.color = null
-    this.locationType = null
+    this.player = player
+    this.color = color
+    this.locationType = locationType
     this.edges = []
     board.vertices[this.id] = this
   }
@@ -336,12 +356,12 @@ class Vertex {
 }
 
 class Edge {
-  constructor(row, column, board) {
+  constructor(row, column, board, color = null, player = null) {
     this.id = board.getStringFromCoordinate(row, column)
     this.row = row
     this.column = column
-    this.color = null
-    this.player = null
+    this.color = color
+    this.player = player
     this.vertices = []
     board.edges[this.id] = this
   }

@@ -4,9 +4,15 @@ import {
   getVerticeNeighbors,
   validateChangeVertice
 } from './helpers'
+import Board from '../../board'
 
-import {createRoad, createSettlement} from './actionTypes'
+import {createRoad, createSettlement, getBoard} from './actionTypes'
 import socket from '../../socket'
+
+export const deserializeBoard = boardData => dispatch => {
+  const board = new Board(boardData)
+  dispatch(getBoard(board))
+}
 
 export const changeVertexThunk = id => (dispatch, getState) => {
   const {board, user} = getState()
