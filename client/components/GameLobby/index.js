@@ -6,6 +6,7 @@ import UserList from './UserList'
 import GameList from './GameList'
 import GameState from './GameState'
 import GameChat from './GameChat'
+import * as actions from '../../store/actions'
 
 export class GameLobby extends React.Component {
   constructor(props) {
@@ -25,50 +26,6 @@ export class GameLobby extends React.Component {
     this.clickUser = this.clickUser.bind(this)
     this.clickGame = this.clickGame.bind(this)
     this.resetAllGames = this.resetAllGames.bind(this)
-  }
-
-  setupSocket() {
-    console.log('[ GameLobby ] setupSocket', socket.id)
-
-    socket.on('player-joined', () => {
-      console.log('[ GameLobby ] player-joined')
-    })
-
-    socket.on('lobby-joined', (userLobby, activeGames) => {
-      console.log(
-        '[ GameLobby ] lobby-joined userLobby/activeGames',
-        userLobby,
-        activeGames
-      )
-      this.setState({
-        userLobby,
-        activeGames
-      })
-    })
-
-    socket.on('game-joined', activeGames => {
-      console.log('[ GameLobby ] game-joined')
-      this.setState({
-        activeGames
-      })
-    })
-
-    socket.on('lobby-left', userLobby => {
-      console.log('[ GameLobby ] lobby-left userLobby', userLobby)
-      this.setState({
-        userLobby
-      })
-    })
-
-    socket.on('disconnect', () => {
-      console.log(`Connection ${socket.id} was lost - rejoining`)
-      socket.emit('join-lobby', this.props.user)
-    })
-
-    socket.on('send-card-to-user', () => {
-      console.log('player received card')
-      socket.emit('get-dev-card')
-    })
   }
 
   componentDidMount() {
@@ -205,11 +162,12 @@ export class GameLobby extends React.Component {
       })
     })
 
-    socket.on('start-game', board => {
+    socket.on('start-game', (board, users) => {
       console.log('[ GameLobby ] start-game')
       this.setState({
         gameId: ''
       })
+      this.props.setGameUsers(users)
       this.props.history.push('/game')
     })
 
@@ -240,4 +198,10 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(GameLobby)
+const mapDispatchToProps = dispatch => {
+  return {
+    setGameUsers: users => dispatch(actions.setGameUsers(users))
+  }
+}
+
+export default connect(mapState, mapDispatchToProps)(GameLobby)

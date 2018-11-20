@@ -36,6 +36,7 @@ export const createSettlement = (id, color) => ({
 
 // play State action types
 export const START_GAME = 'START_GAME'
+export const SET_GAME_USERS = 'SET_GAME_USERS'
 export const NEXT_PLAYER = 'NEXT_PLAYER'
 
 export const startGame = () => ({

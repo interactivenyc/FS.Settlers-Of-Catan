@@ -90,12 +90,17 @@ module.exports = io => {
           board_data: JSON.stringify(new Board())
         })
 
+        let gameUsers = {}
+        let playerNum = 0
         userKeys.forEach(socketId => {
-          io.to(socketId).emit('start-game', board.board_data)
           delete activeGames[gameId][socketId]
+          let user = userLobby[socketId]
+          user.playerNum = playerNum++
+          gameUsers['player_' + playerNum] = user
           delete userLobby[socketId]
-          io.sockets.emit('update-lobby', userLobby, activeGames)
+          io.to(socketId).emit('start-game', board.board_data, gameUsers)
         })
+        io.sockets.emit('update-lobby', userLobby, activeGames)
       }
     })
 
