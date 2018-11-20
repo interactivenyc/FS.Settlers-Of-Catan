@@ -5,6 +5,7 @@ import './GameLobby.css'
 import UserList from './UserList'
 import GameList from './GameList'
 import GameState from './GameState'
+import GameChat from './GameChat'
 
 export class GameLobby extends React.Component {
   constructor(props) {
@@ -16,7 +17,8 @@ export class GameLobby extends React.Component {
       socketId: '',
       gameId: '',
       userLobby: {},
-      activeGames: {}
+      activeGames: {},
+      chatList: ['line1', 'line2', 'line3']
     }
     this.setupSocket()
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
@@ -68,18 +70,33 @@ export class GameLobby extends React.Component {
     return (
       <React.Fragment>
         <h1>Lobby</h1>
-        <UserList clickUser={this.clickUser} userLobby={this.state.userLobby} />
 
-        <p />
-
-        <GameList
-          clickGame={this.clickGame}
-          activeGames={this.state.activeGames}
-        />
-
-        <p />
-
-        <GameState state={this.state} />
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <UserList
+                  clickUser={this.clickUser}
+                  userLobby={this.state.userLobby}
+                />
+              </td>
+              <td>
+                <GameList
+                  clickGame={this.clickGame}
+                  activeGames={this.state.activeGames}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <GameState state={this.state} />
+              </td>
+              <td>
+                <GameChat chatList={this.state.chatList} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         <p />
 
