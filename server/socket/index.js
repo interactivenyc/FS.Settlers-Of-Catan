@@ -118,6 +118,7 @@ module.exports = io => {
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
       delete userLobby[socket.id]
+      delete activeGames['Default Game'][socket.id]
       io.sockets.emit('lobby-left', userLobby)
     })
 
@@ -131,6 +132,12 @@ module.exports = io => {
           delete game[key]
         }
       }
+    })
+
+    socket.on('leave-game', gameId => {
+      console.log('leave-game', gameId, socket.id)
+      delete activeGames[gameId][socket.id]
+      io.sockets.emit('update-lobby', userLobby, activeGames)
     })
 
     /**

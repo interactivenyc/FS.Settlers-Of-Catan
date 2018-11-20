@@ -25,6 +25,7 @@ export class GameLobby extends React.Component {
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
     this.clickUser = this.clickUser.bind(this)
     this.clickGame = this.clickGame.bind(this)
+    this.leaveGame = this.leaveGame.bind(this)
     this.resetAllGames = this.resetAllGames.bind(this)
   }
 
@@ -35,6 +36,10 @@ export class GameLobby extends React.Component {
 
   componentDidUpdate() {
     this.tryJoinLobby()
+  }
+
+  componentWillUnmount() {
+    socket.emit('leave-game', this.state.gameId)
   }
 
   tryJoinLobby() {
@@ -67,6 +72,14 @@ export class GameLobby extends React.Component {
     socket.emit('join-game', e.target.getAttribute('gameid'))
   }
 
+  leaveGame(e) {
+    console.log('[ GameLobby ] leaveGame', e.target.getAttribute('gameid'))
+    this.setState({
+      gameId: ''
+    })
+    socket.emit('leave-game', e.target.getAttribute('gameid'))
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -84,7 +97,10 @@ export class GameLobby extends React.Component {
               <td>
                 <GameList
                   clickGame={this.clickGame}
+                  leaveGame={this.leaveGame}
                   activeGames={this.state.activeGames}
+                  socketId={this.state.socketId}
+                  gameId={this.state.gameId}
                 />
               </td>
             </tr>

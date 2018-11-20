@@ -1,8 +1,13 @@
 .tableDisplay,
 .tableDisplay th {
   border: 1px solid black;
+  width: 100%;
 }
 
 td {
   vertical-align: top;
+}
+
+button {
+  outline: none;
 }

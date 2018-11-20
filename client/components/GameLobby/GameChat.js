@@ -1,7 +1,7 @@
 import React from 'react'
 
 const GameChat = props => {
-  let chatList = props.chatList.join('<br/>')
+  let chatList = props.chatList.join('\n')
   return (
     <table className="tableDisplay">
       <tbody>
@@ -9,7 +9,9 @@ const GameChat = props => {
           <th>Chat Window</th>
         </tr>
         <tr>
-          <td>{chatList}</td>
+          <td>
+            <pre>{chatList}</pre>
+          </td>
         </tr>
       </tbody>
     </table>
