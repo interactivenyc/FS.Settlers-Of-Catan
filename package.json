@@ -21,7 +21,7 @@
     "start": "node server",
     "start-dev": "killall -9 node; NODE_ENV='development' npm run build-client-watch & NODE_ENV='development' npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
-    "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register --exit"
+    "test": "NODE_ENV='test' mocha \"./server/**/*.spec.js\" \"./client/**/*.spec.js\" \"./script/**/*.spec.js\" --require @babel/polyfill --require @babel/register --require ignore-styles --exit"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -44,6 +44,7 @@
     "express-session": "^1.15.1",
     "gulp": "^3.9.1",
     "history": "^4.6.3",
+    "ignore-styles": "^5.0.1",
     "morgan": "^1.9.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
