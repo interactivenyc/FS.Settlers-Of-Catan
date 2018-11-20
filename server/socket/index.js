@@ -45,7 +45,7 @@ module.exports = io => {
   generateDeck()
 
   // let board = new Board()
-  const maxUsers = 2
+  const maxUsers = 4
 
   /**
    * THESE ARE VARS USED BY RYAN - TO INTEGRATE
@@ -82,17 +82,25 @@ module.exports = io => {
       // console.log('join-game activeGames', activeGames)
       io.sockets.emit('game-joined', activeGames)
       const userKeys = Object.keys(activeGames[gameId])
+      /**
+       * START NEW GAME
+       */
       if (userKeys.length === maxUsers) {
         const board = await Game.create({
           board_data: JSON.stringify(new Board())
         })
 
+        let gameUsers = {}
+        let playerNum = 0
         userKeys.forEach(socketId => {
-          io.to(socketId).emit('start-game', board.board_data)
           delete activeGames[gameId][socketId]
+          let user = userLobby[socketId]
+          user.playerNum = playerNum++
+          gameUsers['player_' + playerNum] = user
           delete userLobby[socketId]
-          io.sockets.emit('update-lobby', userLobby, activeGames)
+          io.to(socketId).emit('start-game', board.board_data, gameUsers)
         })
+        io.sockets.emit('update-lobby', userLobby, activeGames)
       }
     })
 

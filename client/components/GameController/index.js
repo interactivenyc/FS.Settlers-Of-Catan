@@ -54,7 +54,8 @@ class GameController extends Component {
 }
 
 const mapStateToProps = state => ({
-  playerHand: state.playerState.playerHand
+  playerHand: state.playerState.playerHand,
+  players: state.gameState.players
 })
 
 const mapDispatchToProps = dispatch => {
