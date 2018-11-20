@@ -180,7 +180,7 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('start-game', board => {
-      console.log('[ GameLobby ] start-game', unescape(board))
+      console.log('[ GameLobby ] start-game', board)
       this.setState({
         gameId: ''
       })
