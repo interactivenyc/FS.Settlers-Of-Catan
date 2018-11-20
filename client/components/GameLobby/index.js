@@ -164,14 +164,14 @@ export class GameLobby extends React.Component {
       })
     })
 
-    socket.on('start-game', (board, users) => {
+    socket.on('start-game', (board, user) => {
       console.log('[ GameLobby ] start-game')
       this.setState({
         gameId: ''
       })
       this.props.deserializeBoard(board)
-      this.props.setGameUsers(users)
-      this.props.history.push('/game')
+      this.props.assignPlayer(user.number, user.color)
+      this.props.history.push('/map')
     })
 
     socket.on('disconnect', () => {
@@ -205,7 +205,9 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     deserializeBoard: board => dispatch(deserializeBoard(board)),
-    setGameUsers: users => dispatch(actions.setGameUsers(users))
+    setGameUsers: users => dispatch(actions.setGameUsers(users)),
+    assignPlayer: (number, color) =>
+      dispatch(actions.assignPlayer(number, color))
   }
 }
 
