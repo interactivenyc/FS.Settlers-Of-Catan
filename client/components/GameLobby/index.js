@@ -3,6 +3,11 @@ import {connect} from 'react-redux'
 import socket from '../../socket'
 import './GameLobby.css'
 import {deserializeBoard} from '../../store/actions'
+import UserList from './UserList'
+import GameList from './GameList'
+import GameState from './GameState'
+import GameChat from './GameChat'
+import * as actions from '../../store/actions'
 
 export class GameLobby extends React.Component {
   constructor(props) {
@@ -14,7 +19,8 @@ export class GameLobby extends React.Component {
       socketId: '',
       gameId: '',
       userLobby: {},
-      activeGames: {}
+      activeGames: {},
+      chatList: ['line1', 'line2', 'line3']
     }
     this.setupSocket()
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
@@ -66,52 +72,29 @@ export class GameLobby extends React.Component {
     return (
       <React.Fragment>
         <h1>Lobby</h1>
-        <table id="userLobby" className="tableDisplay">
+
+        <table>
           <tbody>
             <tr>
-              <th>Waiting For Game</th>
-            </tr>
-            {Object.keys(this.state.userLobby).map(key => {
-              return (
-                <tr key={key}>
-                  <td onClick={this.clickUser}>
-                    {this.state.userLobby[key].email}
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-
-        <p />
-
-        <table id="games" className="tableDisplay">
-          <tbody>
-            <tr>
-              <th>Active Games Waiting For Players</th>
-            </tr>
-            {Object.keys(this.state.activeGames).map(key => {
-              return (
-                <tr key={key}>
-                  <td gameid={key} onClick={this.clickGame}>{`${key} (${
-                    Object.keys(this.state.activeGames[key]).length
-                  })`}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-
-        <p />
-
-        <table className="tableDisplay">
-          <tbody>
-            <tr>
-              <th>this.state JSON</th>
+              <td>
+                <UserList
+                  clickUser={this.clickUser}
+                  userLobby={this.state.userLobby}
+                />
+              </td>
+              <td>
+                <GameList
+                  clickGame={this.clickGame}
+                  activeGames={this.state.activeGames}
+                />
+              </td>
             </tr>
             <tr>
               <td>
-                <pre>{JSON.stringify(this.state, null, 2)}</pre>
+                <GameState state={this.state} />
+              </td>
+              <td>
+                <GameChat chatList={this.state.chatList} />
               </td>
             </tr>
           </tbody>
@@ -180,12 +163,13 @@ export class GameLobby extends React.Component {
       })
     })
 
-    socket.on('start-game', board => {
-      console.log('[ GameLobby ] start-game', board)
+    socket.on('start-game', (board, users) => {
+      console.log('[ GameLobby ] start-game')
       this.setState({
         gameId: ''
       })
       this.props.deserializeBoard(board)
+      this.props.setGameUsers(users)
       this.props.history.push('/game')
     })
 
@@ -218,7 +202,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    deserializeBoard: board => dispatch(deserializeBoard(board))
+    deserializeBoard: board => dispatch(deserializeBoard(board)),
+    setGameUsers: users => dispatch(actions.setGameUsers(users))
   }
 }
 

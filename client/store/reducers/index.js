@@ -1,9 +1,9 @@
 import {combineReducers} from 'redux'
 import user from './user'
 import board from './board'
-import playState from './playState'
-import players from './players'
+import gameState from './gameState'
+import playerState from './playerState'
 
-const reducer = combineReducers({user, board, playState, players})
+const reducer = combineReducers({user, board, gameState, playerState})
 
 export default reducer

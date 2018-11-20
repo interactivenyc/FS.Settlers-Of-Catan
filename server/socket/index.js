@@ -5,6 +5,47 @@ module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
   let gamesInProgress = {}
+  let gameDecks = {}
+
+  //Fisher-Yates Shuffle
+  function shuffle(array) {
+    var currentIndex = array.length,
+      temporaryValue,
+      randomIndex
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
+    }
+
+    return array
+  }
+
+  function generateDeck() {
+    console.log('generate deck')
+    const cards = ['monopoly', 'monopoly', 'road', 'road', 'plenty', 'plenty']
+    for (let i = 0; i < 14; i++) {
+      cards.push('knight')
+    }
+    for (let i = 0; i < 5; i++) {
+      cards.push('vp')
+    }
+    shuffle(cards)
+    gameDecks.defaultGame = cards
+    // console.log(gameDecks.defaultGame)
+  }
+
+  function getRandomCard(gameId) {
+    return gameDecks[gameId].pop()
+  }
+
+  generateDeck()
+
+  // let board = new Board()
   const maxUsers = 4
 
   /**
@@ -42,17 +83,25 @@ module.exports = io => {
       // console.log('join-game activeGames', activeGames)
       io.sockets.emit('game-joined', activeGames)
       const userKeys = Object.keys(activeGames[gameId])
+      /**
+       * START NEW GAME
+       */
       if (userKeys.length === maxUsers) {
         const board = await Game.create({
           board_data: JSON.stringify(new Board())
         })
 
+        let gameUsers = {}
+        let playerNum = 0
         userKeys.forEach(socketId => {
-          io.to(socketId).emit('start-game', board.board_data)
           delete activeGames[gameId][socketId]
+          let user = userLobby[socketId]
+          user.playerNum = playerNum++
+          gameUsers['player_' + playerNum] = user
           delete userLobby[socketId]
-          io.sockets.emit('update-lobby', userLobby, activeGames)
+          io.to(socketId).emit('start-game', board.board_data, gameUsers)
         })
+        io.sockets.emit('update-lobby', userLobby, activeGames)
       }
     })
 
@@ -60,6 +109,11 @@ module.exports = io => {
       log('reset-all-games')
       resetAllGames()
       io.sockets.emit('games-reset', activeGames)
+    })
+
+    socket.on('get-dev-card', gameId => {
+      let card = getRandomCard(gameId)
+      io.sockets.emit('send-card-to-user', card)
     })
 
     socket.on('disconnect', () => {
@@ -99,7 +153,7 @@ module.exports = io => {
     socket.on('assignPlayer', () => {
       if (number <= 4) {
         io.sockets.emit('assignPlayer', {
-          number: number,
+          number,
           color: colors[number++]
         })
       }
