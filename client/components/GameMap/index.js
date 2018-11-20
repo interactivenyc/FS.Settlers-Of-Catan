@@ -47,6 +47,7 @@ class GameMap extends Component {
           playerTurn={playerTurn}
           player={player}
           nextPlayerThunk={this.props.nextPlayerThunk}
+          newDiceRoll={this.props.newDiceRoll}
         />
         )
       </div>
@@ -63,12 +64,15 @@ const mapStateToProps = state => {
     ),
     player: playerState,
     visible: gameState.modle,
-    playerTurn: gameState.playerTurn
+    playerTurn: gameState.playerTurn,
+    die1: gameState.die1,
+    die2: gameState.die2
   }
 }
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
   changeVertexThunk: actions.changeVertexThunk,
-  nextPlayerThunk: actions.nextPlayerThunk
+  nextPlayerThunk: actions.nextPlayerThunk,
+  newDiceRoll: actions.newDiceRoll
 })(GameMap)

@@ -5,8 +5,9 @@ import {
   validateChangeVertice
 } from './helpers'
 
-import {createRoad, createSettlement} from './actionTypes'
+import {createRoad, createSettlement, rollDice} from './actionTypes'
 import socket from '../../socket'
+import {rollDie} from '../../components/GameMap/HelperFunctions'
 
 export const changeVertexThunk = id => (dispatch, getState) => {
   const {board, playerState} = getState()

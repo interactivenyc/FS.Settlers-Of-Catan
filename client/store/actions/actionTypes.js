@@ -9,8 +9,9 @@ export const removeUser = () => ({type: REMOVE_USER})
 export const GET_BOARD = 'GET_BOARD'
 export const CREATE_ROAD = 'CREATE_ROAD'
 export const CREATE_SETTLEMENT = 'CREATE_SETTLEMENT'
-
+export const ROLL_DICE = 'ROLL_DICE'
 export const getBoard = board => ({type: GET_BOARD, board})
+export const rollDice = (die1, die2) => ({type: ROLL_DICE, die1, die2})
 
 //Player State Action Types
 export const ASSIGN_PLAYER = 'ASSIGN_PLAYER'

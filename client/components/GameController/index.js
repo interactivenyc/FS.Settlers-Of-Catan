@@ -5,6 +5,7 @@ import Dice from '../Dice'
 import socket from '../../socket'
 import DevDeck from '../DevDeck'
 import * as actions from '../../store/actions'
+import {newDiceRoll} from '../../store/actions'
 
 class GameController extends Component {
   constructor(props) {
@@ -30,24 +31,13 @@ class GameController extends Component {
     socket.emit('get-dev-card', 'defaultGame')
   }
 
-  rollDice = () => {
-    const rollOne = Math.floor(Math.random() * 6) + 1
-    const rollTwo = Math.floor(Math.random() * 6) + 1
-    this.setState({die1: rollOne, die2: rollTwo, diceTotal: rollOne + rollTwo})
-  }
-
   render() {
     return (
       <Fragment>
         <button onClick={this.buyaCard}>getDevCard</button>
-        <Dice
-          die1={this.state.die1}
-          die2={this.state.die2}
-          diceTotal={this.state.diceTotal}
-          visible={this.state.visible}
-        />
+        <Dice />
         <DevDeck playerHand={this.props.playerHand} />
-        {/* <GameMap /> */}
+        <GameMap die1={this.props.die1} die2={this.props.die2} />
       </Fragment>
     )
   }
@@ -55,12 +45,15 @@ class GameController extends Component {
 
 const mapStateToProps = state => ({
   playerHand: state.playerState.playerHand,
-  players: state.gameState.players
+  players: state.gameState.players,
+  die1: state.gameState.die1,
+  die2: state.gameState.die2
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    buyCard: card => dispatch(actions.buyCard(card))
+    buyCard: card => dispatch(actions.buyCard(card)),
+    newDiceRoll: () => dispatch(actions.newDiceRoll())
   }
 }
 

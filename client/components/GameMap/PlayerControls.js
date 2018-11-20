@@ -15,8 +15,10 @@ const PlayerControls = ({playerTurn, player, nextPlayerThunk}) => {
         ))}
         {playerTurn === player.playerNumber && (
           <div className="section-btns">
-            <button className="btn">modle</button>
-            <button className="btn">Roll</button>
+            <button className="btn">modal</button>
+            <button onClick={this.props.newDiceRoll} className="btn">
+              Roll
+            </button>
             <button className="btn">Settlement</button>
             <button className="btn">City</button>
             <button className="btn">Development Cards</button>
