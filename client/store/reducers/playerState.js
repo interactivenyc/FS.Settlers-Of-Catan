@@ -19,7 +19,7 @@ export default function(state = playerState, action) {
     case ADD_CARD:
       return {
         ...state,
-        playerHand: [...state.playerHand, action.card]
+        playerHand: action.hand
       }
     case REMOVE_CARD:
       return {

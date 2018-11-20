@@ -16,13 +16,17 @@ class GameController extends Component {
       visible: false
     }
     socket.on('send-card-to-user', card => {
-      console.log('player received card', card)
+      this.props.buyCard(card)
     })
   }
 
   componentDidMount() {
     this.rollDice()
     this.setState({visible: true})
+    console.log(this.props)
+  }
+
+  buyaCard() {
     socket.emit('get-dev-card', 'defaultGame')
   }
 
@@ -35,6 +39,9 @@ class GameController extends Component {
   render() {
     return (
       <Fragment>
+        {/* <button onClick = {this.buyaCard}>
+                getDevCard
+                </button> */}
         <Dice
           die1={this.state.die1}
           die2={this.state.die2}
@@ -52,6 +59,10 @@ const mapStateToProps = state => ({
   playerHand: state.playerState.playerHand
 })
 
-export default connect(mapStateToProps, {playCard: actions.playCard})(
-  GameController
-)
+const mapDispatchToProps = dispatch => {
+  return {
+    buyCard: card => dispatch(actions.buyCard(card))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameController)

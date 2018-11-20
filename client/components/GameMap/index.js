@@ -19,7 +19,7 @@ class GameMap extends Component {
 
     socket.on('assignPlayer', ({number, color}) => {
       if (!this.props.user.color) store.dispatch(assignPlayer(number, color))
-      if (number === 4) socket.emit('startGame')
+      if (number === 1) socket.emit('startGame')
     })
   }
 
@@ -74,7 +74,7 @@ const mapStateToProps = state => ({
     if (Number(val) !== state.user.playerNumber) acc[val] = state.players[val]
     return acc
   }, {}),
-  player: state.user.playerNumber && state.players[state.user.playerNumber],
+  player: state.playerState,
   visible: state.playState.modle,
   playerTurn: state.playState.playerTurn
 })

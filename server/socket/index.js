@@ -32,6 +32,7 @@ module.exports = io => {
     }
     shuffle(cards)
     gameDecks.defaultGame = cards
+    // console.log(gameDecks.defaultGame)
   }
 
   function getRandomCard(gameId) {
@@ -39,6 +40,7 @@ module.exports = io => {
   }
 
   generateDeck()
+
   let number = 1
   let colors = {
     1: 'red',
@@ -88,12 +90,12 @@ module.exports = io => {
     })
 
     socket.on('assignPlayer', () => {
-      if (number <= 4) {
-        io.sockets.emit('assignPlayer', {
-          number: number,
-          color: colors[number++]
-        })
-      }
+      // if (number <= 4) {
+      io.sockets.emit('assignPlayer', {
+        number: 1,
+        color: colors[1]
+      })
+      // }
     })
   })
 }

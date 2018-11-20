@@ -23,7 +23,7 @@ export const assignPlayer = (number, color) => ({
   color
 })
 export const getHand = () => ({type: GET_HAND})
-export const addCard = card => ({type: ADD_CARD, card})
+export const addCard = hand => ({type: ADD_CARD, hand})
 export const deleteCard = hand => ({type: DELETE_CARD, hand})
 
 //build action Types
