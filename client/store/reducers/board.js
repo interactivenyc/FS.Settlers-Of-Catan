@@ -1,7 +1,7 @@
 import {GET_BOARD, CREATE_ROAD, CREATE_SETTLEMENT} from '../actions'
 import Board from '../../board'
 
-const defaultBoard = {}
+const defaultBoard = new Board()
 
 export default function(state = defaultBoard, action) {
   switch (action.type) {

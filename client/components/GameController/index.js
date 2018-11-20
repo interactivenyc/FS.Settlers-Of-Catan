@@ -40,14 +40,14 @@ class GameController extends Component {
     return (
       <Fragment>
         <button onClick={this.buyaCard}>getDevCard</button>
-        <Dice
+        {/* <Dice
           die1={this.state.die1}
           die2={this.state.die2}
           diceTotal={this.state.diceTotal}
           visible={this.state.visible}
-        />
-        <DevDeck playerHand={this.props.playerHand} />
-        {/* <GameMap /> */}
+        /> */}
+        {/* <DevDeck playerHand={this.props.playerHand} /> */}
+        <GameMap />
       </Fragment>
     )
   }

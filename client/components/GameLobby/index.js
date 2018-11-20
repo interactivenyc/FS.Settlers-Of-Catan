@@ -30,6 +30,7 @@ export class GameLobby extends React.Component {
   }
 
   componentDidMount() {
+    console.log('BOARD', JSON.stringify(this.props.board))
     console.log('[ GameLobby ] componentDidMount', this.props)
     this.tryJoinLobby()
   }
@@ -196,7 +197,8 @@ export class GameLobby extends React.Component {
 
 const mapState = state => {
   return {
-    user: state.user
+    user: state.user,
+    board: state.board
   }
 }
 

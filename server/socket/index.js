@@ -5,7 +5,7 @@ module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
   let gamesInProgress = {}
-  const maxUsers = 4
+  // const maxUsers = 4
   let gameDecks = {}
 
   //Fisher-Yates Shuffle
