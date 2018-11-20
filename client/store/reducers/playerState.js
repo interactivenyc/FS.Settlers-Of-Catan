@@ -4,13 +4,13 @@ const playerState = {
   playerHand: [],
   color: null,
   playerNumber: null,
-  resources: {
-    forest: 1,
-    field: 1,
-    hill: 1,
-    mountain: 1,
-    pasture: 1
-  },
+  resources: [
+    {type: 'forest', quantity: 0},
+    {type: 'field', quantity: 0},
+    {type: 'hill', quantity: 0},
+    {type: 'mountain', quantity: 0},
+    {type: 'pasture', quantity: 0}
+  ],
   score: 0
 }
 

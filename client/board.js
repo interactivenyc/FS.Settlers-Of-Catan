@@ -310,11 +310,11 @@ class Resource {
     }
   }
 
-  // toJSON() {
-  //   delete this.vertices
-  //   delete this.edges
-  //   return this
-  // }
+  toJSON() {
+    delete this.vertices
+    delete this.edges
+    return this
+  }
 }
 
 class Vertex {
@@ -329,10 +329,10 @@ class Vertex {
     board.vertices[this.id] = this
   }
 
-  // toJSON() {
-  //   delete this.edges
-  //   return this
-  // }
+  toJSON() {
+    delete this.edges
+    return this
+  }
 }
 
 class Edge {
@@ -346,10 +346,10 @@ class Edge {
     board.edges[this.id] = this
   }
 
-  // toJSON() {
-  //   delete this.vertices
-  //   return this
-  // }
+  toJSON() {
+    delete this.vertices
+    return this
+  }
 }
 
 export default Board
