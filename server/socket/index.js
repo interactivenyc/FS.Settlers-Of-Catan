@@ -149,8 +149,10 @@ module.exports = io => {
 
     socket.on('leave-game', gameId => {
       console.log('leave-game', gameId, socket.id)
-      delete activeGames[gameId][socket.id]
-      io.sockets.emit('update-lobby', userLobby, activeGames)
+      if (gameId) {
+        delete activeGames[gameId][socket.id]
+        io.sockets.emit('update-lobby', userLobby, activeGames)
+      }
     })
 
     /**

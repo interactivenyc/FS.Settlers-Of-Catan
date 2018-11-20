@@ -15,6 +15,7 @@ export class GameLobby extends React.Component {
 
     this.state = {
       inLobby: false,
+      inGame: false,
       socketId: '',
       gameId: '',
       userLobby: {},
@@ -43,7 +44,11 @@ export class GameLobby extends React.Component {
   }
 
   tryJoinLobby() {
-    if (this.props.user.email && this.state.inLobby === false) {
+    if (
+      this.props.user.email &&
+      this.state.inLobby === false &&
+      this.state.inGame === false
+    ) {
       console.log('[ GameLobby ] join-lobby')
       this.setState({
         inLobby: true
@@ -131,8 +136,11 @@ export class GameLobby extends React.Component {
       console.log('[ GameLobby ] player-joined')
     })
 
-    socket.on('update-lobby', (userLobby, activeGames, userEmail) => {
-      console.log('[ GameLobby ] update-lobby', userEmail)
+    socket.on('update-lobby', (userLobby, activeGames) => {
+      console.log('[ GameLobby ] update-lobby', this.state)
+
+      if (!this.state.inLobby) return
+      if (this.state.inGame) return
 
       /**
        * If the user has lost their connection accidentally, reset
@@ -145,7 +153,7 @@ export class GameLobby extends React.Component {
           this.state.socketId,
           socket.id
         )
-        if (this.state.gameId != '') {
+        if (this.state.gameId !== '') {
           socket.emit('join-game', this.state.gameId)
         }
       }
@@ -179,9 +187,10 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('start-game', (board, user) => {
-      console.log('[ GameLobby ] start-game')
+      console.log('[ GameLobby ] start-game - setting inLobby false')
       this.setState({
-        gameId: ''
+        gameId: '',
+        inGame: true
       })
       this.props.assignPlayer(user.number, user.color)
       this.props.history.push('/map')

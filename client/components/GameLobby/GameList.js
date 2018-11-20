@@ -3,20 +3,16 @@ import React from 'react'
 const GameList = props => {
   function getButtonText() {
     if (isInGame()) {
-      console.log('button text LEAVE')
       return 'LEAVE'
     } else {
-      console.log('button text JOIN')
       return 'JOIN'
     }
   }
 
   function getClickFunction() {
     if (isInGame()) {
-      console.log('click function leaveGame')
       return props.leaveGame
     } else {
-      console.log('click function clickGame')
       return props.clickGame
     }
   }
