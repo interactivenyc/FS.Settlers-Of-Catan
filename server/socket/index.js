@@ -8,6 +8,7 @@ module.exports = io => {
   let gamesInProgress = {}
   // const maxUsers = 4
   let gameDecks = {}
+  let chatHistory = []
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
@@ -76,7 +77,7 @@ module.exports = io => {
     socket.on('join-lobby', user => {
       userLobby[socket.id] = user
       // console.log('userLobby', userLobby, '\nactiveGames', activeGames)
-      io.sockets.emit('update-lobby', userLobby, activeGames, user.email)
+      io.sockets.emit('update-lobby', userLobby, activeGames, chatHistory)
     })
 
     socket.on('join-game', async gameId => {
@@ -134,6 +135,7 @@ module.exports = io => {
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
       delete userLobby[socket.id]
+      delete activeGames['Default Game'][socket.id]
       io.sockets.emit('lobby-left', userLobby)
     })
 
@@ -147,6 +149,21 @@ module.exports = io => {
           delete game[key]
         }
       }
+    })
+
+    socket.on('leave-game', gameId => {
+      console.log('leave-game', gameId, socket.id)
+      if (gameId) {
+        delete activeGames[gameId][socket.id]
+        io.sockets.emit('update-lobby', userLobby, activeGames)
+      }
+    })
+
+    socket.on('send-message', message => {
+      console.log('send-message', message)
+
+      chatHistory.push(message)
+      io.sockets.emit('update-chat', chatHistory)
     })
 
     /**
