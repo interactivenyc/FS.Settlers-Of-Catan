@@ -18,15 +18,15 @@ class GameMap extends Component {
     socket.on('dispatch', action => store.dispatch(action))
 
     socket.on('assignPlayer', ({number, color}) => {
-      if (!this.props.user.color) store.dispatch(assignPlayer(number, color))
-      if (number === 1) socket.emit('startGame')
+      if (!this.props.player.color) store.dispatch(assignPlayer(number, color))
+      if (number === 4) socket.emit('startGame')
     })
   }
 
   handleClick = e => {
-    const {changeRoadThunk, changeVertexThunk, user, playerTurn} = this.props
+    const {changeRoadThunk, changeVertexThunk, player, playerTurn} = this.props
 
-    if (playerTurn === user.playerNumber) {
+    if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
         console.log('clicked resource', e.target.id)
         // this.props.changeResourceThunk(e.target.id)
@@ -41,9 +41,7 @@ class GameMap extends Component {
   }
 
   render() {
-    const {players, visible, playerTurn, user, player} = this.props
-
-    console.log(players)
+    const {players, visible, playerTurn, player} = this.props
 
     return (
       <div className="board-container">
@@ -54,30 +52,29 @@ class GameMap extends Component {
           handleClick={this.handleClick}
           board={this.props.board}
         />
-        {player && (
-          <PlayerControls
-            playerNumber={user.playerNumber}
-            playerTurn={playerTurn}
-            player={player}
-            nextPlayerThunk={this.props.nextPlayerThunk}
-          />
-        )}
+        <PlayerControls
+          playerTurn={playerTurn}
+          player={player}
+          nextPlayerThunk={this.props.nextPlayerThunk}
+        />
+        )
       </div>
     )
   }
 }
 
-const mapStateToProps = state => ({
-  board: state.board,
-  user: state.user,
-  players: Object.keys(state.players).reduce((acc, val) => {
-    if (Number(val) !== state.user.playerNumber) acc[val] = state.players[val]
-    return acc
-  }, {}),
-  player: state.playerState,
-  visible: state.playState.modle,
-  playerTurn: state.playState.playerTurn
-})
+const mapStateToProps = state => {
+  const {board, gameState, playerState} = state
+  return {
+    board,
+    players: gameState.players.filter(
+      player => player.id !== playerState.playerNumber
+    ),
+    player: playerState,
+    visible: gameState.modle,
+    playerTurn: gameState.playerTurn
+  }
+}
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,

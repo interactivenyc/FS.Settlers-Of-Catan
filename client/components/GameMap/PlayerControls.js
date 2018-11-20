@@ -1,24 +1,19 @@
 import React from 'react'
 
-const PlayerControls = ({
-  playerNumber,
-  playerTurn,
-  player,
-  nextPlayerThunk
-}) => {
+const PlayerControls = ({playerTurn, player, nextPlayerThunk}) => {
   return (
     <div
-      className={`game-controller player-${playerNumber} ${playerTurn ===
-        playerNumber && `active-${playerNumber}`}`}
+      className={`game-controller player-${player.playerNumber} ${playerTurn ===
+        player.playerNumber && `active-${player.playerNumber}`}`}
     >
       <div className="section-resources">
-        {Object.keys(player.resources).map(resource => (
-          <div key={resource} className="resource-container">
-            <div className={`resource ${resource}`} />
-            <div className="counter">{player.resources[resource]}</div>
+        {player.resources.map(({type, quantity}) => (
+          <div key={type} className="resource-container">
+            <div className={`resource ${type}`} />
+            <div className="counter">{quantity}</div>
           </div>
         ))}
-        {playerTurn === playerNumber && (
+        {playerTurn === player.playerNumber && (
           <div className="section-btns">
             <button className="btn">modle</button>
             <button className="btn">Roll</button>
@@ -27,7 +22,7 @@ const PlayerControls = ({
             <button className="btn">Development Cards</button>
             <button
               className="btn"
-              onClick={() => nextPlayerThunk(playerNumber)}
+              onClick={() => nextPlayerThunk(player.playerNumber)}
             >
               Next Player
             </button>

@@ -1,4 +1,4 @@
-import {deleteCard, addCard, getHand} from './actionTypes'
+import {deleteCard, addCard} from './actionTypes'
 
 export const playCard = playedCard => {
   return (dispatch, getState) => {

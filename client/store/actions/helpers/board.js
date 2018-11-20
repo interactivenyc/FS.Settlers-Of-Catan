@@ -29,19 +29,19 @@ export const getVerticeNeighbors = (vertice, board) => {
 }
 
 // at least one edge needs to share the current player color
-export const validateChangeEdge = (user, edge, neighbors, board) => {
+export const validateChangeEdge = (playerState, edge, neighbors, board) => {
   return neighbors.some(neighbor => {
-    const isValid = neighbor === user.color && !edge.color && neighbor
+    const isValid = neighbor === playerState.color && !edge.color && neighbor
     const isEmpty =
       !edge.color &&
-      (board.vertices[edge.vertices[0].id].color === user.color ||
-        board.vertices[edge.vertices[1].id].color === user.color)
+      (board.vertices[edge.vertices[0].id].color === playerState.color ||
+        board.vertices[edge.vertices[1].id].color === playerState.color)
 
     return isValid || isEmpty
   })
 }
 
-// all adjacent vertices must have not settlements
-export const validateChangeVertice = (user, vertice, neighbors) => {
+// all adjacent vertices must have no settlements
+export const validateChangeVertice = neighbors => {
   return neighbors.every(neighbor => neighbor.color === null)
 }

@@ -16,7 +16,6 @@ export default function(state = defaultBoard, action) {
         }
       }
     case CREATE_SETTLEMENT:
-      console.log('SETTLEMENT ACTION', action, state)
       return {
         ...state,
         vertices: {
