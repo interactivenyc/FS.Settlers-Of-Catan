@@ -3,15 +3,23 @@ import socket from '../../socket'
 
 const GameChat = props => {
   let chatList = props.chatList.join('\n')
+  // document.getElementById("textarea").scrollTop = document.getElementById("textarea").scrollHeight
+
+  window.setTimeout(function() {
+    document.getElementById('message').addEventListener('change', scroll)
+  }, 1000)
 
   function onSubmit(e) {
     e.preventDefault()
-    console.log(
-      '[ GameChat ] onSubmit',
-      document.getElementById('message').value
-    )
     socket.emit('send-message', document.getElementById('message').value)
+    document.getElementById('message').value = ''
   }
+
+  function scroll() {
+    var elem = document.getElementById('scrollText')
+    elem.scrollTop = elem.scrollHeight
+  }
+
   return (
     <table className="tableDisplay">
       <tbody>
@@ -20,7 +28,9 @@ const GameChat = props => {
         </tr>
         <tr>
           <td>
-            <pre>{chatList}</pre>
+            <div id="scrollText" className="scrollText">
+              <pre>{chatList}</pre>
+            </div>
           </td>
         </tr>
         <tr>

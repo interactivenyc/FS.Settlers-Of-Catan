@@ -4,6 +4,11 @@
   width: 100%;
 }
 
+.scrollText {
+  overflow: auto;
+  height: 250px;
+}
+
 td {
   vertical-align: top;
 }
