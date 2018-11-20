@@ -3,16 +3,10 @@ import './Dice.css'
 
 const Dice = props => {
   return (
-    <div className="die">
-      {' '}
-      <div>
-        {' '}
-        <img src={`/images/Dice/Dice-${props.die1}.png`} />{' '}
-      </div>{' '}
-      <div>
-        {' '}
-        <img src={`/images/Dice/Dice-${props.die2}.png`} />{' '}
-      </div>{' '}
+    <div className={`die-container ${props.visible && 'active'}`}>
+      <div className={`die die-${props.die1}`} />
+
+      <div className={`die die-${props.die2}`} />
     </div>
   )
 }
