@@ -1,7 +1,7 @@
 import React from 'react'
 
 const GameChat = props => {
-  let chatList = props.chatList.join('\n\n')
+  let chatList = props.chatList.join('<br/>')
   return (
     <table className="tableDisplay">
       <tbody>

@@ -42,6 +42,9 @@ module.exports = io => {
       // console.log('join-game activeGames', activeGames)
       io.sockets.emit('game-joined', activeGames)
       const userKeys = Object.keys(activeGames[gameId])
+      /**
+       * START NEW GAME
+       */
       if (userKeys.length === maxUsers) {
         const board = await Game.create({
           board_data: JSON.stringify(new Board())
