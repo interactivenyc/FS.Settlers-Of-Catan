@@ -20,7 +20,7 @@ export class GameLobby extends React.Component {
       gameId: '',
       userLobby: {},
       activeGames: {},
-      chatList: ['line1', 'line2', 'line3']
+      chatList: ['chat', 'feature', 'coming', 'soon']
     }
     this.setupSocket()
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
