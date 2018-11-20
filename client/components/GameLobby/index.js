@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import socket from '../../socket'
 import './GameLobby.css'
+import {deserializeBoard} from '../../store/actions'
 
 export class GameLobby extends React.Component {
   constructor(props) {
@@ -184,6 +185,7 @@ export class GameLobby extends React.Component {
       this.setState({
         gameId: ''
       })
+      this.props.deserializeBoard(board)
       this.props.history.push('/game')
     })
 
@@ -214,4 +216,10 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(GameLobby)
+const mapDispatch = dispatch => {
+  return {
+    deserializeBoard: board => dispatch(deserializeBoard(board))
+  }
+}
+
+export default connect(mapState, mapDispatch)(GameLobby)

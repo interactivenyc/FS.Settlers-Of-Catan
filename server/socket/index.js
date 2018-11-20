@@ -4,8 +4,8 @@ const Board = require('./board')
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
-  // let board = new Board()
-  const maxUsers = 2
+  let gamesInProgress = {}
+  const maxUsers = 4
 
   /**
    * THESE ARE VARS USED BY RYAN - TO INTEGRATE
