@@ -11,16 +11,7 @@ import store from '../../store'
 
 class GameMap extends Component {
   componentDidMount() {
-    const {assignPlayer} = actions
-
-    socket.emit('assignPlayer')
-
     socket.on('dispatch', action => store.dispatch(action))
-
-    socket.on('assignPlayer', ({number, color}) => {
-      if (!this.props.player.color) store.dispatch(assignPlayer(number, color))
-      if (number === 4) socket.emit('startGame')
-    })
   }
 
   handleClick = e => {

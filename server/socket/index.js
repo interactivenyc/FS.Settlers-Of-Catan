@@ -96,10 +96,23 @@ module.exports = io => {
           delete activeGames[gameId][socketId]
           let user = userLobby[socketId]
           user.playerNum = playerNum++
-          gameUsers['player_' + playerNum] = user
+          gameUsers[playerNum] = user
           delete userLobby[socketId]
-          io.to(socketId).emit('start-game', board.board_data, gameUsers)
+
+          console.log('==================================')
+          console.log(
+            'THIS IS THE USER',
+            user.playerNum,
+            colors[user.playerNum]
+          )
+          console.log('==================================')
+
+          io.to(socketId).emit('start-game', board.board_data, {
+            number: playerNum,
+            color: colors[playerNum]
+          })
         })
+
         io.sockets.emit('update-lobby', userLobby, activeGames)
       }
     })
