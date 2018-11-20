@@ -1,8 +1,8 @@
 import {START_GAME, NEXT_PLAYER, SET_GAME_USERS} from '../actions'
 
 const defaultState = {
-  playerTurn: null,
-  modle: true,
+  playerTurn: 1,
+  modle: false,
   players: [
     {id: 1, resources: 1, score: 0},
     {id: 2, resources: 2, score: 0},
@@ -14,8 +14,6 @@ const defaultState = {
 const gameState = (state = defaultState, action) => {
   switch (action.type) {
     case SET_GAME_USERS:
-      console.log('SET_GAME_USERS', action.users)
-
       return {...state, players: action.users}
     case START_GAME:
       return {...state, playerTurn: action.playerTurn, modle: action.modle}
