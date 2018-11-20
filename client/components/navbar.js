@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {logout} from '../store'
+import {logout} from '../store/actions'
 import './navbar.css'
 
 const Navbar = ({isLoggedIn, handleClick}) => {
@@ -18,7 +18,7 @@ const Navbar = ({isLoggedIn, handleClick}) => {
       </div>
       {isLoggedIn ? (
         <div className="navItem">
-          <Link to="/" className="navItem link">
+          <Link to="/lobby" className="navItem link">
             Join Game
           </Link>
           <Link to="/" onClick={handleClick} className="navItem link">

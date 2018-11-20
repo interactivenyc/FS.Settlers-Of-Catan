@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import GameMap from '../GameMap'
-import Dice from '../Dice'
+// import Dice from '../Dice'
 
 class GameController extends Component {
   constructor(props) {
@@ -27,12 +27,12 @@ class GameController extends Component {
     return (
       <div>
         <h1> Game Controller </h1>
-        <Dice
+        <GameMap />
+        {/* <Dice
           die1={this.state.die1}
           die2={this.state.die2}
           diceTotal={this.state.diceTotal}
-        />
-        <GameMap />
+        /> */}
       </div>
     )
   }

@@ -352,7 +352,7 @@ class Edge {
   }
 }
 
-export default Board
+module.exports = Board
 
 // /**
 //  * Use these lines to create a new Board from scratch
