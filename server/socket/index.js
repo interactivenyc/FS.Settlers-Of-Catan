@@ -1,5 +1,6 @@
 const Game = require('../db').model('game')
 const Board = require('./board')
+const initializedBoardData = require('./initializedBoard')
 
 module.exports = io => {
   let userLobby = {}
@@ -89,7 +90,7 @@ module.exports = io => {
        */
       if (userKeys.length === maxUsers) {
         const board = await Game.create({
-          board_data: JSON.stringify(new Board())
+          board_data: JSON.stringify(initializedBoardData)
         })
 
         let gameUsers = {}

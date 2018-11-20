@@ -1,4 +1,4 @@
-const initializedBoard = {
+module.exports = initializedBoard = {
   resources: {
     '11': {id: '1,1', row: 1, column: 1, type: 'forest', diceTarget: 11},
     '12': {id: '1,2', row: 1, column: 2, type: 'pasture', diceTarget: 12},
