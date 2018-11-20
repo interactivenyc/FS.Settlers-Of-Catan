@@ -12,7 +12,6 @@ export const playCard = playedCard => {
 export const buyCard = cardToBuy => {
   return (dispatch, getState) => {
     let {playerHand} = getState().playerState
-    playerHand.push(cardToBuy)
-    dispatch(addCard(playerHand))
+    dispatch(addCard([...playerHand, cardToBuy]))
   }
 }

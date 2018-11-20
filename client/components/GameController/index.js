@@ -39,9 +39,7 @@ class GameController extends Component {
   render() {
     return (
       <Fragment>
-        {/* <button onClick = {this.buyaCard}>
-                getDevCard
-                </button> */}
+        <button onClick={this.buyaCard}>getDevCard</button>
         <Dice
           die1={this.state.die1}
           die2={this.state.die2}
@@ -49,7 +47,7 @@ class GameController extends Component {
           visible={this.state.visible}
         />
         <DevDeck playerHand={this.props.playerHand} />
-        <GameMap />
+        {/* <GameMap /> */}
       </Fragment>
     )
   }
