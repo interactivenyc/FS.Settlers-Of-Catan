@@ -1,3 +1,8 @@
+const Game = require('../db').model('game')
+const Board = require('./board')
+
+const newBoard = new Board()
+
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
@@ -36,7 +41,7 @@ module.exports = io => {
       socket.broadcast.emit('dispatch', value)
     })
 
-    socket.on('startGame', () => {
+    socket.on('startGame', async () => {
       io.sockets.emit('dispatch', {
         type: 'START_GAME',
         modle: false,

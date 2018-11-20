@@ -68,7 +68,7 @@ export class GameLobby extends React.Component {
   }
 
   tryJoinLobby() {
-    if (this.props.user && this.state.inLobby === false) {
+    if (this.props.user.id && this.state.inLobby === false) {
       console.log('[ GameLobby ] join-lobby')
       this.setState({
         inLobby: true

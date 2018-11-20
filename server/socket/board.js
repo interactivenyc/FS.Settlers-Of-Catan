@@ -1,6 +1,3 @@
-// const fs = require('fs')
-// const path = require('path')
-
 class Board {
   constructor(initialData) {
     console.log('new Board()')
@@ -352,7 +349,7 @@ class Edge {
   }
 }
 
-export default Board
+module.exports = Board
 
 // /**
 //  * Use these lines to create a new Board from scratch
