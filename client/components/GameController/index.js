@@ -5,7 +5,6 @@ import Dice from '../Dice'
 import socket from '../../socket'
 import DevDeck from '../DevDeck'
 import * as actions from '../../store/actions'
-import {newDiceRoll} from '../../store/actions'
 
 class GameController extends Component {
   constructor(props) {
@@ -21,12 +20,6 @@ class GameController extends Component {
     })
   }
 
-  componentDidMount() {
-    this.rollDice()
-    this.setState({visible: true})
-    console.log(this.props)
-  }
-
   buyaCard() {
     socket.emit('get-dev-card', 'defaultGame')
   }
@@ -34,10 +27,11 @@ class GameController extends Component {
   render() {
     return (
       <Fragment>
-        <button onClick={this.buyaCard}>getDevCard</button>
+        <button onClick={this.buyCard}>getDevCard</button>
+        <button onClick={this.rollDice}>rollDice</button>
         <Dice />
         <DevDeck playerHand={this.props.playerHand} />
-        <GameMap die1={this.props.die1} die2={this.props.die2} />
+        {/* <GameMap die1={this.props.die1} die2={this.props.die2} /> */}
       </Fragment>
     )
   }

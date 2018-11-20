@@ -28,8 +28,8 @@ const gameState = (state = defaultState, action) => {
     case ROLL_DICE:
       return {
         ...state,
-        die1: action.die1,
-        die2: action.die2
+        die1: action.dieRolls[0],
+        die2: action.dieRolls[1]
       }
     default:
       return state

@@ -8,6 +8,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../store/actions'
 import socket from '../../socket'
 import store from '../../store'
+import Dice from '../Dice'
 
 class GameMap extends Component {
   componentDidMount() {
@@ -36,8 +37,8 @@ class GameMap extends Component {
 
     return (
       <div className="board-container">
-        <Players players={players} playerTurn={playerTurn} />
-        <Modle visible={visible} />
+        {/* <Players players={players} playerTurn={playerTurn} /> */}
+        {/* <Modle visible={visible} /> */}
         <GameBoard
           adjust={-25}
           handleClick={this.handleClick}
@@ -49,6 +50,7 @@ class GameMap extends Component {
           nextPlayerThunk={this.props.nextPlayerThunk}
           newDiceRoll={this.props.newDiceRoll}
         />
+        <Dice die1={this.props.die1} die={this.props.die2} />
         )
       </div>
     )
