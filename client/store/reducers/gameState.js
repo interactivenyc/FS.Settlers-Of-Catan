@@ -2,10 +2,16 @@ import {START_GAME, NEXT_PLAYER} from '../actions'
 
 const defaultState = {
   playerTurn: null,
-  modle: true
+  modle: true,
+  players: [
+    {id: 1, resources: 1, score: 0},
+    {id: 2, resources: 2, score: 0},
+    {id: 3, resources: 3, score: 0},
+    {id: 4, resources: 4, score: 0}
+  ]
 }
 
-const playState = (state = defaultState, action) => {
+const gameState = (state = defaultState, action) => {
   switch (action.type) {
     case START_GAME:
       return {...state, playerTurn: action.playerTurn, modle: action.modle}
@@ -19,4 +25,4 @@ const playState = (state = defaultState, action) => {
   }
 }
 
-export default playState
+export default gameState

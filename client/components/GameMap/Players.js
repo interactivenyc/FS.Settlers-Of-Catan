@@ -3,19 +3,16 @@ import React from 'react'
 const Players = ({players, playerTurn}) => {
   return (
     <div className="player-container">
-      {Object.keys(players).map(number => (
+      {players.map(({id, resources, score}) => (
         <div
-          key={number}
-          className={`player player-${number} ${playerTurn == number &&
-            `active-${number}`}`}
+          key={id}
+          className={`player player-${id} ${playerTurn == id &&
+            `active-${id}`}`}
         >
           <div className="user" />
           <div className="score">
-            <p>{`Score: ${players[number].score}`}</p>
-            <p>{`Resources: ${Object.keys(players[number].resources).reduce(
-              (acc, val) => acc + players[number].resources[val],
-              0
-            )}`}</p>
+            <p>{`Score: ${score}`}</p>
+            <p>{`Resources: ${resources}`}</p>
           </div>
         </div>
       ))}

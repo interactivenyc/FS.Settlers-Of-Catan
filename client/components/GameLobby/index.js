@@ -22,6 +22,50 @@ export class GameLobby extends React.Component {
     this.resetAllGames = this.resetAllGames.bind(this)
   }
 
+  setupSocket() {
+    console.log('[ GameLobby ] setupSocket', socket.id)
+
+    socket.on('player-joined', () => {
+      console.log('[ GameLobby ] player-joined')
+    })
+
+    socket.on('lobby-joined', (userLobby, activeGames) => {
+      console.log(
+        '[ GameLobby ] lobby-joined userLobby/activeGames',
+        userLobby,
+        activeGames
+      )
+      this.setState({
+        userLobby,
+        activeGames
+      })
+    })
+
+    socket.on('game-joined', activeGames => {
+      console.log('[ GameLobby ] game-joined')
+      this.setState({
+        activeGames
+      })
+    })
+
+    socket.on('lobby-left', userLobby => {
+      console.log('[ GameLobby ] lobby-left userLobby', userLobby)
+      this.setState({
+        userLobby
+      })
+    })
+
+    socket.on('disconnect', () => {
+      console.log(`Connection ${socket.id} was lost - rejoining`)
+      socket.emit('join-lobby', this.props.user)
+    })
+
+    socket.on('send-card-to-user', () => {
+      console.log('player received card')
+      socket.emit('get-dev-card')
+    })
+  }
+
   componentDidMount() {
     console.log('[ GameLobby ] componentDidMount', this.props)
     this.tryJoinLobby()
