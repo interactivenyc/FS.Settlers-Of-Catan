@@ -1,4 +1,5 @@
 export * from './users'
 export * from './board'
-export * from './playState'
+export * from './gameState'
+export * from './playerState'
 export * from './actionTypes'

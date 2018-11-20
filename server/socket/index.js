@@ -6,6 +6,48 @@ module.exports = io => {
   let activeGames = {'Default Game': {}}
   let gamesInProgress = {}
   const maxUsers = 4
+  let gameDecks = {}
+
+  //Fisher-Yates Shuffle
+  function shuffle(array) {
+    var currentIndex = array.length,
+      temporaryValue,
+      randomIndex
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
+    }
+
+    return array
+  }
+
+  function generateDeck() {
+    console.log('generate deck')
+    const cards = ['monopoly', 'monopoly', 'road', 'road', 'plenty', 'plenty']
+    for (let i = 0; i < 14; i++) {
+      cards.push('knight')
+    }
+    for (let i = 0; i < 5; i++) {
+      cards.push('vp')
+    }
+    shuffle(cards)
+    gameDecks.defaultGame = cards
+    // console.log(gameDecks.defaultGame)
+  }
+
+  function getRandomCard(gameId) {
+    return gameDecks[gameId].pop()
+  }
+
+  generateDeck()
+
+  // let board = new Board()
+  const maxUsers = 2
 
   /**
    * THESE ARE VARS USED BY RYAN - TO INTEGRATE
@@ -62,6 +104,11 @@ module.exports = io => {
       io.sockets.emit('games-reset', activeGames)
     })
 
+    socket.on('get-dev-card', gameId => {
+      let card = getRandomCard(gameId)
+      io.sockets.emit('send-card-to-user', card)
+    })
+
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
       delete userLobby[socket.id]
@@ -99,7 +146,7 @@ module.exports = io => {
     socket.on('assignPlayer', () => {
       if (number <= 4) {
         io.sockets.emit('assignPlayer', {
-          number: number,
+          number,
           color: colors[number++]
         })
       }

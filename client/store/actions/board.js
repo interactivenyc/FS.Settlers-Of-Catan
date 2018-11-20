@@ -15,23 +15,23 @@ export const deserializeBoard = boardData => dispatch => {
 }
 
 export const changeVertexThunk = id => (dispatch, getState) => {
-  const {board, user} = getState()
+  const {board, playerState} = getState()
   const vertice = board.vertices[id]
   const neighbors = getVerticeNeighbors(vertice, board)
 
-  if (validateChangeVertice(user, vertice, neighbors)) {
-    dispatch(createSettlement(id, user.color))
-    socket.emit('dispatch', createSettlement(id, user.color))
+  if (validateChangeVertice(neighbors)) {
+    dispatch(createSettlement(id, playerState.color))
+    socket.emit('dispatch', createSettlement(id, playerState.color))
   }
 }
 
 export const changeRoadThunk = id => (dispatch, getState) => {
-  const {board, user} = getState()
+  const {board, playerState} = getState()
   const edge = board.edges[id]
   const neighbors = getEdgeNeighborsColor(edge, board)
 
-  if (validateChangeEdge(user, edge, neighbors, board)) {
-    dispatch(createRoad(id, user.color))
-    socket.emit('dispatch', createRoad(id, user.color))
+  if (validateChangeEdge(playerState, edge, neighbors, board)) {
+    dispatch(createRoad(id, playerState.color))
+    socket.emit('dispatch', createRoad(id, playerState.color))
   }
 }
