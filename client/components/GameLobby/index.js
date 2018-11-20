@@ -114,7 +114,10 @@ export class GameLobby extends React.Component {
                 <GameState state={this.state} />
               </td>
               <td>
-                <GameChat chatList={this.state.chatList} />
+                <GameChat
+                  updateChat={this.updateChat}
+                  chatList={this.state.chatList}
+                />
               </td>
             </tr>
           </tbody>
@@ -136,7 +139,7 @@ export class GameLobby extends React.Component {
       console.log('[ GameLobby ] player-joined')
     })
 
-    socket.on('update-lobby', (userLobby, activeGames) => {
+    socket.on('update-lobby', (userLobby, activeGames, chatList) => {
       console.log('[ GameLobby ] update-lobby', this.state)
 
       if (!this.state.inLobby) return
@@ -161,7 +164,8 @@ export class GameLobby extends React.Component {
       this.setState({
         socketId: socket.id,
         userLobby,
-        activeGames
+        activeGames,
+        chatList
       })
     })
 
@@ -194,6 +198,12 @@ export class GameLobby extends React.Component {
       })
       this.props.assignPlayer(user.number, user.color)
       this.props.history.push('/map')
+    })
+
+    socket.on('update-chat', chatList => {
+      this.setState({
+        chatList
+      })
     })
 
     socket.on('disconnect', () => {
