@@ -113,14 +113,12 @@ export class GameLobby extends React.Component {
             </tr>
             <tr>
               <td>
-                <GameState state={this.state} />
-              </td>
-              <td>
                 <GameChat
                   updateChat={this.updateChat}
                   chatList={this.state.chatList}
                 />
               </td>
+              <td>{/* <GameState state={this.state} /> */}</td>
             </tr>
           </tbody>
         </table>
@@ -187,9 +185,11 @@ export class GameLobby extends React.Component {
 
     socket.on('lobby-left', userLobby => {
       console.log('[ GameLobby ] lobby-left')
-      this.setState({
-        userLobby
-      })
+      if (!this.state.inGame) {
+        this.setState({
+          userLobby
+        })
+      }
     })
 
     socket.on('start-game', (board, user) => {
