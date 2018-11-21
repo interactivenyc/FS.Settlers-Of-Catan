@@ -10,8 +10,23 @@ export const GET_BOARD = 'GET_BOARD'
 export const CREATE_ROAD = 'CREATE_ROAD'
 export const CREATE_SETTLEMENT = 'CREATE_SETTLEMENT'
 export const ROLL_DICE = 'ROLL_DICE'
+export const MOVE_ROBBER = 'MOVE_ROBBER'
+
 export const getBoard = board => ({type: GET_BOARD, board})
 export const rollDice = dieRolls => ({type: ROLL_DICE, dieRolls})
+export const moveRobber = resource => ({type: MOVE_ROBBER, resource})
+export const createRoad = (id, color, number) => ({
+  type: CREATE_ROAD,
+  id,
+  color,
+  number
+})
+export const createSettlement = (id, color, number) => ({
+  type: CREATE_SETTLEMENT,
+  id,
+  color,
+  number
+})
 
 //Player State Action Types
 export const ASSIGN_PLAYER = 'ASSIGN_PLAYER'
@@ -26,20 +41,6 @@ export const assignPlayer = (number, color) => ({
 export const getHand = () => ({type: GET_HAND})
 export const addCard = hand => ({type: ADD_CARD, hand})
 export const deleteCard = hand => ({type: DELETE_CARD, hand})
-
-//build action Types
-export const createRoad = (id, color, number) => ({
-  type: CREATE_ROAD,
-  id,
-  color,
-  number
-})
-export const createSettlement = (id, color, number) => ({
-  type: CREATE_SETTLEMENT,
-  id,
-  color,
-  number
-})
 
 // game State action types
 export const START_GAME = 'START_GAME'

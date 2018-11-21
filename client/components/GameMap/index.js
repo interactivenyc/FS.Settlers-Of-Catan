@@ -23,7 +23,7 @@ class GameMap extends Component {
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
         console.log(e.target.id)
-        // this.props.moveRobber(e.target.id)
+        this.props.moveRobberThunk(e.target.dataset.resourceId)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -79,7 +79,7 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
-  moveRobber: actions.maveRobber,
+  moveRobberThunk: actions.moveRobberThunk,
   changeVertexThunk: actions.changeVertexThunk,
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,

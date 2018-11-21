@@ -4,7 +4,8 @@ import {
   distributeResource,
   distributeResourcePlayer,
   rollDice,
-  toggleModal
+  toggleModal,
+  moveRobber
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
@@ -41,7 +42,6 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
 }
 
 export const robberThunk = id => (dispatch, getState) => {
-  console.log('ARGUMENTS', id)
   const {playerState, gameState} = getState()
   const resources = gameState.players.filter(
     player => player.id === playerState.playerNumber
@@ -71,4 +71,10 @@ export const newDiceRoll = () => {
       socket.emit('dispatchThunk', {action: 'robberThunk'})
     }
   }
+}
+
+export const moveRobberThunk = id => (dispatch, getState) => {
+  const resource = {...getState().board.resources[id]}
+  console.log('THIS IS THE RESOURCE', resource)
+  dispatch(moveRobber(resource))
 }
