@@ -3,7 +3,9 @@ import {
   SET_GAME_USERS,
   distributeResource,
   distributeResourcePlayer,
-  rollDice
+  rollDice,
+  updateScore,
+  updateScorePlayer
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
@@ -57,5 +59,21 @@ export const newDiceRoll = () => {
     console.log('====================')
 
     dispatch(distributeResourcesThunk(newState.die1 + newState.die2))
+  }
+}
+
+export const adjustScore = scoreChange => {
+  return (dispatch, getState) => {
+    let playerScore = getState().playerState.score
+    let playerId = getState().playerState.playerNumber
+    let updatedScore = 0
+    if (scoreChange > 0) {
+      updatedScore = playerScore + scoreChange
+    }
+    if (scoreChange < 0) {
+      updatedScore = playerScore - scoreChange
+    }
+    dispatch(updateScore(updatedScore))
+    dispatch(updateScorePlayer(playerId, updatedScore))
   }
 }
