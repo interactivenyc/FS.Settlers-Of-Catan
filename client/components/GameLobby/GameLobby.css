@@ -1,8 +1,18 @@
 .tableDisplay,
 .tableDisplay th {
   border: 1px solid black;
+  width: 100%;
+}
+
+.scrollText {
+  overflow: auto;
+  height: 250px;
 }
 
 td {
   vertical-align: top;
+}
+
+button {
+  outline: none;
 }
