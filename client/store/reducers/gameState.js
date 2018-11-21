@@ -2,7 +2,8 @@ import {
   START_GAME,
   NEXT_PLAYER,
   SET_GAME_USERS,
-  DISTRIBUTE_RESOURCE
+  DISTRIBUTE_RESOURCE,
+  ROLL_DICE
 } from '../actions'
 
 const defaultState = {
@@ -14,8 +15,8 @@ const defaultState = {
     {id: 3, resources: 0, score: 0},
     {id: 4, resources: 0, score: 0}
   ],
-  die1: 3,
-  die2: 5
+  die1: 0,
+  die2: 0
 }
 
 const gameState = (state = defaultState, action) => {
@@ -37,6 +38,12 @@ const gameState = (state = defaultState, action) => {
             ? {...player, resources: player.resources + 1}
             : player
         })
+      }
+    case ROLL_DICE:
+      return {
+        ...state,
+        die1: action.dieRolls[0],
+        die2: action.dieRolls[1]
       }
     default:
       return state

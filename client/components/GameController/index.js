@@ -20,34 +20,18 @@ class GameController extends Component {
     })
   }
 
-  componentDidMount() {
-    this.rollDice()
-    this.setState({visible: true})
-    console.log(this.props)
-  }
-
   buyaCard() {
     socket.emit('get-dev-card', 'defaultGame')
-  }
-
-  rollDice = () => {
-    const rollOne = Math.floor(Math.random() * 6) + 1
-    const rollTwo = Math.floor(Math.random() * 6) + 1
-    this.setState({die1: rollOne, die2: rollTwo, diceTotal: rollOne + rollTwo})
   }
 
   render() {
     return (
       <Fragment>
-        <button onClick={this.buyaCard}>getDevCard</button>
-        <Dice
-          die1={this.state.die1}
-          die2={this.state.die2}
-          diceTotal={this.state.diceTotal}
-          visible={this.state.visible}
-        />
+        <button onClick={this.buyCard}>getDevCard</button>
+        <button onClick={this.rollDice}>rollDice</button>
+        <Dice />
         <DevDeck playerHand={this.props.playerHand} />
-        {/* <GameMap /> */}
+        {/* <GameMap die1={this.props.die1} die2={this.props.die2} /> */}
       </Fragment>
     )
   }
@@ -55,12 +39,15 @@ class GameController extends Component {
 
 const mapStateToProps = state => ({
   playerHand: state.playerState.playerHand,
-  players: state.gameState.players
+  players: state.gameState.players,
+  die1: state.gameState.die1,
+  die2: state.gameState.die2
 })
 
 const mapDispatchToProps = dispatch => {
   return {
-    buyCard: card => dispatch(actions.buyCard(card))
+    buyCard: card => dispatch(actions.buyCard(card)),
+    newDiceRoll: () => dispatch(actions.newDiceRoll())
   }
 }
 
