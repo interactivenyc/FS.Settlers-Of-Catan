@@ -1,4 +1,9 @@
-import {ADD_CARD, REMOVE_CARD, ASSIGN_PLAYER} from '../actions'
+import {
+  ADD_CARD,
+  REMOVE_CARD,
+  ASSIGN_PLAYER,
+  DISTRIBUTE_RESOURCE_PLAYER
+} from '../actions'
 
 const playerState = {
   playerHand: [],
@@ -28,6 +33,18 @@ export default function(state = playerState, action) {
       }
     case ASSIGN_PLAYER:
       return {...state, color: action.color, playerNumber: action.number}
+    case DISTRIBUTE_RESOURCE_PLAYER:
+      return action.id === state.playerNumber
+        ? {
+            ...state,
+            resources: state.resources.map(
+              resource =>
+                resource.type === action.resource
+                  ? {...resource, quantity: resource.quantity + 1}
+                  : resource
+            )
+          }
+        : state
     default:
       return state
   }

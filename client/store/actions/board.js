@@ -14,8 +14,11 @@ export const changeVertexThunk = id => (dispatch, getState) => {
   const neighbors = getVerticeNeighbors(vertice, board)
 
   if (validateChangeVertice(neighbors)) {
-    dispatch(createSettlement(id, playerState.color))
-    socket.emit('dispatch', createSettlement(id, playerState.color))
+    dispatch(createSettlement(id, playerState.color, playerState.playerNumber))
+    socket.emit(
+      'dispatch',
+      createSettlement(id, playerState.color, playerState.playerNumber)
+    )
   }
 }
 
@@ -25,7 +28,10 @@ export const changeRoadThunk = id => (dispatch, getState) => {
   const neighbors = getEdgeNeighborsColor(edge, board)
 
   if (validateChangeEdge(playerState, edge, neighbors, board)) {
-    dispatch(createRoad(id, playerState.color))
-    socket.emit('dispatch', createRoad(id, playerState.color))
+    dispatch(createRoad(id, playerState.color, playerState.playerNumber))
+    socket.emit(
+      'dispatch',
+      createRoad(id, playerState.color, playerState.playerNumber)
+    )
   }
 }

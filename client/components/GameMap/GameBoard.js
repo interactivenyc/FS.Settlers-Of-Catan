@@ -2,10 +2,11 @@ import React from 'react'
 import MapRow from './MapRow'
 import Hexagon from './Hexagon'
 import {gameOptions} from './gameOptions'
+import Dice from '../Dice'
 
 const mapAdjust = 5
 
-const GameBoard = ({adjust, handleClick, board}) => {
+const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
   return (
     <div className="board" onClick={e => handleClick(e)}>
       <MapRow style={{transform: 'translateY(60%)'}}>
@@ -163,6 +164,7 @@ const GameBoard = ({adjust, handleClick, board}) => {
           board={board}
         />
       </MapRow>
+      <Dice die1={die1} die2={die2} />
     </div>
   )
 }

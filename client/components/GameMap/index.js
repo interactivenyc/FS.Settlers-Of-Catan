@@ -19,13 +19,10 @@ class GameMap extends Component {
 
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
-        console.log('clicked resource', e.target.id)
         // this.props.changeResourceThunk(e.target.id)
       } else if (e.target.classList.contains('side')) {
-        console.log('clicked side', e.target.id)
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
-        console.log('clicked city', e.target.id)
         changeVertexThunk(e.target.id)
       }
     }
@@ -42,13 +39,16 @@ class GameMap extends Component {
           adjust={-25}
           handleClick={this.handleClick}
           board={this.props.board}
+          die1={this.props.die1}
+          die2={this.props.die2}
         />
         <PlayerControls
+          distributeResources={this.props.distributeResourcesThunk}
           playerTurn={playerTurn}
           player={player}
           nextPlayerThunk={this.props.nextPlayerThunk}
+          newDiceRoll={this.props.newDiceRoll}
         />
-        )
       </div>
     )
   }
@@ -63,12 +63,16 @@ const mapStateToProps = state => {
     ),
     player: playerState,
     visible: gameState.modle,
-    playerTurn: gameState.playerTurn
+    playerTurn: gameState.playerTurn,
+    die1: gameState.die1,
+    die2: gameState.die2
   }
 }
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
   changeVertexThunk: actions.changeVertexThunk,
-  nextPlayerThunk: actions.nextPlayerThunk
+  nextPlayerThunk: actions.nextPlayerThunk,
+  distributeResourcesThunk: actions.distributeResourcesThunk,
+  newDiceRoll: actions.newDiceRoll
 })(GameMap)
