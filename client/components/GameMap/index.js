@@ -19,7 +19,9 @@ class GameMap extends Component {
 
   componentDidMount() {
     socket.on('dispatch', action => store.dispatch(action))
-    console.log(typeof this.buyaCard)
+    socket.on('dispatchThunk', ({action, args}) =>
+      store.dispatch(actions[action].apply(this, args))
+    )
   }
 
   buyaCard() {
@@ -27,11 +29,17 @@ class GameMap extends Component {
   }
 
   handleClick = e => {
-    const {changeRoadThunk, changeVertexThunk, player, playerTurn} = this.props
+    const {
+      changeRoadThunk,
+      changeVertexThunk,
+      player,
+      playerTurn,
+      moveRobberThunk
+    } = this.props
 
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
-        // this.props.changeResourceThunk(e.target.id)
+        moveRobberThunk(e.target.dataset.resourceId)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -89,6 +97,7 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
+  moveRobberThunk: actions.moveRobberThunk,
   changeVertexThunk: actions.changeVertexThunk,
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,

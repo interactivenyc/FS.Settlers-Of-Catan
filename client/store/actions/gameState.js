@@ -4,6 +4,8 @@ import {
   distributeResource,
   distributeResourcePlayer,
   rollDice,
+  toggleModal,
+  moveRobber,
   updateScore,
   updateScorePlayer
 } from './actionTypes'
@@ -41,6 +43,15 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   })
 }
 
+export const robberThunk = id => (dispatch, getState) => {
+  const {playerState, gameState} = getState()
+  const resources = gameState.players.filter(
+    player => player.id === playerState.playerNumber
+  )[0].resources
+
+  if (resources > 7) dispatch(toggleModal('robber'))
+}
+
 export const newDiceRoll = () => {
   return (dispatch, getState) => {
     let die1 = rollDie()
@@ -53,13 +64,20 @@ export const newDiceRoll = () => {
     socket.emit('dispatch', rollDice(dieRolls))
 
     const newState = getState().gameState
-
-    console.log('====================')
-    console.log(newState.die1, newState.die2)
-    console.log('====================')
+    const newDiceTotal = newState.die1 + newState.die2
 
     dispatch(distributeResourcesThunk(newState.die1 + newState.die2))
+
+    if (newDiceTotal === 7) {
+      dispatch(robberThunk())
+      socket.emit('dispatchThunk', {action: 'robberThunk'})
+    }
   }
+}
+
+export const moveRobberThunk = id => (dispatch, getState) => {
+  const resource = {...getState().board.resources[id]}
+  dispatch(moveRobber(resource))
 }
 
 export const adjustScore = scoreChange => {

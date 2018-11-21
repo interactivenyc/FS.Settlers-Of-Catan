@@ -4,8 +4,7 @@ import Edges from './Edges'
 
 const Hexagon = props => {
   const {resource, vert, sides} = props.gameOptions
-  const vertices = props.board.vertices
-  const edges = props.board.edges
+  const {vertices, edges, robberLocation} = props.board
 
   const number = props.board.resources[props.gameOptions.id].diceTarget
 
@@ -15,10 +14,14 @@ const Hexagon = props => {
       <div className="hexagon">
         <div
           id={resource}
+          data-resource-id={props.gameOptions.id}
           className={`inner-hexagon hexagon-image ${props.image}`}
         >
-          <div className="resource-number">
-            <h1>{!!number && number}</h1>
+          <div
+            className={`resource-number ${robberLocation.id === resource &&
+              'robber'}`}
+          >
+            <h1>{!!number && robberLocation.id !== resource && number}</h1>
           </div>
         </div>
         <Edges sides={sides} edges={edges} />
