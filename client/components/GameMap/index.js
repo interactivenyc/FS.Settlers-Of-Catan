@@ -12,19 +12,9 @@ import store from '../../store'
 class GameMap extends Component {
   componentDidMount() {
     socket.on('dispatch', action => store.dispatch(action))
-  }
-
-  componentDidUpdate(prevProps) {
-    // const {diceTotal, visible} = this.props
-    // const isSeven = diceTotal === 7
-    // const notRobber = visible !== 'robber'
-    // const robberChanged = !prevProps.visible
-    // console.log(isSeven, notRobber, robberChanged)
-    // console.log(diceTotal, visible, prevProps.visible)
-    // if (isSeven && notRobber && robberChanged) {
-    //   console.log('FIRING ACTION MODAL')
-    //   this.props.toggleModal('robber')
-    // }
+    socket.on('dispatchThunk', ({action, args}) =>
+      store.dispatch(actions[action].apply(this, args))
+    )
   }
 
   handleClick = e => {
@@ -32,7 +22,8 @@ class GameMap extends Component {
 
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
-        // this.props.changeResourceThunk(e.target.id)
+        console.log(e.target.id)
+        // this.props.moveRobber(e.target.id)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -88,6 +79,7 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
+  moveRobber: actions.maveRobber,
   changeVertexThunk: actions.changeVertexThunk,
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,
