@@ -57,6 +57,7 @@ class GameMap extends Component {
           board={this.props.board}
           die1={this.props.die1}
           die2={this.props.die2}
+          player={player}
         />
         <PlayerControls
           playerTurn={playerTurn}

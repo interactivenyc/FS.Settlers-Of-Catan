@@ -6,7 +6,7 @@ import Dice from '../Dice'
 
 const mapAdjust = 5
 
-const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
+const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
   return (
     <div className="board" onClick={e => handleClick(e)}>
       <MapRow style={{transform: 'translateY(60%)'}}>
@@ -14,6 +14,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           gameOptions={gameOptions.row1.hex1}
           image={board.resources[gameOptions.row1.hex1.id].type}
           board={board}
+          player={player}
         />
         <Hexagon
           style={{transform: `translateX(-${mapAdjust}%)`}}
@@ -21,6 +22,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           image={board.resources[gameOptions.row1.hex2.id].type}
           cityAdjust={adjust}
           board={board}
+          player={player}
         />
         <Hexagon
           style={{transform: `translateX(-${mapAdjust * 2}%)`}}
@@ -30,6 +32,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           anchor
           anchorAdjust={adjust}
           board={board}
+          player={player}
         />
       </MapRow>
       <MapRow style={{transform: 'translateY(30%)'}}>
@@ -37,6 +40,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           gameOptions={gameOptions.row2.hex1}
           image={board.resources[gameOptions.row2.hex1.id].type}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row2.hex2}
@@ -44,6 +48,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           style={{transform: `translateX(-${mapAdjust}%)`}}
           cityAdjust={adjust}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row2.hex3}
@@ -51,6 +56,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           style={{transform: `translateX(-${mapAdjust * 2}%)`}}
           cityAdjust={adjust * 2}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row2.hex4}
@@ -60,6 +66,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           anchor
           anchorAdjust={adjust * 2}
           board={board}
+          player={player}
         />
       </MapRow>
       <MapRow>
@@ -68,6 +75,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           image={board.resources[gameOptions.row3.hex1.id].type}
           bottomLeftAnchor
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row3.hex2}
@@ -75,6 +83,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           style={{transform: `translateX(-${mapAdjust}%)`}}
           cityAdjust={adjust}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row3.hex3}
@@ -82,6 +91,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           style={{transform: `translateX(-${mapAdjust * 2}%)`}}
           cityAdjust={adjust * 2}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row3.hex4}
@@ -89,6 +99,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           style={{transform: `translateX(-${mapAdjust * 3}%)`}}
           cityAdjust={adjust * 3}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row3.hex5}
@@ -99,6 +110,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           anchorAdjust={adjust * 3}
           bottomRightAnchor
           board={board}
+          player={player}
         />
       </MapRow>
       <MapRow style={{transform: 'translateY(-30%)'}}>
@@ -107,6 +119,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           image={board.resources[gameOptions.row4.hex1.id].type}
           bottomLeftAnchor
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row4.hex2}
@@ -114,6 +127,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           style={{transform: `translateX(-${mapAdjust}%)`}}
           cityAdjust={adjust}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row4.hex3}
@@ -121,6 +135,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           style={{transform: `translateX(-${mapAdjust * 2}%)`}}
           cityAdjust={adjust * 2}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row4.hex4}
@@ -131,6 +146,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           anchorAdjust={adjust * 2}
           bottomRightAnchor
           board={board}
+          player={player}
         />
       </MapRow>
       <MapRow style={{transform: 'translateY(-60%)'}}>
@@ -142,6 +158,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           bottomAnchor
           anchorAdjust={adjust * -1}
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row5.hex2}
@@ -150,6 +167,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           cityAdjust={adjust}
           bottomAnchor
           board={board}
+          player={player}
         />
         <Hexagon
           gameOptions={gameOptions.row5.hex3}
@@ -162,6 +180,7 @@ const GameBoard = ({adjust, handleClick, board, die1, die2}) => {
           bottomRightAnchor
           bottomAnchor
           board={board}
+          player={player}
         />
       </MapRow>
       <Dice die1={die1} die2={die2} />

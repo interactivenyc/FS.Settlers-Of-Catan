@@ -19,7 +19,7 @@ export const changeVertexThunk = id => (dispatch, getState) => {
   const vertice = board.vertices[id]
   const neighbors = getVerticeNeighbors(vertice, board)
 
-  if (validateChangeVertice(neighbors)) {
+  if (validateChangeVertice(neighbors, playerState.color)) {
     dispatch(createSettlement(id, playerState.color, playerState.playerNumber))
     socket.emit(
       'dispatch',

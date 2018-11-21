@@ -21,7 +21,7 @@ const Hexagon = props => {
             <h1>{!!number && number}</h1>
           </div>
         </div>
-        <Edges sides={sides} edges={edges} />
+        <Edges sides={sides} edges={edges} {...props} />
       </div>
     </div>
   )

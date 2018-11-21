@@ -2,7 +2,7 @@ import React from 'react'
 
 const DevCardModal = ({toggleModal}) => {
   return (
-    <div className="game-modle game-modle-active">
+    <div>
       <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
         Devlopment Cards
         <button
