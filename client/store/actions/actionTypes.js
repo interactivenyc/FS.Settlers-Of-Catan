@@ -38,10 +38,15 @@ export const createSettlement = (id, color) => ({
 export const START_GAME = 'START_GAME'
 export const SET_GAME_USERS = 'SET_GAME_USERS'
 export const NEXT_PLAYER = 'NEXT_PLAYER'
+export const TOGGLE_MODAL = 'TOGGLE_MODAL'
 
 export const startGame = () => ({
   type: START_GAME,
   modle: false,
   playerTurn: 1
+})
+export const toggleModal = view => ({
+  type: TOGGLE_MODAL,
+  modal: view
 })
 export const nextPlayer = playerNumber => ({type: NEXT_PLAYER, playerNumber})

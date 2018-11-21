@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PlayerControls = ({playerTurn, player, nextPlayerThunk}) => {
+const PlayerControls = ({playerTurn, player, nextPlayerThunk, toggleModal}) => {
   return (
     <div
       className={`game-controller player-${player.playerNumber} ${playerTurn ===
@@ -15,11 +15,13 @@ const PlayerControls = ({playerTurn, player, nextPlayerThunk}) => {
         ))}
         {playerTurn === player.playerNumber && (
           <div className="section-btns">
-            <button className="btn">modle</button>
             <button className="btn">Roll</button>
-            <button className="btn">Settlement</button>
-            <button className="btn">City</button>
-            <button className="btn">Development Cards</button>
+            <button className="btn" onClick={() => toggleModal('build')}>
+              Build
+            </button>
+            <button className="btn" onClick={() => toggleModal('showDevCards')}>
+              Development Cards
+            </button>
             <button
               className="btn"
               onClick={() => nextPlayerThunk(player.playerNumber)}

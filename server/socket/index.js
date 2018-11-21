@@ -6,7 +6,6 @@ module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
   let gamesInProgress = {}
-  // const maxUsers = 4
   let gameDecks = {}
   let chatHistory = []
 
@@ -48,7 +47,6 @@ module.exports = io => {
 
   generateDeck()
 
-  // let board = new Board()
   const maxUsers = 4
 
   /**

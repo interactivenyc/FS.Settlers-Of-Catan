@@ -1,4 +1,4 @@
-import {START_GAME, NEXT_PLAYER, SET_GAME_USERS} from '../actions'
+import {START_GAME, NEXT_PLAYER, SET_GAME_USERS, TOGGLE_MODAL} from '../actions'
 
 const defaultState = {
   playerTurn: 1,
@@ -22,6 +22,8 @@ const gameState = (state = defaultState, action) => {
         ...state,
         playerTurn: action.playerNumber + 1 < 5 ? action.playerNumber + 1 : 1
       }
+    case TOGGLE_MODAL:
+      return {...state, modle: action.modal}
     default:
       return state
   }

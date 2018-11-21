@@ -149,10 +149,42 @@
   border-radius: 10px;
   z-index: 10;
   transition: all 0.5s;
+  display: flex;
+  flex-direction: column;
 }
 
 .game-modle-active {
   transform: translate(-50%, -50%);
+}
+
+.build-modal {
+  flex-basis: auto;
+  flex-grow: 15;
+  display: flex;
+  flex-direction: column;
+}
+
+.build-modal-button {
+  flex-basis: auto;
+  flex-grow: 1;
+  margin: 5px;
+  font-size: 20pt;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.build-modal-button:hover {
+  outline: #ffb732 solid 6px;
+}
+
+.modal-resource {
+  width: 90px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 .game-controller {
