@@ -4,7 +4,8 @@ import {
   SET_GAME_USERS,
   DISTRIBUTE_RESOURCE,
   ROLL_DICE,
-  TOGGLE_MODAL
+  TOGGLE_MODAL,
+  MAKE_OFFER
 } from '../actions'
 
 const defaultState = {
@@ -16,10 +17,12 @@ const defaultState = {
     {id: 3, resources: 0, score: 0},
     {id: 4, resources: 0, score: 0}
   ],
+  currentTrade: {offerCards: [], wantCards: []},
   die1: 0,
   die2: 0
 }
 
+/* eslint-disable complexity */
 const gameState = (state = defaultState, action) => {
   switch (action.type) {
     case SET_GAME_USERS:
@@ -47,6 +50,13 @@ const gameState = (state = defaultState, action) => {
         ...state,
         die1: action.dieRolls[0],
         die2: action.dieRolls[1]
+      }
+    case MAKE_OFFER:
+      console.log('MAKE_OFFER', action.currentTrade)
+
+      return {
+        ...state,
+        currentTrade: action.currentTrade
       }
     default:
       return state

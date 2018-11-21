@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import TradeCount from './TradeCount'
+import * as actions from '../../../store/actions'
 
 class TradeModal extends React.Component {
   constructor(props) {
@@ -68,6 +69,11 @@ class TradeModal extends React.Component {
   }
   submit(e) {
     console.log('[ TradeModal ] submit trade', e.target)
+    const currentTrade = {
+      offerCards: this.state.offerCards,
+      wantCards: this.state.wantCards
+    }
+    this.props.makeOffer(currentTrade)
   }
   getResourceCount(type) {
     let found = this.props.resources.find(element => {
@@ -284,7 +290,9 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => {
-  return {}
+  return {
+    makeOffer: currentTrade => dispatch(actions.makeOffer(currentTrade))
+  }
 }
 
 export default connect(mapState, mapDispatch)(TradeModal)

@@ -48,6 +48,9 @@ export const NEXT_PLAYER = 'NEXT_PLAYER'
 export const TOGGLE_MODAL = 'TOGGLE_MODAL'
 export const DISTRIBUTE_RESOURCE = 'DISTRIBUTE_RESOURCE'
 export const DISTRIBUTE_RESOURCE_PLAYER = 'DISTRIBUTE_RESOURCE_PLAYER'
+export const MAKE_OFFER = 'MAKE_OFFER'
+export const ACCEPT_OFFER = 'ACCEPT_OFFER'
+export const REJECT_OFFER = 'REJECT_OFFER'
 
 export const startGame = () => ({
   type: START_GAME,

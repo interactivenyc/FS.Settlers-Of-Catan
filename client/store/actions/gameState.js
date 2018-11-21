@@ -1,6 +1,7 @@
 import {
   nextPlayer,
   SET_GAME_USERS,
+  MAKE_OFFER,
   distributeResource,
   distributeResourcePlayer,
   rollDice
@@ -59,3 +60,5 @@ export const newDiceRoll = () => {
     dispatch(distributeResourcesThunk(newState.die1 + newState.die2))
   }
 }
+
+export const makeOffer = currentTrade => ({type: MAKE_OFFER, currentTrade})
