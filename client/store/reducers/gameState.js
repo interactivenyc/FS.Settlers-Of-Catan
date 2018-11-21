@@ -7,7 +7,8 @@ import {
   ROLL_DICE,
   TOGGLE_MODAL,
   MAKE_OFFER,
-  RECEIVE_OFFER
+  RECEIVE_OFFER,
+  UPDATE_SCORE
 } from '../actions'
 
 const defaultState = {
@@ -63,6 +64,15 @@ const gameState = (state = defaultState, action) => {
       return {
         ...state,
         currentTrade: action.currentTrade
+      }
+    case UPDATE_SCORE:
+      return {
+        ...state,
+        players: state.players.map(player => {
+          return player.id === action.id
+            ? {...player, score: action.updatedScore}
+            : player
+        })
       }
     default:
       return state

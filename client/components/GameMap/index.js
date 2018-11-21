@@ -10,6 +10,13 @@ import socket from '../../socket'
 import store from '../../store'
 
 class GameMap extends Component {
+  constructor(props) {
+    super(props)
+    socket.on('send-card-to-user', card => {
+      this.props.buyCard(card)
+    })
+  }
+
   componentDidMount() {
     socket.on('dispatch', action => store.dispatch(action))
     socket.on('dispatchThunk', ({action, args}) =>
@@ -34,13 +41,22 @@ class GameMap extends Component {
     }
   }
 
+  buyaCard() {
+    socket.emit('get-dev-card', 'defaultGame')
+  }
+
   handleClick = e => {
-    const {changeRoadThunk, changeVertexThunk, player, playerTurn} = this.props
+    const {
+      changeRoadThunk,
+      changeVertexThunk,
+      player,
+      playerTurn,
+      moveRobberThunk
+    } = this.props
 
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
-        console.log(e.target.id)
-        // this.props.moveRobber(e.target.id)
+        moveRobberThunk(e.target.dataset.resourceId)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -54,11 +70,13 @@ class GameMap extends Component {
 
     return (
       <div className="board-container">
-        <Players
-          players={players.filter(user => user.id !== player.playerNumber)}
-          playerTurn={playerTurn}
+        <Players players={players} playerTurn={playerTurn} />
+        <Modle
+          visible={visible}
+          toggleModal={this.props.toggleModal}
+          buyaCard={this.buyaCard}
+          adjustScore={this.props.adjustScore}
         />
-        <Modle visible={visible} toggleModal={this.props.toggleModal} />
         <GameBoard
           adjust={-25}
           handleClick={this.handleClick}
@@ -67,6 +85,7 @@ class GameMap extends Component {
           die2={this.props.die2}
         />
         <PlayerControls
+          distributeResources={this.props.distributeResourcesThunk}
           playerTurn={playerTurn}
           player={player}
           nextPlayerThunk={this.props.nextPlayerThunk}
@@ -97,10 +116,12 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
-  moveRobber: actions.maveRobber,
+  moveRobberThunk: actions.moveRobberThunk,
   changeVertexThunk: actions.changeVertexThunk,
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,
   distributeResourcesThunk: actions.distributeResourcesThunk,
-  newDiceRoll: actions.newDiceRoll
+  newDiceRoll: actions.newDiceRoll,
+  buyCard: actions.buyCard,
+  adjustScore: actions.adjustScore
 })(GameMap)

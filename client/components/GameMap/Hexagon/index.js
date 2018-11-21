@@ -14,6 +14,7 @@ const Hexagon = props => {
       <div className="hexagon">
         <div
           id={resource}
+          data-resource-id={props.gameOptions.id}
           className={`inner-hexagon hexagon-image ${props.image}`}
         >
           <div

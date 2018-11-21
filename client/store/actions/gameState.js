@@ -6,7 +6,10 @@ import {
   distributeResource,
   distributeResourcePlayer,
   rollDice,
-  toggleModal
+  toggleModal,
+  moveRobber,
+  updateScore,
+  updateScorePlayer
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
@@ -43,7 +46,6 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
 }
 
 export const robberThunk = id => (dispatch, getState) => {
-  console.log('ARGUMENTS', id)
   const {playerState, gameState} = getState()
   const resources = gameState.players.filter(
     player => player.id === playerState.playerNumber
@@ -85,4 +87,25 @@ export const makeOffer = currentTrade => {
 
 export const receiveOffer = currentTrade => {
   return {type: RECEIVE_OFFER, currentTrade}
+}
+
+export const moveRobberThunk = id => (dispatch, getState) => {
+  const resource = {...getState().board.resources[id]}
+  dispatch(moveRobber(resource))
+}
+
+export const adjustScore = scoreChange => {
+  return (dispatch, getState) => {
+    let playerScore = getState().playerState.score
+    let playerId = getState().playerState.playerNumber
+    let updatedScore = 0
+    if (scoreChange > 0) {
+      updatedScore = playerScore + scoreChange
+    }
+    if (scoreChange < 0) {
+      updatedScore = playerScore - scoreChange
+    }
+    dispatch(updateScore(updatedScore))
+    dispatch(updateScorePlayer(playerId, updatedScore))
+  }
 }
