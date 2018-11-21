@@ -5,6 +5,7 @@ const PlayerControls = ({
   player,
   nextPlayerThunk,
   distributeResources,
+  toggleModal,
   newDiceRoll
 }) => {
   return (
@@ -21,13 +22,15 @@ const PlayerControls = ({
         ))}
         {playerTurn === player.playerNumber && (
           <div className="section-btns">
-            <button className="btn">modal</button>
             <button onClick={newDiceRoll} className="btn">
               Roll
             </button>
-            <button className="btn">Settlement</button>
-            <button className="btn">City</button>
-            <button className="btn">Development Cards</button>
+            <button className="btn" onClick={() => toggleModal('build')}>
+              Build
+            </button>
+            <button className="btn" onClick={() => toggleModal('showDevCards')}>
+              Development Cards
+            </button>
             <button
               className="btn"
               onClick={() => nextPlayerThunk(player.playerNumber)}

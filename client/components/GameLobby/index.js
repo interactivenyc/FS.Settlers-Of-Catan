@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import socket from '../../socket'
 import './GameLobby.css'
+import {deserializeBoard} from '../../store/actions'
 import UserList from './UserList'
 import GameList from './GameList'
 import GameState from './GameState'
@@ -31,6 +32,7 @@ export class GameLobby extends React.Component {
   }
 
   componentDidMount() {
+    console.log('BOARD', JSON.stringify(this.props.board))
     console.log('[ GameLobby ] componentDidMount', this.props)
     this.tryJoinLobby()
   }
@@ -196,6 +198,7 @@ export class GameLobby extends React.Component {
         gameId: '',
         inGame: true
       })
+      this.props.deserializeBoard(board)
       this.props.assignPlayer(user.number, user.color)
       this.props.history.push('/map')
     })
@@ -229,16 +232,18 @@ export class GameLobby extends React.Component {
 
 const mapState = state => {
   return {
-    user: state.user
+    user: state.user,
+    board: state.board
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatch = dispatch => {
   return {
+    deserializeBoard: board => dispatch(deserializeBoard(board)),
     setGameUsers: users => dispatch(actions.setGameUsers(users)),
     assignPlayer: (number, color) =>
       dispatch(actions.assignPlayer(number, color))
   }
 }
 
-export default connect(mapState, mapDispatchToProps)(GameLobby)
+export default connect(mapState, mapDispatch)(GameLobby)

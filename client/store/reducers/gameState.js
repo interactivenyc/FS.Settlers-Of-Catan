@@ -3,7 +3,8 @@ import {
   NEXT_PLAYER,
   SET_GAME_USERS,
   DISTRIBUTE_RESOURCE,
-  ROLL_DICE
+  ROLL_DICE,
+  TOGGLE_MODAL
 } from '../actions'
 
 const defaultState = {
@@ -30,6 +31,8 @@ const gameState = (state = defaultState, action) => {
         ...state,
         playerTurn: action.playerNumber + 1 < 5 ? action.playerNumber + 1 : 1
       }
+    case TOGGLE_MODAL:
+      return {...state, modle: action.modal}
     case DISTRIBUTE_RESOURCE:
       return {
         ...state,

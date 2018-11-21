@@ -34,7 +34,7 @@ class GameMap extends Component {
     return (
       <div className="board-container">
         <Players players={players} playerTurn={playerTurn} />
-        <Modle visible={visible} />
+        <Modle visible={visible} toggleModal={this.props.toggleModal} />
         <GameBoard
           adjust={-25}
           handleClick={this.handleClick}
@@ -47,6 +47,7 @@ class GameMap extends Component {
           playerTurn={playerTurn}
           player={player}
           nextPlayerThunk={this.props.nextPlayerThunk}
+          toggleModal={this.props.toggleModal}
           newDiceRoll={this.props.newDiceRoll}
         />
       </div>
@@ -73,6 +74,7 @@ export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
   changeVertexThunk: actions.changeVertexThunk,
   nextPlayerThunk: actions.nextPlayerThunk,
+  toggleModal: actions.toggleModal,
   distributeResourcesThunk: actions.distributeResourcesThunk,
   newDiceRoll: actions.newDiceRoll
 })(GameMap)
