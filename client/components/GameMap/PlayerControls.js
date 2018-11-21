@@ -26,9 +26,7 @@ const PlayerControls = ({
               Roll
             </button>
             <button className="btn">Settlement</button>
-            <button className="btn" onClick={() => distributeResources(10)}>
-              City
-            </button>
+            <button className="btn">City</button>
             <button className="btn">Development Cards</button>
             <button
               className="btn"

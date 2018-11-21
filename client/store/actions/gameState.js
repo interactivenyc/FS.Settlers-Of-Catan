@@ -10,14 +10,12 @@ import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
 
-export const nextPlayerThunk = playerNumber => (dispatch, getState) => {
+export const nextPlayerThunk = playerNumber => dispatch => {
   dispatch(nextPlayer(playerNumber))
   socket.emit('dispatch', nextPlayer(playerNumber))
 }
 
 export const distributeResourcesThunk = num => (dispatch, getState) => {
-  console.log('RESOURCES THUNK', num)
-
   const {resources, vertices} = getState().board
 
   const newResources = Object.keys(resources)
@@ -42,7 +40,7 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
 }
 
 export const newDiceRoll = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     let die1 = rollDie()
     let die2 = rollDie()
     let dieRolls = []
@@ -50,5 +48,14 @@ export const newDiceRoll = () => {
     dieRolls.push(die2)
 
     dispatch(rollDice(dieRolls))
+    socket.emit('dispatch', rollDice(dieRolls))
+
+    const newState = getState().gameState
+
+    console.log('====================')
+    console.log(newState.die1, newState.die2)
+    console.log('====================')
+
+    dispatch(distributeResourcesThunk(newState.die1 + newState.die2))
   }
 }

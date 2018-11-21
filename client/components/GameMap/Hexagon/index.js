@@ -18,7 +18,7 @@ const Hexagon = props => {
           className={`inner-hexagon hexagon-image ${props.image}`}
         >
           <div className="resource-number">
-            <h1>{number}</h1>
+            <h1>{!!number && number}</h1>
           </div>
         </div>
         <Edges sides={sides} edges={edges} />
