@@ -2,7 +2,7 @@ import React from 'react'
 import BuildModal from './BuildModal'
 import DevCardModal from './DevCardModal'
 
-const Modle = ({visible, toggleModal}) => {
+const Modle = ({visible, toggleModal, buyaCard, adjustScore}) => {
   return (
     <div>
       {visible === 'waiting' && (
@@ -11,7 +11,13 @@ const Modle = ({visible, toggleModal}) => {
         </div>
       )}
       {visible === 'build' && <BuildModal toggleModal={toggleModal} />}
-      {visible === 'showDevCards' && <DevCardModal toggleModal={toggleModal} />}
+      {visible === 'showDevCards' && (
+        <DevCardModal
+          toggleModal={toggleModal}
+          buyaCard={buyaCard}
+          adjustScore={adjustScore}
+        />
+      )}
     </div>
   )
 }

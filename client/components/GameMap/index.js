@@ -10,8 +10,20 @@ import socket from '../../socket'
 import store from '../../store'
 
 class GameMap extends Component {
+  constructor(props) {
+    super(props)
+    socket.on('send-card-to-user', card => {
+      this.props.buyCard(card)
+    })
+  }
+
   componentDidMount() {
     socket.on('dispatch', action => store.dispatch(action))
+    console.log(typeof this.buyaCard)
+  }
+
+  buyaCard() {
+    socket.emit('get-dev-card', 'defaultGame')
   }
 
   handleClick = e => {
@@ -34,7 +46,12 @@ class GameMap extends Component {
     return (
       <div className="board-container">
         <Players players={players} playerTurn={playerTurn} />
-        <Modle visible={visible} toggleModal={this.props.toggleModal} />
+        <Modle
+          visible={visible}
+          toggleModal={this.props.toggleModal}
+          buyaCard={this.buyaCard}
+          adjustScore={this.props.adjustScore}
+        />
         <GameBoard
           adjust={-25}
           handleClick={this.handleClick}
@@ -76,5 +93,7 @@ export default connect(mapStateToProps, {
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,
   distributeResourcesThunk: actions.distributeResourcesThunk,
-  newDiceRoll: actions.newDiceRoll
+  newDiceRoll: actions.newDiceRoll,
+  buyCard: actions.buyCard,
+  adjustScore: actions.adjustScore
 })(GameMap)

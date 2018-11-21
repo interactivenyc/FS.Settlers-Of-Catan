@@ -4,7 +4,8 @@ import {
   SET_GAME_USERS,
   DISTRIBUTE_RESOURCE,
   ROLL_DICE,
-  TOGGLE_MODAL
+  TOGGLE_MODAL,
+  UPDATE_SCORE
 } from '../actions'
 
 const defaultState = {
@@ -47,6 +48,15 @@ const gameState = (state = defaultState, action) => {
         ...state,
         die1: action.dieRolls[0],
         die2: action.dieRolls[1]
+      }
+    case UPDATE_SCORE:
+      return {
+        ...state,
+        players: state.players.map(player => {
+          return player.id === action.id
+            ? {...player, score: action.updatedScore}
+            : player
+        })
       }
     default:
       return state

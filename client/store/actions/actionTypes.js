@@ -18,6 +18,7 @@ export const ASSIGN_PLAYER = 'ASSIGN_PLAYER'
 export const GET_HAND = 'GET_HAND'
 export const ADD_CARD = 'ADD_CARD'
 export const DELETE_CARD = 'DELETE_CARD'
+export const UPDATE_SCORE_PLAYER = 'UPDATE_SCORE_PLAYER'
 export const assignPlayer = (number, color) => ({
   type: ASSIGN_PLAYER,
   number,
@@ -26,6 +27,10 @@ export const assignPlayer = (number, color) => ({
 export const getHand = () => ({type: GET_HAND})
 export const addCard = hand => ({type: ADD_CARD, hand})
 export const deleteCard = hand => ({type: DELETE_CARD, hand})
+export const updateScorePlayer = updatedScore => ({
+  type: UPDATE_SCORE_PLAYER,
+  updatedScore
+})
 
 //build action Types
 export const createRoad = (id, color, number) => ({
@@ -48,6 +53,7 @@ export const NEXT_PLAYER = 'NEXT_PLAYER'
 export const TOGGLE_MODAL = 'TOGGLE_MODAL'
 export const DISTRIBUTE_RESOURCE = 'DISTRIBUTE_RESOURCE'
 export const DISTRIBUTE_RESOURCE_PLAYER = 'DISTRIBUTE_RESOURCE_PLAYER'
+export const UPDATE_SCORE = 'UPDATE_SCORE'
 
 export const startGame = () => ({
   type: START_GAME,
@@ -65,3 +71,8 @@ export const distributeResourcePlayer = (resource, id) => ({
   id
 })
 export const distributeResource = id => ({type: DISTRIBUTE_RESOURCE, id})
+export const updateScore = (playerId, updatedScore) => ({
+  type: UPDATE_SCORE,
+  playerId,
+  updatedScore
+})
