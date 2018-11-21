@@ -1,6 +1,13 @@
 import React from 'react'
 
-const PlayerControls = ({playerTurn, player, nextPlayerThunk, toggleModal}) => {
+const PlayerControls = ({
+  playerTurn,
+  player,
+  nextPlayerThunk,
+  distributeResources,
+  toggleModal,
+  newDiceRoll
+}) => {
   return (
     <div
       className={`game-controller player-${player.playerNumber} ${playerTurn ===
@@ -15,7 +22,9 @@ const PlayerControls = ({playerTurn, player, nextPlayerThunk, toggleModal}) => {
         ))}
         {playerTurn === player.playerNumber && (
           <div className="section-btns">
-            <button className="btn">Roll</button>
+            <button onClick={newDiceRoll} className="btn">
+              Roll
+            </button>
             <button className="btn" onClick={() => toggleModal('build')}>
               Build
             </button>

@@ -1,14 +1,23 @@
-import {START_GAME, NEXT_PLAYER, SET_GAME_USERS, TOGGLE_MODAL} from '../actions'
+import {
+  START_GAME,
+  NEXT_PLAYER,
+  SET_GAME_USERS,
+  DISTRIBUTE_RESOURCE,
+  ROLL_DICE,
+  TOGGLE_MODAL
+} from '../actions'
 
 const defaultState = {
   playerTurn: 1,
   modle: false,
   players: [
-    {id: 1, resources: 1, score: 0},
-    {id: 2, resources: 2, score: 0},
-    {id: 3, resources: 3, score: 0},
-    {id: 4, resources: 4, score: 0}
-  ]
+    {id: 1, resources: 0, score: 0},
+    {id: 2, resources: 0, score: 0},
+    {id: 3, resources: 0, score: 0},
+    {id: 4, resources: 0, score: 0}
+  ],
+  die1: 0,
+  die2: 0
 }
 
 const gameState = (state = defaultState, action) => {
@@ -24,6 +33,21 @@ const gameState = (state = defaultState, action) => {
       }
     case TOGGLE_MODAL:
       return {...state, modle: action.modal}
+    case DISTRIBUTE_RESOURCE:
+      return {
+        ...state,
+        players: state.players.map(player => {
+          return player.id === action.id
+            ? {...player, resources: player.resources + 1}
+            : player
+        })
+      }
+    case ROLL_DICE:
+      return {
+        ...state,
+        die1: action.dieRolls[0],
+        die2: action.dieRolls[1]
+      }
     default:
       return state
   }

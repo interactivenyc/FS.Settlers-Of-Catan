@@ -52,7 +52,6 @@ module.exports = io => {
   /**
    * THESE ARE VARS USED BY RYAN - TO INTEGRATE
    */
-  let number = 1
   let colors = {
     1: 'red',
     2: 'green',
@@ -100,14 +99,6 @@ module.exports = io => {
           user.playerNum = playerNum++
           gameUsers[playerNum] = user
           delete userLobby[socketId]
-
-          console.log('==================================')
-          console.log(
-            'THIS IS THE USER',
-            user.playerNum,
-            colors[user.playerNum]
-          )
-          console.log('==================================')
 
           io.to(socketId).emit('start-game', board.board_data, {
             number: playerNum,
