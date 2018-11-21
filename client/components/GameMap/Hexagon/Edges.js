@@ -18,6 +18,7 @@ class Edges extends React.Component {
   }
 
   handleMouseEnter = event => {
+    //need to be able to access hidden divs
     console.log(event.target)
     const {edges, player, board} = this.props
     const edge = edges[event.target.id]

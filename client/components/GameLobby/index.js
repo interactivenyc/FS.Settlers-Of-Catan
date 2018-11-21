@@ -198,6 +198,7 @@ export class GameLobby extends React.Component {
         gameId: '',
         inGame: true
       })
+
       this.props.deserializeBoard(board)
       this.props.assignPlayer(user.number, user.color)
       this.props.history.push('/map')
