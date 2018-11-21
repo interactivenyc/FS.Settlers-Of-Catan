@@ -18,12 +18,17 @@ class GameMap extends Component {
   }
 
   handleClick = e => {
-    const {changeRoadThunk, changeVertexThunk, player, playerTurn} = this.props
+    const {
+      changeRoadThunk,
+      changeVertexThunk,
+      player,
+      playerTurn,
+      moveRobberThunk
+    } = this.props
 
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
-        console.log(e.target.id)
-        this.props.moveRobberThunk(e.target.dataset.resourceId)
+        moveRobberThunk(e.target.dataset.resourceId)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
