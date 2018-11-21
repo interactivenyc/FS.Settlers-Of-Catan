@@ -313,3 +313,19 @@
 .cur-player {
   outline: 5px solid #ecf0f1;
 }
+
+.build-player-1:hover {
+  background-color: var(--color-red);
+}
+
+.build-player-2:hover {
+  background-color: var(--color-green);
+}
+
+.build-player-3:hover {
+  background-color: var(--color-blue);
+}
+
+.build-player-4:hover {
+  background-color: var(--color-orange);
+}
