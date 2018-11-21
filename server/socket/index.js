@@ -162,22 +162,16 @@ module.exports = io => {
     socket.on('dispatch', value => {
       socket.broadcast.emit('dispatch', value)
     })
+    socket.on('dispatchThunk', action => {
+      socket.broadcast.emit('dispatchThunk', action)
+    })
 
-    socket.on('startGame', async () => {
+    socket.on('startGame', () => {
       io.sockets.emit('dispatch', {
         type: 'START_GAME',
         modle: false,
         playerTurn: 1
       })
-    })
-
-    socket.on('assignPlayer', () => {
-      if (number <= 4) {
-        io.sockets.emit('assignPlayer', {
-          number,
-          color: colors[number++]
-        })
-      }
     })
   })
 }
