@@ -6,12 +6,12 @@ const TradeCount = props => {
     <table className="trade-table" height="100%" width="100%">
       <tbody>
         <tr>
-          <td halign="middle" valign="top">
+          <td id={`plus ${props.type}`} halign="middle" valign="top">
             {props.offerCount}
           </td>
         </tr>
         <tr>
-          <td halign="middle" valign="bottom">
+          <td id={`minus ${props.type}`} halign="middle" valign="bottom">
             {props.resourceCount}
           </td>
         </tr>

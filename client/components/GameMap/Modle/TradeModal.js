@@ -12,17 +12,21 @@ class TradeModal extends React.Component {
       wantCards: []
     }
 
-    this.clickItem = this.clickItem.bind(this)
+    this.clickOffer = this.clickOffer.bind(this)
     this.reset = this.reset.bind(this)
     this.submit = this.submit.bind(this)
     this.getResourceCount = this.getResourceCount.bind(this)
     this.getOfferCount = this.getOfferCount.bind(this)
   }
 
-  clickItem(e) {
-    console.log('[ TradeModal ] clickItem', e.target)
-    e.target.classList.toggle('trade-modal-button-active')
-    e.target.classList.toggle('trade-modal-button')
+  clickOffer(e) {
+    console.log('[ TradeModal ] clickOffer', e.target.id)
+    const [offer, type] = e.target.id.split(' ')
+    console.log('[ TradeModal ] offer/type', offer, type)
+  }
+  clickWant(e) {
+    console.log('[ TradeModal ] clickWant', e.target.id)
+    const type = e.target.id
   }
   reset(e) {
     console.log('[ TradeModal ] reset', e.target)
@@ -71,40 +75,45 @@ class TradeModal extends React.Component {
           <button className="trade-modal-container" type="button">
             I Want = &nbsp;
             <div
-              onClick={this.clickItem}
+              onClick={this.clickWant}
+              id="hill"
               className="trade-resource trade-modal-button hill "
             >
-              0
+              <TradeCount type="hill" resourceCount={0} offerCount="" />
             </div>
             <div
-              onClick={this.clickItem}
+              onClick={this.clickWant}
+              id="forest"
               className="trade-resource trade-modal-button forest"
             >
-              0
+              <TradeCount type="forest" resourceCount={0} offerCount="" />
             </div>
             <div
-              onClick={this.clickItem}
+              onClick={this.clickWant}
+              id="field"
               className="trade-resource trade-modal-button field"
             >
-              0
+              <TradeCount type="field" resourceCount={0} offerCount="" />
             </div>
             <div
-              onClick={this.clickItem}
+              onClick={this.clickWant}
+              id="pasture"
               className="trade-resource trade-modal-button pasture"
             >
-              0
+              <TradeCount type="pasture" resourceCount={0} offerCount="" />
             </div>
             <div
-              onClick={this.clickItem}
+              onClick={this.clickWant}
+              id="mountain"
               className="trade-resource trade-modal-button mountain"
             >
-              0
+              <TradeCount type="mountain" resourceCount={0} offerCount="" />
             </div>
           </button>
           <button className="trade-modal-container" type="button">
             My Offer = &nbsp;
             <div
-              onClick={this.clickItem}
+              onClick={this.clickOffer}
               className="trade-resource trade-modal-button hill"
             >
               <TradeCount
@@ -114,7 +123,7 @@ class TradeModal extends React.Component {
               />
             </div>
             <div
-              onClick={this.clickItem}
+              onClick={this.clickOffer}
               className="trade-resource trade-modal-button forest"
             >
               <TradeCount
@@ -124,7 +133,7 @@ class TradeModal extends React.Component {
               />
             </div>
             <div
-              onClick={this.clickItem}
+              onClick={this.clickOffer}
               className="trade-resource trade-modal-button field"
             >
               <TradeCount
@@ -134,7 +143,7 @@ class TradeModal extends React.Component {
               />
             </div>
             <div
-              onClick={this.clickItem}
+              onClick={this.clickOffer}
               className="trade-resource trade-modal-button pasture"
             >
               <TradeCount
@@ -144,7 +153,7 @@ class TradeModal extends React.Component {
               />
             </div>
             <div
-              onClick={this.clickItem}
+              onClick={this.clickOffer}
               className="trade-resource trade-modal-button mountain"
             >
               <TradeCount
