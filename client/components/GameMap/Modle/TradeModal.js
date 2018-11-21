@@ -13,23 +13,58 @@ class TradeModal extends React.Component {
     }
 
     this.clickOffer = this.clickOffer.bind(this)
-    this.reset = this.reset.bind(this)
-    this.submit = this.submit.bind(this)
+    this.clickWant = this.clickWant.bind(this)
     this.getResourceCount = this.getResourceCount.bind(this)
     this.getOfferCount = this.getOfferCount.bind(this)
+    this.getWantCount = this.getWantCount.bind(this)
+    this.reset = this.reset.bind(this)
+    this.submit = this.submit.bind(this)
   }
 
   clickOffer(e) {
-    console.log('[ TradeModal ] clickOffer', e.target.id)
-    const [offer, type] = e.target.id.split(' ')
-    console.log('[ TradeModal ] offer/type', offer, type)
+    console.log('[ TradeModal ] clickOffer', e.currentTarget.id)
+    const type = e.currentTarget.id
+    let found = this.state.offerCards.find(element => {
+      return element.type === type
+    })
+    if (found) {
+      if (this.getResourceCount(type) - this.getOfferCount(type) > 0) {
+        found.quantity++
+        this.setState({
+          offerCards: this.state.offerCards
+        })
+      } else {
+        console.log("You don't have enough resources")
+      }
+    } else {
+      this.setState({
+        offerCards: [...this.state.offerCards, {type: type, quantity: 1}]
+      })
+    }
   }
   clickWant(e) {
-    console.log('[ TradeModal ] clickWant', e.target.id)
-    const type = e.target.id
+    console.log('[ TradeModal ] clickWant', e.currentTarget.id)
+    const type = e.currentTarget.id
+    let found = this.state.wantCards.find(element => {
+      return element.type === type
+    })
+    if (found) {
+      found.quantity++
+      this.setState({
+        wantCards: this.state.wantCards
+      })
+    } else {
+      this.setState({
+        wantCards: [...this.state.wantCards, {type: type, quantity: 1}]
+      })
+    }
   }
   reset(e) {
-    console.log('[ TradeModal ] reset', e.target)
+    console.log('[ TradeModal ] reset state', e.target)
+    this.setState({
+      offerCards: [],
+      wantCards: []
+    })
   }
   submit(e) {
     console.log('[ TradeModal ] submit trade', e.target)
@@ -38,9 +73,8 @@ class TradeModal extends React.Component {
     let found = this.props.resources.find(element => {
       return element.type === type
     })
-    console.log('[ TradeModal ] getResourceCount', found)
     if (found) {
-      return found.quantity - this.getOfferCount(type)
+      return found.quantity
     } else {
       return 0
     }
@@ -49,11 +83,20 @@ class TradeModal extends React.Component {
     let found = this.state.offerCards.find(element => {
       return element.type === type
     })
-    console.log('[ TradeModal ] getOfferCount', type, found)
     if (found) {
       return found.quantity
     } else {
-      console.log('[ TradeModal ] getOfferCount return 0')
+      return 0
+    }
+  }
+
+  getWantCount(type) {
+    let found = this.state.wantCards.find(element => {
+      return element.type === type
+    })
+    if (found) {
+      return found.quantity
+    } else {
       return 0
     }
   }
@@ -75,93 +118,142 @@ class TradeModal extends React.Component {
           <button className="trade-modal-container" type="button">
             I Want = &nbsp;
             <div
-              onClick={this.clickWant}
               id="hill"
+              onClick={this.clickWant}
               className="trade-resource trade-modal-button hill "
             >
-              <TradeCount type="hill" resourceCount={0} offerCount="" />
+              <TradeCount
+                resourceCount={this.getWantCount('hill')}
+                offerCount=""
+              />
             </div>
             <div
-              onClick={this.clickWant}
               id="forest"
+              onClick={this.clickWant}
               className="trade-resource trade-modal-button forest"
             >
-              <TradeCount type="forest" resourceCount={0} offerCount="" />
+              <TradeCount
+                resourceCount={this.getWantCount('forest')}
+                offerCount=""
+              />
             </div>
             <div
-              onClick={this.clickWant}
               id="field"
+              onClick={this.clickWant}
               className="trade-resource trade-modal-button field"
             >
-              <TradeCount type="field" resourceCount={0} offerCount="" />
+              <TradeCount
+                resourceCount={this.getWantCount('field')}
+                offerCount=""
+              />
             </div>
             <div
-              onClick={this.clickWant}
               id="pasture"
+              onClick={this.clickWant}
               className="trade-resource trade-modal-button pasture"
             >
-              <TradeCount type="pasture" resourceCount={0} offerCount="" />
+              <TradeCount
+                resourceCount={this.getWantCount('pasture')}
+                offerCount=""
+              />
             </div>
             <div
-              onClick={this.clickWant}
               id="mountain"
+              onClick={this.clickWant}
               className="trade-resource trade-modal-button mountain"
             >
-              <TradeCount type="mountain" resourceCount={0} offerCount="" />
+              <TradeCount
+                resourceCount={this.getWantCount('mountain')}
+                offerCount=""
+              />
             </div>
           </button>
+
           <button className="trade-modal-container" type="button">
             My Offer = &nbsp;
-            <div
-              onClick={this.clickOffer}
-              className="trade-resource trade-modal-button hill"
-            >
-              <TradeCount
-                type="hill"
-                resourceCount={this.getResourceCount('hill')}
-                offerCount={this.getOfferCount('hill')}
-              />
-            </div>
-            <div
-              onClick={this.clickOffer}
-              className="trade-resource trade-modal-button forest"
-            >
-              <TradeCount
-                type="forest"
-                resourceCount={this.getResourceCount('forest')}
-                offerCount={this.getOfferCount('forest')}
-              />
-            </div>
-            <div
-              onClick={this.clickOffer}
-              className="trade-resource trade-modal-button field"
-            >
-              <TradeCount
-                type="field"
-                resourceCount={this.getResourceCount('field')}
-                offerCount={this.getOfferCount('field')}
-              />
-            </div>
-            <div
-              onClick={this.clickOffer}
-              className="trade-resource trade-modal-button pasture"
-            >
-              <TradeCount
-                type="pasture"
-                resourceCount={this.getResourceCount('pasture')}
-                offerCount={this.getOfferCount('pasture')}
-              />
-            </div>
-            <div
-              onClick={this.clickOffer}
-              className="trade-resource trade-modal-button mountain"
-            >
-              <TradeCount
-                type="mountain"
-                resourceCount={this.getResourceCount('mountain')}
-                offerCount={this.getOfferCount('mountain')}
-              />
-            </div>
+            {this.getResourceCount('hill') > 0 ? (
+              <div
+                id="hill"
+                onClick={this.clickOffer}
+                className="trade-resource trade-modal-button hill"
+              >
+                <TradeCount
+                  resourceCount={
+                    this.getResourceCount('hill') - this.getOfferCount('hill')
+                  }
+                  offerCount={this.getOfferCount('hill')}
+                />
+              </div>
+            ) : (
+              <div />
+            )}
+            {this.getResourceCount('forest') > 0 ? (
+              <div
+                id="forest"
+                onClick={this.clickOffer}
+                className="trade-resource trade-modal-button forest"
+              >
+                <TradeCount
+                  resourceCount={
+                    this.getResourceCount('forest') -
+                    this.getOfferCount('forest')
+                  }
+                  offerCount={this.getOfferCount('forest')}
+                />
+              </div>
+            ) : (
+              <div />
+            )}
+            {this.getResourceCount('field') > 0 ? (
+              <div
+                id="field"
+                onClick={this.clickOffer}
+                className="trade-resource trade-modal-button field"
+              >
+                <TradeCount
+                  resourceCount={
+                    this.getResourceCount('field') - this.getOfferCount('field')
+                  }
+                  offerCount={this.getOfferCount('field')}
+                />
+              </div>
+            ) : (
+              <div />
+            )}
+            {this.getResourceCount('pasture') > 0 ? (
+              <div
+                id="pasture"
+                onClick={this.clickOffer}
+                className="trade-resource trade-modal-button pasture"
+              >
+                <TradeCount
+                  resourceCount={
+                    this.getResourceCount('pasture') -
+                    this.getOfferCount('pasture')
+                  }
+                  offerCount={this.getOfferCount('pasture')}
+                />
+              </div>
+            ) : (
+              <div />
+            )}
+            {this.getResourceCount('mountain') > 0 ? (
+              <div
+                id="mountain"
+                onClick={this.clickOffer}
+                className="trade-resource trade-modal-button mountain"
+              >
+                <TradeCount
+                  resourceCount={
+                    this.getResourceCount('mountain') -
+                    this.getOfferCount('mountain')
+                  }
+                  offerCount={this.getOfferCount('mountain')}
+                />
+              </div>
+            ) : (
+              <div />
+            )}
           </button>
           <button
             onClick={this.reset}
