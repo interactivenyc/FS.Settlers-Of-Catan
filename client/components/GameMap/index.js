@@ -50,8 +50,6 @@ class GameMap extends Component {
           nextPlayerThunk={this.props.nextPlayerThunk}
           newDiceRoll={this.props.newDiceRoll}
         />
-        <Dice die1={this.props.die1} die={this.props.die2} />
-        )
       </div>
     )
   }

@@ -45,7 +45,7 @@ module.exports = io => {
   generateDeck()
 
   // let board = new Board()
-  const maxUsers = 4
+  const maxUsers = 1
 
   /**
    * THESE ARE VARS USED BY RYAN - TO INTEGRATE
