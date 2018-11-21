@@ -50,6 +50,7 @@ class GameMap extends Component {
           visible={visible}
           toggleModal={this.props.toggleModal}
           buyaCard={this.buyaCard}
+          adjustScore={this.props.adjustScore}
         />
         <GameBoard
           adjust={-25}
@@ -93,5 +94,6 @@ export default connect(mapStateToProps, {
   toggleModal: actions.toggleModal,
   distributeResourcesThunk: actions.distributeResourcesThunk,
   newDiceRoll: actions.newDiceRoll,
-  buyCard: actions.buyCard
+  buyCard: actions.buyCard,
+  adjustScore: actions.adjustScore
 })(GameMap)

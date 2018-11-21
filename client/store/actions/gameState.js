@@ -62,9 +62,10 @@ export const newDiceRoll = () => {
   }
 }
 
-export const adjustScore = (playerId, scoreChange) => {
+export const adjustScore = scoreChange => {
   return (dispatch, getState) => {
     let playerScore = getState().playerState.score
+    let playerId = getState().playerState.playerNumber
     let updatedScore = 0
     if (scoreChange > 0) {
       updatedScore = playerScore + scoreChange
