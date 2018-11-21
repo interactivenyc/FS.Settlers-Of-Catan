@@ -2,6 +2,7 @@ import {
   nextPlayer,
   SET_GAME_USERS,
   MAKE_OFFER,
+  RECEIVE_OFFER,
   distributeResource,
   distributeResourcePlayer,
   rollDice,
@@ -74,4 +75,14 @@ export const newDiceRoll = () => {
   }
 }
 
-export const makeOffer = currentTrade => ({type: MAKE_OFFER, currentTrade})
+export const makeOffer = currentTrade => {
+  socket.emit('dispatch', {
+    type: RECEIVE_OFFER,
+    currentTrade: currentTrade
+  })
+  return {type: MAKE_OFFER, currentTrade}
+}
+
+export const receiveOffer = currentTrade => {
+  return {type: RECEIVE_OFFER, currentTrade}
+}

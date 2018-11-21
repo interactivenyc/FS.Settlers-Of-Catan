@@ -1,3 +1,4 @@
+import socket from '../../socket'
 import {
   START_GAME,
   NEXT_PLAYER,
@@ -5,7 +6,8 @@ import {
   DISTRIBUTE_RESOURCE,
   ROLL_DICE,
   TOGGLE_MODAL,
-  MAKE_OFFER
+  MAKE_OFFER,
+  RECEIVE_OFFER
 } from '../actions'
 
 const defaultState = {
@@ -52,8 +54,12 @@ const gameState = (state = defaultState, action) => {
         die2: action.dieRolls[1]
       }
     case MAKE_OFFER:
-      console.log('MAKE_OFFER', action.currentTrade)
-
+      return {
+        ...state,
+        currentTrade: action.currentTrade
+      }
+    case RECEIVE_OFFER:
+      console.log('RECEIVE_OFFER', action.currentTrade)
       return {
         ...state,
         currentTrade: action.currentTrade

@@ -12,7 +12,7 @@ import * as actions from '../../store/actions'
 export class GameLobby extends React.Component {
   constructor(props) {
     super(props)
-    console.log('[ GameLobby ] constructor')
+    // console.log('[ GameLobby ] constructor')
 
     this.state = {
       inLobby: false,
@@ -21,7 +21,7 @@ export class GameLobby extends React.Component {
       gameId: '',
       userLobby: {},
       activeGames: {},
-      chatList: ['chat', 'feature', 'coming', 'soon']
+      chatList: []
     }
     this.setupSocket()
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
@@ -32,8 +32,8 @@ export class GameLobby extends React.Component {
   }
 
   componentDidMount() {
-    console.log('BOARD', JSON.stringify(this.props.board))
-    console.log('[ GameLobby ] componentDidMount', this.props)
+    // console.log('BOARD', JSON.stringify(this.props.board))
+    // console.log('[ GameLobby ] componentDidMount', this.props)
     this.tryJoinLobby()
   }
 
@@ -51,7 +51,7 @@ export class GameLobby extends React.Component {
       this.state.inLobby === false &&
       this.state.inGame === false
     ) {
-      console.log('[ GameLobby ] join-lobby')
+      // console.log('[ GameLobby ] join-lobby')
       this.setState({
         inLobby: true
       })
@@ -64,15 +64,15 @@ export class GameLobby extends React.Component {
   }
 
   clickUser(e) {
-    console.log('[ GameLobby ] clickUser', e.target.innerHTML)
+    // console.log('[ GameLobby ] clickUser', e.target.innerHTML)
   }
 
   clickGame(e) {
-    console.log(
-      '[ GameLobby ] clickGame',
-      e.target.getAttribute('gameid'),
-      this.state.activeGames
-    )
+    // console.log(
+    //   '[ GameLobby ] clickGame',
+    //   e.target.getAttribute('gameid'),
+    //   this.state.activeGames
+    // )
     this.setState({
       gameId: e.target.getAttribute('gameid')
     })
@@ -80,7 +80,7 @@ export class GameLobby extends React.Component {
   }
 
   leaveGame(e) {
-    console.log('[ GameLobby ] leaveGame', e.target.getAttribute('gameid'))
+    // console.log('[ GameLobby ] leaveGame', e.target.getAttribute('gameid'))
     this.setState({
       gameId: ''
     })
@@ -136,11 +136,11 @@ export class GameLobby extends React.Component {
     // console.log('[ GameLobby ] setupSocket', socket.id)
 
     socket.on('player-joined', () => {
-      console.log('[ GameLobby ] player-joined')
+      // console.log('[ GameLobby ] player-joined')
     })
 
     socket.on('update-lobby', (userLobby, activeGames, chatList) => {
-      console.log('[ GameLobby ] update-lobby', this.state)
+      // console.log('[ GameLobby ] update-lobby', this.state)
 
       if (!this.state.inLobby) return
       if (this.state.inGame) return
@@ -151,11 +151,11 @@ export class GameLobby extends React.Component {
        * previously selected one
        */
       if (this.state.socketId !== socket.id && this.state.socketId !== '') {
-        console.log(
-          '[ GameLobby ] SOCKET ID HAS CHANGED',
-          this.state.socketId,
-          socket.id
-        )
+        // console.log(
+        //   '[ GameLobby ] SOCKET ID HAS CHANGED',
+        //   this.state.socketId,
+        //   socket.id
+        // )
         if (this.state.gameId !== '') {
           socket.emit('join-game', this.state.gameId)
         }
@@ -170,21 +170,21 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('game-joined', activeGames => {
-      console.log('[ GameLobby ] game-joined')
+      // console.log('[ GameLobby ] game-joined')
       this.setState({
         activeGames
       })
     })
 
     socket.on('games-reset', activeGames => {
-      console.log('[ GameLobby ] games-reset')
+      // console.log('[ GameLobby ] games-reset')
       this.setState({
         activeGames
       })
     })
 
     socket.on('lobby-left', userLobby => {
-      console.log('[ GameLobby ] lobby-left')
+      // console.log('[ GameLobby ] lobby-left')
       if (!this.state.inGame) {
         this.setState({
           userLobby
@@ -193,7 +193,7 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('start-game', (board, user) => {
-      console.log('[ GameLobby ] start-game - setting inLobby false')
+      // console.log('[ GameLobby ] start-game - setting inLobby false')
       this.setState({
         gameId: '',
         inGame: true
