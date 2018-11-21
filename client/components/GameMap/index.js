@@ -14,6 +14,19 @@ class GameMap extends Component {
     socket.on('dispatch', action => store.dispatch(action))
   }
 
+  componentDidUpdate(prevProps) {
+    // const {diceTotal, visible} = this.props
+    // const isSeven = diceTotal === 7
+    // const notRobber = visible !== 'robber'
+    // const robberChanged = !prevProps.visible
+    // console.log(isSeven, notRobber, robberChanged)
+    // console.log(diceTotal, visible, prevProps.visible)
+    // if (isSeven && notRobber && robberChanged) {
+    //   console.log('FIRING ACTION MODAL')
+    //   this.props.toggleModal('robber')
+    // }
+  }
+
   handleClick = e => {
     const {changeRoadThunk, changeVertexThunk, player, playerTurn} = this.props
 
@@ -33,7 +46,10 @@ class GameMap extends Component {
 
     return (
       <div className="board-container">
-        <Players players={players} playerTurn={playerTurn} />
+        <Players
+          players={players.filter(user => user.id !== player.playerNumber)}
+          playerTurn={playerTurn}
+        />
         <Modle visible={visible} toggleModal={this.props.toggleModal} />
         <GameBoard
           adjust={-25}
@@ -43,7 +59,6 @@ class GameMap extends Component {
           die2={this.props.die2}
         />
         <PlayerControls
-          distributeResources={this.props.distributeResourcesThunk}
           playerTurn={playerTurn}
           player={player}
           nextPlayerThunk={this.props.nextPlayerThunk}
@@ -66,7 +81,8 @@ const mapStateToProps = state => {
     visible: gameState.modle,
     playerTurn: gameState.playerTurn,
     die1: gameState.die1,
-    die2: gameState.die2
+    die2: gameState.die2,
+    diceTotal: gameState.die1 + gameState.die2
   }
 }
 
