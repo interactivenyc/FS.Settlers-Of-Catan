@@ -10,21 +10,20 @@ import socket from '../../socket'
 import store from '../../store'
 
 class GameMap extends Component {
-  componentDidMount() {
-    socket.on('dispatch', action => store.dispatch(action))
+  constructor(props) {
+    super(props)
+    socket.on('send-card-to-user', card => {
+      this.props.buyCard(card)
+    })
   }
 
-  componentDidUpdate(prevProps) {
-    // const {diceTotal, visible} = this.props
-    // const isSeven = diceTotal === 7
-    // const notRobber = visible !== 'robber'
-    // const robberChanged = !prevProps.visible
-    // console.log(isSeven, notRobber, robberChanged)
-    // console.log(diceTotal, visible, prevProps.visible)
-    // if (isSeven && notRobber && robberChanged) {
-    //   console.log('FIRING ACTION MODAL')
-    //   this.props.toggleModal('robber')
-    // }
+  componentDidMount() {
+    socket.on('dispatch', action => store.dispatch(action))
+    console.log(typeof this.buyaCard)
+  }
+
+  buyaCard() {
+    socket.emit('get-dev-card', 'defaultGame')
   }
 
   handleClick = e => {
@@ -46,11 +45,12 @@ class GameMap extends Component {
 
     return (
       <div className="board-container">
-        <Players
-          players={players.filter(user => user.id !== player.playerNumber)}
-          playerTurn={playerTurn}
+        <Players players={players} playerTurn={playerTurn} />
+        <Modle
+          visible={visible}
+          toggleModal={this.props.toggleModal}
+          buyaCard={this.buyaCard}
         />
-        <Modle visible={visible} toggleModal={this.props.toggleModal} />
         <GameBoard
           adjust={-25}
           handleClick={this.handleClick}
@@ -59,6 +59,7 @@ class GameMap extends Component {
           die2={this.props.die2}
         />
         <PlayerControls
+          distributeResources={this.props.distributeResourcesThunk}
           playerTurn={playerTurn}
           player={player}
           nextPlayerThunk={this.props.nextPlayerThunk}
@@ -81,8 +82,7 @@ const mapStateToProps = state => {
     visible: gameState.modle,
     playerTurn: gameState.playerTurn,
     die1: gameState.die1,
-    die2: gameState.die2,
-    diceTotal: gameState.die1 + gameState.die2
+    die2: gameState.die2
   }
 }
 
@@ -92,5 +92,6 @@ export default connect(mapStateToProps, {
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,
   distributeResourcesThunk: actions.distributeResourcesThunk,
-  newDiceRoll: actions.newDiceRoll
+  newDiceRoll: actions.newDiceRoll,
+  buyCard: actions.buyCard
 })(GameMap)

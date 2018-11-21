@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DevCardModal = ({toggleModal}) => {
+const DevCardModal = ({toggleModal, buyaCard}) => {
   return (
     <div className="game-modle game-modle-active">
       <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
@@ -13,7 +13,7 @@ const DevCardModal = ({toggleModal}) => {
         </button>
       </div>
       <div className="build-modal">
-        <button className="build-modal-button">
+        <button onClick={buyaCard} className="build-modal-button">
           Get New Development Card = &nbsp;<div className="modal-resource pasture" />
           <div className="modal-resource field" />
           <div className="modal-resource mountain" />

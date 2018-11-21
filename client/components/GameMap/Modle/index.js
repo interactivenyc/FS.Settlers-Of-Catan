@@ -1,25 +1,19 @@
 import React from 'react'
 import BuildModal from './BuildModal'
 import DevCardModal from './DevCardModal'
-import RobberModal from './RobberModal'
 
-const Modle = ({visible, toggleModal}) => {
-  const setUpModal = modalType => {
-    switch (modalType) {
-      case 'build':
-        return <BuildModal toggleModal={toggleModal} />
-      case 'showDevCards':
-        return <DevCardModal toggleModal={toggleModal} />
-      case 'robber':
-        return <RobberModal toggleModal={toggleModal} />
-      default:
-        return <div />
-    }
-  }
-
+const Modle = ({visible, toggleModal, buyaCard}) => {
   return (
-    <div className={`game-modle ${visible && 'game-modle-active'}`}>
-      {setUpModal(visible)}
+    <div>
+      {visible === 'waiting' && (
+        <div className="game-modle game-modle-active">
+          <h1>Waiting for players...</h1>
+        </div>
+      )}
+      {visible === 'build' && <BuildModal toggleModal={toggleModal} />}
+      {visible === 'showDevCards' && (
+        <DevCardModal toggleModal={toggleModal} buyaCard={buyaCard} />
+      )}
     </div>
   )
 }
