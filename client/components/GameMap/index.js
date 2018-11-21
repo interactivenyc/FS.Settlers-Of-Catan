@@ -44,6 +44,7 @@ class GameMap extends Component {
           board={this.props.board}
         />
         <PlayerControls
+          distributeResources={this.props.distributeResourcesThunk}
           playerTurn={playerTurn}
           player={player}
           nextPlayerThunk={this.props.nextPlayerThunk}
@@ -70,5 +71,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
   changeVertexThunk: actions.changeVertexThunk,
-  nextPlayerThunk: actions.nextPlayerThunk
+  nextPlayerThunk: actions.nextPlayerThunk,
+  distributeResourcesThunk: actions.distributeResourcesThunk
 })(GameMap)

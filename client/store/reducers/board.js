@@ -12,7 +12,11 @@ export default function(state = defaultBoard, action) {
         ...state,
         edges: {
           ...state.edges,
-          [action.id]: {...state.edges[action.id], color: action.color}
+          [action.id]: {
+            ...state.edges[action.id],
+            color: action.color,
+            player: action.number
+          }
         }
       }
     case CREATE_SETTLEMENT:
@@ -20,7 +24,11 @@ export default function(state = defaultBoard, action) {
         ...state,
         vertices: {
           ...state.vertices,
-          [action.id]: {...state.vertices[action.id], color: action.color}
+          [action.id]: {
+            ...state.vertices[action.id],
+            color: action.color,
+            player: action.number
+          }
         }
       }
     default:
