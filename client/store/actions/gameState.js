@@ -5,7 +5,9 @@ import {
   distributeResourcePlayer,
   rollDice,
   toggleModal,
-  moveRobber
+  moveRobber,
+  updateScore,
+  updateScorePlayer
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
@@ -75,6 +77,21 @@ export const newDiceRoll = () => {
 
 export const moveRobberThunk = id => (dispatch, getState) => {
   const resource = {...getState().board.resources[id]}
-  console.log('THIS IS THE RESOURCE', resource)
   dispatch(moveRobber(resource))
+}
+
+export const adjustScore = scoreChange => {
+  return (dispatch, getState) => {
+    let playerScore = getState().playerState.score
+    let playerId = getState().playerState.playerNumber
+    let updatedScore = 0
+    if (scoreChange > 0) {
+      updatedScore = playerScore + scoreChange
+    }
+    if (scoreChange < 0) {
+      updatedScore = playerScore - scoreChange
+    }
+    dispatch(updateScore(updatedScore))
+    dispatch(updateScorePlayer(playerId, updatedScore))
+  }
 }

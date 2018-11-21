@@ -10,11 +10,22 @@ import socket from '../../socket'
 import store from '../../store'
 
 class GameMap extends Component {
+  constructor(props) {
+    super(props)
+    socket.on('send-card-to-user', card => {
+      this.props.buyCard(card)
+    })
+  }
+
   componentDidMount() {
     socket.on('dispatch', action => store.dispatch(action))
     socket.on('dispatchThunk', ({action, args}) =>
       store.dispatch(actions[action].apply(this, args))
     )
+  }
+
+  buyaCard() {
+    socket.emit('get-dev-card', 'defaultGame')
   }
 
   handleClick = e => {
@@ -42,11 +53,13 @@ class GameMap extends Component {
 
     return (
       <div className="board-container">
-        <Players
-          players={players.filter(user => user.id !== player.playerNumber)}
-          playerTurn={playerTurn}
+        <Players players={players} playerTurn={playerTurn} />
+        <Modle
+          visible={visible}
+          toggleModal={this.props.toggleModal}
+          buyaCard={this.buyaCard}
+          adjustScore={this.props.adjustScore}
         />
-        <Modle visible={visible} toggleModal={this.props.toggleModal} />
         <GameBoard
           adjust={-25}
           handleClick={this.handleClick}
@@ -55,6 +68,7 @@ class GameMap extends Component {
           die2={this.props.die2}
         />
         <PlayerControls
+          distributeResources={this.props.distributeResourcesThunk}
           playerTurn={playerTurn}
           player={player}
           nextPlayerThunk={this.props.nextPlayerThunk}
@@ -77,8 +91,7 @@ const mapStateToProps = state => {
     visible: gameState.modle,
     playerTurn: gameState.playerTurn,
     die1: gameState.die1,
-    die2: gameState.die2,
-    diceTotal: gameState.die1 + gameState.die2
+    die2: gameState.die2
   }
 }
 
@@ -89,5 +102,7 @@ export default connect(mapStateToProps, {
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,
   distributeResourcesThunk: actions.distributeResourcesThunk,
-  newDiceRoll: actions.newDiceRoll
+  newDiceRoll: actions.newDiceRoll,
+  buyCard: actions.buyCard,
+  adjustScore: actions.adjustScore
 })(GameMap)

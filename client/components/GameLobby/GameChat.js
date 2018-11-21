@@ -1,49 +1,60 @@
 import React from 'react'
 import socket from '../../socket'
 
-const GameChat = props => {
-  let chatList = props.chatList.join('\n')
-  // document.getElementById("textarea").scrollTop = document.getElementById("textarea").scrollHeight
+export default class GameChat extends React.Component {
+  constructor(props) {
+    console.log('[ GameChat ] constructor', props)
 
-  window.setTimeout(function() {
-    document.getElementById('message').addEventListener('change', scroll)
-  }, 1000)
+    super(props)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.scroll = this.scroll.bind(this)
+  }
 
-  function onSubmit(e) {
+  componentDidMount() {
+    console.log('[ GameChat ] this.props.chatList', this.props.chatList)
+    this.scroll()
+  }
+
+  componentDidUpdate() {
+    console.log('[ GameChat ] this.props.chatList', this.props.chatList)
+    this.scroll()
+  }
+
+  onSubmit(e) {
     e.preventDefault()
     socket.emit('send-message', document.getElementById('message').value)
     document.getElementById('message').value = ''
   }
 
-  function scroll() {
+  scroll() {
     var elem = document.getElementById('scrollText')
     elem.scrollTop = elem.scrollHeight
   }
 
-  return (
-    <table className="tableDisplay">
-      <tbody>
-        <tr>
-          <th>Chat Window</th>
-        </tr>
-        <tr>
-          <td>
-            <div id="scrollText" className="scrollText">
-              <pre>{chatList}</pre>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <form onSubmit={onSubmit}>
-              <input id="message" type="text" />
-              <button type="submit">Send</button>
-            </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  )
+  render() {
+    return (
+      <table className="tableDisplay">
+        <tbody>
+          <tr>
+            <th>Chat Window</th>
+          </tr>
+          <tr>
+            <td>
+              <div id="scrollText" className="scrollText">
+                <pre>{this.props.chatList.join('\n\r')}</pre>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <form onSubmit={this.onSubmit}>
+                <input id="message" type="text" />
+                <button type="submit">Send</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    )
+  }
 }
-
-export default GameChat
