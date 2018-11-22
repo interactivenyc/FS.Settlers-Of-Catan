@@ -59,6 +59,7 @@ export const RECEIVE_OFFER = 'RECEIVE_OFFER'
 export const ACCEPT_OFFER = 'ACCEPT_OFFER'
 export const REJECT_OFFER = 'REJECT_OFFER'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
+export const UPDATE_PLAYERS = 'UPDATE_PLAYERS'
 
 export const startGame = () => ({
   type: START_GAME,
@@ -81,3 +82,5 @@ export const updateScore = (playerId, updatedScore) => ({
   playerId,
   updatedScore
 })
+
+export const updatePlayers = players => ({type: UPDATE_PLAYERS, players})

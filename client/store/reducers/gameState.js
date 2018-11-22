@@ -8,17 +8,18 @@ import {
   TOGGLE_MODAL,
   MAKE_OFFER,
   RECEIVE_OFFER,
-  UPDATE_SCORE
+  UPDATE_SCORE,
+  UPDATE_PLAYERS
 } from '../actions'
 
 const defaultState = {
   playerTurn: 1,
   modle: false,
   players: [
-    {id: 1, resources: 0, score: 0},
-    {id: 2, resources: 0, score: 0},
-    {id: 3, resources: 0, score: 0},
-    {id: 4, resources: 0, score: 0}
+    {id: 1, resources: 0, score: 0, longestRoad: 0},
+    {id: 2, resources: 0, score: 0, longestRoad: 0},
+    {id: 3, resources: 0, score: 0, longestRoad: 0},
+    {id: 4, resources: 0, score: 0, longestRoad: 0}
   ],
   currentTrade: {offerCards: [], wantCards: []},
   die1: 0,
@@ -74,6 +75,8 @@ const gameState = (state = defaultState, action) => {
             : player
         })
       }
+    case UPDATE_PLAYERS:
+      return {...state, players: action.players}
     default:
       return state
   }

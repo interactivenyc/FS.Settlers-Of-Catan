@@ -33,6 +33,7 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
       if (vertices[vertex.id].player) {
         dispatch(distributeResource(vertices[vertex.id].player))
         socket.emit('dispatch', distributeResource(vertices[vertex.id].player))
+
         dispatch(
           distributeResourcePlayer(resource.type, vertices[vertex.id].player)
         )
@@ -45,7 +46,7 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   })
 }
 
-export const robberThunk = id => (dispatch, getState) => {
+export const robberThunk = () => (dispatch, getState) => {
   const {playerState, gameState} = getState()
   const resources = gameState.players.filter(
     player => player.id === playerState.playerNumber

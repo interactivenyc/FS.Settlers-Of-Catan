@@ -2,11 +2,17 @@ import {
   getEdgeNeighborsColor,
   validateChangeEdge,
   getVerticeNeighbors,
-  validateChangeVertice
+  validateChangeVertice,
+  getRoadLength
 } from './helpers'
 import Board from '../../board'
 
-import {createRoad, createSettlement, getBoard} from './actionTypes'
+import {
+  createRoad,
+  createSettlement,
+  getBoard,
+  updatePlayers
+} from './actionTypes'
 import socket from '../../socket'
 
 export const deserializeBoard = boardData => dispatch => {
@@ -28,6 +34,20 @@ export const changeVertexThunk = id => (dispatch, getState) => {
   }
 }
 
+export const longestRoad = (edge, board, id) => (dispatch, getState) => {
+  const length = getRoadLength(edge, board)
+  const {players} = getState().gameState
+
+  const updatedPlayers = players.map(player => {
+    return player.id === id && player.longestRoad < length
+      ? {...player, longestRoad: length}
+      : {...player}
+  })
+
+  dispatch(updatePlayers(updatedPlayers))
+  socket.emit('dispatch', updatePlayers(updatedPlayers))
+}
+
 export const changeRoadThunk = id => (dispatch, getState) => {
   const {board, playerState} = getState()
   const edge = board.edges[id]
@@ -39,5 +59,10 @@ export const changeRoadThunk = id => (dispatch, getState) => {
       'dispatch',
       createRoad(id, playerState.color, playerState.playerNumber)
     )
+
+    const newBoard = getState().board
+    const newEdge = newBoard.edges[id]
+
+    dispatch(longestRoad(newEdge, newBoard, playerState.playerNumber))
   }
 }

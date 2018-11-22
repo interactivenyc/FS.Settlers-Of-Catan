@@ -8,7 +8,8 @@ module.exports = io => {
   let gamesInProgress = {}
   let gameDecks = {}
   let chatHistory = []
-  const maxUsers = 2
+
+  const maxUsers = 4
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
