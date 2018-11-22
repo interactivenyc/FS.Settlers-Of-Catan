@@ -24,6 +24,23 @@ class GameMap extends Component {
     )
   }
 
+  componentDidUpdate() {
+    try {
+      if (
+        this.props.currentTrade.wantCards.length > 0 ||
+        this.props.currentTrade.offerCards.length > 0
+      ) {
+        console.log('[ GameMap ] UPDATE display trade being offered')
+        // this.props.toggleModal('trade')
+      }
+    } catch (error) {
+      console.log(
+        '[ GameMap ] componentDidUpdate something went wrong with check state'
+      )
+      console.log(error)
+    }
+  }
+
   buyaCard() {
     socket.emit('get-dev-card', 'defaultGame')
   }
@@ -91,7 +108,9 @@ const mapStateToProps = state => {
     visible: gameState.modle,
     playerTurn: gameState.playerTurn,
     die1: gameState.die1,
-    die2: gameState.die2
+    die2: gameState.die2,
+    diceTotal: gameState.die1 + gameState.die2,
+    currentTrade: gameState.currentTrade
   }
 }
 
