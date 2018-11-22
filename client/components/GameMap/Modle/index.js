@@ -3,7 +3,7 @@ import BuildModal from './BuildModal'
 import DevCardModal from './DevCardModal'
 import RobberModal from './RobberModal'
 
-const Modle = ({visible, toggleModal}) => {
+const Modle = ({visible, toggleModal, player}) => {
   const setUpModal = modalType => {
     switch (modalType) {
       case 'build':
@@ -11,7 +11,7 @@ const Modle = ({visible, toggleModal}) => {
       case 'showDevCards':
         return <DevCardModal toggleModal={toggleModal} />
       case 'robber':
-        return <RobberModal toggleModal={toggleModal} />
+        return <RobberModal player={player} toggleModal={toggleModal} />
       default:
         return <div />
     }
