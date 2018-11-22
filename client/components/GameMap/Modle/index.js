@@ -3,6 +3,7 @@ import BuildModal from './BuildModal'
 import DevCardModal from './DevCardModal'
 import RobberModal from './RobberModal'
 import TradeModal from './TradeModal'
+import OfferModal from './OfferModal'
 
 const Modle = ({visible, toggleModal}) => {
   const setUpModal = modalType => {
@@ -15,6 +16,8 @@ const Modle = ({visible, toggleModal}) => {
         return <RobberModal toggleModal={toggleModal} />
       case 'trade':
         return <TradeModal toggleModal={toggleModal} />
+      case 'offer':
+        return <OfferModal toggleModal={toggleModal} />
       default:
         return <div />
     }

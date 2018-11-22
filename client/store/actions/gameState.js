@@ -3,6 +3,8 @@ import {
   SET_GAME_USERS,
   MAKE_OFFER,
   RECEIVE_OFFER,
+  ACCEPT_OFFER,
+  REJECT_OFFER,
   distributeResource,
   distributeResourcePlayer,
   rollDice,
@@ -87,6 +89,14 @@ export const makeOffer = currentTrade => {
 
 export const receiveOffer = currentTrade => {
   return {type: RECEIVE_OFFER, currentTrade}
+}
+
+export const acceptOffer = () => {
+  return {type: ACCEPT_OFFER}
+}
+
+export const rejectOffer = () => {
+  return {type: REJECT_OFFER}
 }
 
 export const moveRobberThunk = id => (dispatch, getState) => {

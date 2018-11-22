@@ -107,38 +107,7 @@ class TradeModal extends React.Component {
     }
   }
 
-  componentDidMount() {
-    try {
-      if (
-        this.props.currentTrade.wantCards > 0 ||
-        this.props.currentTrade.offerCards > 0
-      ) {
-        console.log('[ TradeModal ] MOUNT display trade being offered')
-      } else {
-        console.log('[ TradeModal ] MOUNT initiate a new trade')
-      }
-    } catch (error) {
-      console.log(
-        '[ TradeModal ] MOUNT componentDidMount something went wrong with check state'
-      )
-    }
-  }
-
-  componentDidUpdate() {
-    // try {
-    //   if (
-    //     this.props.currentTrade.wantCards > 0 ||
-    //     this.props.currentTrade.offerCards > 0
-    //   ) {
-    //     console.log('[ TradeModal ] UPDATE display trade being offered')
-    //   } else {
-    //     console.log('[ TradeModal ] UPDATE initiate a new trade')
-    //   }
-    // } catch (error) {
-    //   console.log('[ TradeModal ] UPDATE something went wrong with check state')
-    //   console.log(error)
-    // }
-  }
+  componentDidMount() {}
 
   render() {
     return (
@@ -319,7 +288,8 @@ const mapState = state => {
 
   return {
     resources: state.playerState.resources,
-    currentTrade: state.gameState.currentTrade
+    currentTrade: state.gameState.currentTrade,
+    playerState: state.playerState
   }
 }
 

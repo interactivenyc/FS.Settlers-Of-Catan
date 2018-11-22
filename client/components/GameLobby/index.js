@@ -220,7 +220,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    deserializeBoard: board => dispatch(deserializeBoard(board)),
+    deserializeBoard: board => dispatch(actions.deserializeBoard(board)),
     setGameUsers: users => dispatch(actions.setGameUsers(users)),
     assignPlayer: (number, color) =>
       dispatch(actions.assignPlayer(number, color))

@@ -8,7 +8,9 @@ import {
   TOGGLE_MODAL,
   MAKE_OFFER,
   RECEIVE_OFFER,
-  UPDATE_SCORE
+  UPDATE_SCORE,
+  ACCEPT_OFFER,
+  REJECT_OFFER
 } from '../actions'
 
 const defaultState = {
@@ -65,6 +67,12 @@ const gameState = (state = defaultState, action) => {
         ...state,
         currentTrade: action.currentTrade
       }
+    case ACCEPT_OFFER:
+      console.log('ACCEPT_OFFER')
+      return state
+    case REJECT_OFFER:
+      console.log('REJECT_OFFER')
+      return state
     case UPDATE_SCORE:
       return {
         ...state,

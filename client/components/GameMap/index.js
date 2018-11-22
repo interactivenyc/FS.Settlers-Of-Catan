@@ -31,7 +31,16 @@ class GameMap extends Component {
         this.props.currentTrade.offerCards.length > 0
       ) {
         console.log('[ GameMap ] UPDATE display trade being offered')
-        // this.props.toggleModal('trade')
+        if (this.props.visible) {
+          console.log(
+            '[ GameMap ] UPDATE if visible, this is person making offer'
+          )
+        } else {
+          console.log(
+            '[ GameMap ] UPDATE if not visible, this is person receiving offer'
+          )
+          this.props.toggleModal('offer')
+        }
       }
     } catch (error) {
       console.log(
