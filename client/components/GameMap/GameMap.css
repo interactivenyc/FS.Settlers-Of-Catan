@@ -83,7 +83,7 @@
   background-size: cover;
   height: 100px;
   width: 50px;
-  transform: translateY(-10%);
+  transform: rotateY(30deg) rotate(-10deg) translateY(-25%);
 }
 
 .resource-number {
