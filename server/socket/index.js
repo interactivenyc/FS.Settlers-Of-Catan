@@ -67,6 +67,18 @@ module.exports = io => {
   }
 
   io.on('connection', socket => {
+    /*******************************************
+     * GAME LISTENERS
+     *******************************************/
+    socket.on('get-dev-card', gameId => {
+      let card = getRandomCard(gameId)
+      io.sockets.emit('send-card-to-user', card)
+    })
+
+    /*******************************************
+     * LOBBY LISTENERS
+     *******************************************/
+
     console.log(`A socket connection to the server has been made: ${socket.id}`)
     socket.broadcast.emit('player-joined', socket.id)
 
@@ -115,11 +127,6 @@ module.exports = io => {
       io.sockets.emit('games-reset', activeGames)
     })
 
-    socket.on('get-dev-card', gameId => {
-      let card = getRandomCard(gameId)
-      io.sockets.emit('send-card-to-user', card)
-    })
-
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
       delete userLobby[socket.id]
@@ -159,9 +166,15 @@ module.exports = io => {
      */
 
     socket.on('dispatch', value => {
+      console.log('dispatch - this is an opportunity to update state on server')
+      console.log(value)
       socket.broadcast.emit('dispatch', value)
     })
     socket.on('dispatchThunk', action => {
+      console.log(
+        'dispatchThunk - this is an opportunity to update state on server'
+      )
+      console.log(action)
       socket.broadcast.emit('dispatchThunk', action)
     })
 

@@ -22,7 +22,7 @@ const defaultState = {
     {id: 3, resources: 0, score: 0},
     {id: 4, resources: 0, score: 0}
   ],
-  currentTrade: {offerCards: [], wantCards: []},
+  currentTrade: null,
   die1: 0,
   die2: 0
 }
@@ -68,11 +68,11 @@ const gameState = (state = defaultState, action) => {
         currentTrade: action.currentTrade
       }
     case ACCEPT_OFFER:
-      console.log('ACCEPT_OFFER')
-      return state
+      console.log('ACCEPT_OFFER', action)
+      return {...state, currentTrade: null}
     case REJECT_OFFER:
-      console.log('REJECT_OFFER')
-      return state
+      console.log('REJECT_OFFER', action)
+      return {...state, currentTrade: null}
     case UPDATE_SCORE:
       return {
         ...state,

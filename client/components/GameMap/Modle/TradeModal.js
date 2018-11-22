@@ -71,7 +71,8 @@ class TradeModal extends React.Component {
     console.log('[ TradeModal ] submit trade', e.target)
     const currentTrade = {
       offerCards: this.state.offerCards,
-      wantCards: this.state.wantCards
+      wantCards: this.state.wantCards,
+      playerNumber: this.props.playerState.playerNumber
     }
     this.props.makeOffer(currentTrade)
   }
@@ -106,8 +107,6 @@ class TradeModal extends React.Component {
       return 0
     }
   }
-
-  componentDidMount() {}
 
   render() {
     return (

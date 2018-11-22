@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import TradeCount from './TradeCount'
 import * as actions from '../../../store/actions'
 
 class OfferModal extends React.Component {
@@ -16,13 +15,13 @@ class OfferModal extends React.Component {
   }
 
   accept(e) {
-    console.log('[ OfferModal ] reset state', e.target)
-    this.props.acceptOffer()
+    console.log('[ OfferModal ] accept', this.props.playerState.playerNumber)
+    this.props.acceptOffer(this.props.playerState.playerNumber)
     this.toggleModal(false)
   }
   reject(e) {
-    console.log('[ OfferModal ] submit trade', e.target)
-    this.props.rejectOffer()
+    console.log('[ OfferModal ] reject', this.props.playerState.playerNumber)
+    this.props.rejectOffer(this.props.playerState.playerNumber)
     this.toggleModal(false)
   }
   getResourceCount(type) {
@@ -56,8 +55,6 @@ class OfferModal extends React.Component {
       return 0
     }
   }
-
-  componentDidMount() {}
 
   render() {
     return (

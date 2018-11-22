@@ -26,10 +26,7 @@ class GameMap extends Component {
 
   componentDidUpdate() {
     try {
-      if (
-        this.props.currentTrade.wantCards.length > 0 ||
-        this.props.currentTrade.offerCards.length > 0
-      ) {
+      if (this.props.currentTrade) {
         console.log('[ GameMap ] UPDATE display trade being offered')
         if (this.props.visible) {
           console.log(

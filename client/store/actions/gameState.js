@@ -82,7 +82,7 @@ export const newDiceRoll = () => {
 export const makeOffer = currentTrade => {
   socket.emit('dispatch', {
     type: RECEIVE_OFFER,
-    currentTrade: currentTrade
+    currentTrade
   })
   return {type: MAKE_OFFER, currentTrade}
 }
@@ -91,12 +91,22 @@ export const receiveOffer = currentTrade => {
   return {type: RECEIVE_OFFER, currentTrade}
 }
 
-export const acceptOffer = () => {
-  return {type: ACCEPT_OFFER}
+export const acceptOffer = playerNumber => {
+  console.log('acceptOffer', playerNumber)
+  socket.emit('dispatch', {
+    type: ACCEPT_OFFER,
+    playerNumber
+  })
+  return {type: ACCEPT_OFFER, playerNumber}
 }
 
-export const rejectOffer = () => {
-  return {type: REJECT_OFFER}
+export const rejectOffer = playerNumber => {
+  console.log('rejectOffer', playerNumber)
+  socket.emit('dispatch', {
+    type: REJECT_OFFER,
+    playerNumber
+  })
+  return {type: REJECT_OFFER, playerNumber}
 }
 
 export const moveRobberThunk = id => (dispatch, getState) => {
