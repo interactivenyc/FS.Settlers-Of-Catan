@@ -3,7 +3,11 @@ import {
   REMOVE_CARD,
   ASSIGN_PLAYER,
   DISTRIBUTE_RESOURCE_PLAYER,
-  UPDATE_SCORE_PLAYER
+  UPDATE_SCORE_PLAYER,
+  MAKE_OFFER,
+  RECEIVE_OFFER,
+  ACCEPT_OFFER,
+  REJECT_OFFER
 } from '../actions'
 
 const playerState = {
@@ -17,9 +21,11 @@ const playerState = {
     {type: 'mountain', quantity: 0},
     {type: 'pasture', quantity: 0}
   ],
+  currentTrade: null,
   score: 0
 }
 
+/* eslint-disable complexity */
 export default function(state = playerState, action) {
   switch (action.type) {
     case ADD_CARD:
@@ -51,6 +57,30 @@ export default function(state = playerState, action) {
         ...state,
         score: action.updatedScore
       }
+    case MAKE_OFFER:
+      return {
+        ...state,
+        currentTrade: action.currentTrade
+      }
+    case RECEIVE_OFFER:
+      console.log('RECEIVE_OFFER', action.currentTrade)
+      return {
+        ...state,
+        currentTrade: action.currentTrade
+      }
+    case ACCEPT_OFFER:
+      console.log('ACCEPT_OFFER', state.playerNumber, action)
+      if (state.currentTrade.playerNumber === state.playerNumber) {
+        console.log('Your offer has been accepted')
+      } else if (action.playerNumber === state.playerNumber) {
+        console.log('finalize transfer for the person who accepted')
+      } else {
+        console.log('ignore this transaction')
+      }
+      return {...state, currentTrade: null}
+    case REJECT_OFFER:
+      console.log('REJECT_OFFER', action)
+      return {...state, currentTrade: null}
     default:
       return state
   }

@@ -116,7 +116,7 @@ const mapStateToProps = state => {
     die1: gameState.die1,
     die2: gameState.die2,
     diceTotal: gameState.die1 + gameState.die2,
-    currentTrade: gameState.currentTrade
+    currentTrade: playerState.currentTrade
   }
 }
 

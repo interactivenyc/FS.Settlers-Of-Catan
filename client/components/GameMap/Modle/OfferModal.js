@@ -102,7 +102,7 @@ const mapState = state => {
 
   return {
     resources: state.playerState.resources,
-    currentTrade: state.gameState.currentTrade,
+    currentTrade: state.playerState.currentTrade,
     playerState: state.playerState
   }
 }
