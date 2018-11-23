@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import * as actions from '../../../store/actions'
+import TradeCount from './TradeCount'
 
 class OfferModal extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class OfferModal extends React.Component {
       this.props.toggleModal(false)
       return false
     } else {
-      const wantCards = this.props.playerState.currentTrade.wantCards
+      const wantCards = this.props.currentTrade.wantCards
 
       console.log('[ OfferModal ] isAcceptable trader wants', wantCards)
       console.log(
@@ -67,7 +68,7 @@ class OfferModal extends React.Component {
   }
 
   getWantCount(type) {
-    let found = this.props.playerState.currentTrade.wantCards.find(element => {
+    let found = this.props.currentTrade.wantCards.find(element => {
       return element.type === type
     })
     if (found) {
@@ -85,44 +86,78 @@ class OfferModal extends React.Component {
 
   render() {
     console.log('[ OfferModal ] render')
-    return (
-      <div className="game-modle game-modle-active">
-        <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
-          Trade
-          <button
-            onClick={() => this.toggleModal(false)}
-            style={{float: 'right', fontSize: '10pt'}}
-            type="button"
-          >
-            X
-          </button>
-        </div>
-        <div className="trade-modal">
-          <button className="trade-modal-container" type="button">
-            I Want = &nbsp;
-          </button>
+    if (!this.props.currentTrade) {
+      this.props.toggleModal(false)
+      return <div />
+    } else {
+      const wantCards = this.props.currentTrade.wantCards
+      const offerCards = this.props.currentTrade.offerCards
 
-          <button className="trade-modal-container" type="button">
-            My Offer = &nbsp;
-          </button>
-          <button
-            disabled={!this.isAcceptable()}
-            onClick={this.accept}
-            className="build-modal-button"
-            type="button"
-          >
-            Accept
-          </button>
-          <button
-            onClick={this.reject}
-            className="build-modal-button"
-            type="button"
-          >
-            Reject
-          </button>
+      return (
+        <div className="game-modle game-modle-active">
+          <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
+            Trade
+            <button
+              onClick={() => this.toggleModal(false)}
+              style={{float: 'right', fontSize: '10pt'}}
+              type="button"
+            >
+              X
+            </button>
+          </div>
+          <div className="trade-modal">
+            <button className="trade-modal-container" type="button">
+              Trader Offers = &nbsp;
+              {offerCards.map(offer => {
+                return (
+                  <div
+                    key={offer.type}
+                    id={offer.type}
+                    onClick={this.clickWant}
+                    className={`trade-resource trade-modal-button ${
+                      offer.type
+                    }`}
+                  >
+                    <TradeCount resourceCount={offer.quantity} offerCount="" />
+                  </div>
+                )
+              })}
+            </button>
+
+            <button className="trade-modal-container" type="button">
+              Trader Wants = &nbsp;
+              {wantCards.map(want => {
+                return (
+                  <div
+                    key={want.type}
+                    id={want.type}
+                    onClick={this.clickWant}
+                    className={`trade-resource trade-modal-button ${want.type}`}
+                  >
+                    <TradeCount resourceCount="" offerCount={want.quantity} />
+                  </div>
+                )
+              })}
+            </button>
+            <button
+              disabled={!this.isAcceptable()}
+              onClick={this.accept}
+              className="build-modal-button"
+              type="button"
+            >
+              Accept
+            </button>
+            <button
+              onClick={this.reject}
+              className="build-modal-button"
+              type="button"
+            >
+              Reject
+            </button>
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
