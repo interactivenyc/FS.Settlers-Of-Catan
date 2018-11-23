@@ -1,12 +1,14 @@
 const Game = require('../db').model('game')
+const Board = require('./board')
 const initializedBoardData = require('./initializedBoard')
 
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
+  let gamesInProgress = {}
   let gameDecks = {}
   let chatHistory = []
-  const numPlayers = 4
+  const maxUsers = 2
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
@@ -87,16 +89,15 @@ module.exports = io => {
     })
 
     socket.on('join-game', async gameId => {
+      console.log('join-game gameId', gameId)
       activeGames[gameId][socket.id] = userLobby[socket.id]
       // console.log('join-game activeGames', activeGames)
       io.sockets.emit('game-joined', activeGames)
       const userKeys = Object.keys(activeGames[gameId])
-      console.log('join-game gameId', gameId, userKeys.length, numPlayers)
       /**
        * START NEW GAME
        */
-      if (userKeys.length === numPlayers) {
-        console.log('start new game gameId', gameId)
+      if (userKeys.length === maxUsers) {
         const board = await Game.create({
           board_data: JSON.stringify(initializedBoardData)
         })

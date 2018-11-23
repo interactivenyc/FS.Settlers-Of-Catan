@@ -1,6 +1,7 @@
 import {
   START_GAME,
   NEXT_PLAYER,
+  SET_GAME_USERS,
   DISTRIBUTE_RESOURCE,
   ROLL_DICE,
   TOGGLE_MODAL,
@@ -23,6 +24,8 @@ const defaultState = {
 /* eslint-disable complexity */
 const gameState = (state = defaultState, action) => {
   switch (action.type) {
+    case SET_GAME_USERS:
+      return {...state, players: action.users}
     case START_GAME:
       return {...state, playerTurn: action.playerTurn, modle: action.modle}
     case NEXT_PLAYER:

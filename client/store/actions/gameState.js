@@ -1,5 +1,6 @@
 import {
   nextPlayer,
+  SET_GAME_USERS,
   distributeResource,
   distributeResourcePlayer,
   rollDice,
@@ -10,6 +11,8 @@ import {
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
+
+export const setGameUsers = users => ({type: SET_GAME_USERS, users})
 
 export const nextPlayerThunk = playerNumber => dispatch => {
   dispatch(nextPlayer(playerNumber))
