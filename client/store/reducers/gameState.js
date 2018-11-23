@@ -12,7 +12,8 @@ const defaultState = {
   playerTurn: 1,
   modle: false,
   players: [
-    // {id: 1, userProfile: {}}
+    // These objects are defined in case SET_GAME_USERS below
+    // {id: 1, userProfile: {}, score:0}
   ],
   die1: 0,
   die2: 0
@@ -27,7 +28,8 @@ const gameState = (state = defaultState, action) => {
       for (let i = 0; i < action.users.length; i++) {
         let user = {
           id: action.users[i].playerNumber,
-          userProfile: action.users[i]
+          userProfile: action.users[i],
+          score: 0
         }
         console.log('PUSH_USERS', user)
         players.push(user)

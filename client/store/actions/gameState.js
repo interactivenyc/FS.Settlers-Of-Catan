@@ -21,20 +21,12 @@ export const nextPlayerThunk = playerNumber => dispatch => {
 
 export const distributeResourcesThunk = num => (dispatch, getState) => {
   const {resources, vertices} = getState().board
-  console.log('[ gameState ] distributeResourcesThunk board', getState())
 
   const newResources = Object.keys(resources)
     .map(id => resources[id])
     .filter(resource => resource.diceTarget === num)
 
-  console.log(
-    '[ gameState ] distributeResourcesThunk newResources',
-    newResources
-  )
-
   newResources.forEach(resource => {
-    console.log('[ gameState ] distributeResourcesThunk resource', resource)
-
     resource.vertices.forEach(vertex => {
       if (vertices[vertex.id].player) {
         dispatch(distributeResource(vertices[vertex.id].player))
