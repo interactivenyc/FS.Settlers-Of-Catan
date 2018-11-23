@@ -1,11 +1,9 @@
 const Game = require('../db').model('game')
-const Board = require('./board')
 const initializedBoardData = require('./initializedBoard')
 
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
-  let gamesInProgress = {}
   let gameDecks = {}
   let chatHistory = []
   const maxUsers = 2
@@ -97,26 +95,29 @@ module.exports = io => {
       /**
        * START NEW GAME
        */
+
       if (userKeys.length === maxUsers) {
         const board = await Game.create({
           board_data: JSON.stringify(initializedBoardData)
         })
 
-        let gameUsers = {}
-        let playerNum = 0
+        let gameUsers = []
+        let playerNumber = 0
         userKeys.forEach(socketId => {
           delete activeGames[gameId][socketId]
           let user = userLobby[socketId]
-          user.playerNum = playerNum++
-          gameUsers[playerNum] = user
+          playerNumber++
+          user.playerNumber = playerNumber
+          gameUsers.push(user)
           delete userLobby[socketId]
 
           io.to(socketId).emit('start-game', board.board_data, {
-            number: playerNum,
-            color: colors[playerNum]
+            number: playerNumber,
+            color: colors[playerNumber],
+            userProfile: user
           })
         })
-
+        io.sockets.emit('set-game-users', gameUsers)
         io.sockets.emit('update-lobby', userLobby, activeGames)
       }
     })
