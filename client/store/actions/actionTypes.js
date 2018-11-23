@@ -34,6 +34,7 @@ export const GET_HAND = 'GET_HAND'
 export const ADD_CARD = 'ADD_CARD'
 export const DELETE_CARD = 'DELETE_CARD'
 export const UPDATE_SCORE_PLAYER = 'UPDATE_SCORE_PLAYER'
+export const SET_RESOURCES = 'SET_RESOURCES'
 export const assignPlayer = (number, color) => ({
   type: ASSIGN_PLAYER,
   number,
@@ -46,6 +47,10 @@ export const updateScorePlayer = updatedScore => ({
   type: UPDATE_SCORE_PLAYER,
   updatedScore
 })
+export const setResources = resources => ({
+  type: SET_RESOURCES,
+  resources
+})
 
 // game State action types
 export const START_GAME = 'START_GAME'
@@ -55,7 +60,9 @@ export const TOGGLE_MODAL = 'TOGGLE_MODAL'
 export const DISTRIBUTE_RESOURCE = 'DISTRIBUTE_RESOURCE'
 export const DISTRIBUTE_RESOURCE_PLAYER = 'DISTRIBUTE_RESOURCE_PLAYER'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
+export const UPDATE_PLAYERS = 'UPDATE_PLAYERS'
 
+export const updatePlayers = players => ({type: UPDATE_PLAYERS, players})
 export const startGame = () => ({
   type: START_GAME,
   modle: false,

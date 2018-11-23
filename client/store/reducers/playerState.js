@@ -3,7 +3,8 @@ import {
   REMOVE_CARD,
   ASSIGN_PLAYER,
   DISTRIBUTE_RESOURCE_PLAYER,
-  UPDATE_SCORE_PLAYER
+  UPDATE_SCORE_PLAYER,
+  SET_RESOURCES
 } from '../actions'
 
 const playerState = {
@@ -51,6 +52,8 @@ export default function(state = playerState, action) {
         ...state,
         score: action.updatedScore
       }
+    case SET_RESOURCES:
+      return {...state, resources: action.resources}
     default:
       return state
   }

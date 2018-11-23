@@ -5,7 +5,8 @@ import {
   DISTRIBUTE_RESOURCE,
   ROLL_DICE,
   TOGGLE_MODAL,
-  UPDATE_SCORE
+  UPDATE_SCORE,
+  UPDATE_PLAYERS
 } from '../actions'
 
 const defaultState = {
@@ -58,6 +59,8 @@ const gameState = (state = defaultState, action) => {
             : player
         })
       }
+    case UPDATE_PLAYERS:
+      return {...state, players: action.players}
     default:
       return state
   }

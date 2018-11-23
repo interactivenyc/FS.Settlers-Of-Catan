@@ -83,9 +83,12 @@
 .confirm-btn {
   height: 40px;
   width: 80px;
-  background-color: var(--color-blue);
+  background-color: var(--color-blue-transparent-dark);
   border: none;
   color: var(--color-white);
   cursor: pointer;
   align-self: flex-end;
+}
+.confirm-btn:hover {
+  background-color: var(--color-blue);
 }
