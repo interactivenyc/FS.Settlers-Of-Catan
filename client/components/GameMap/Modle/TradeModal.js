@@ -111,6 +111,8 @@ class TradeModal extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log('[ TradeModal ] componentDidUpdate')
+
     if (this.props.currentTrade) {
       console.log(
         '[ TradeModal ] trade result accepted/rejected',
@@ -119,11 +121,17 @@ class TradeModal extends React.Component {
       )
       if (this.props.currentTrade.accepted) {
         console.log('[ TradeModal ] final result ACCEPTED')
+        window.alert('your offer was accepted')
+        this.props.clearOffer()
+        this.props.toggleModal(false)
       } else if (
         this.props.currentTrade.rejected ===
         this.props.numPlayers - 1
       ) {
         console.log('[ TradeModal ] final result REJECTED')
+        window.alert('your offer was rejected')
+        this.props.clearOffer()
+        this.props.toggleModal(false)
       }
     }
   }
@@ -315,7 +323,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    makeOffer: currentTrade => dispatch(actions.makeOffer(currentTrade))
+    makeOffer: currentTrade => dispatch(actions.makeOffer(currentTrade)),
+    clearOffer: () => dispatch(actions.clearOffer())
   }
 }
 

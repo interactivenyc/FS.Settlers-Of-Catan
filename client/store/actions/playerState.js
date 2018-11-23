@@ -4,7 +4,8 @@ import {
   MAKE_OFFER,
   RECEIVE_OFFER,
   ACCEPT_OFFER,
-  REJECT_OFFER
+  REJECT_OFFER,
+  CLEAR_OFFER
 } from './actionTypes'
 import socket from '../../socket'
 
@@ -52,4 +53,8 @@ export const rejectOffer = playerNumber => {
     playerNumber
   })
   return {type: REJECT_OFFER, playerNumber}
+}
+
+export const clearOffer = () => {
+  return {type: CLEAR_OFFER}
 }

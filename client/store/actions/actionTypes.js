@@ -58,6 +58,7 @@ export const MAKE_OFFER = 'MAKE_OFFER'
 export const RECEIVE_OFFER = 'RECEIVE_OFFER'
 export const ACCEPT_OFFER = 'ACCEPT_OFFER'
 export const REJECT_OFFER = 'REJECT_OFFER'
+export const CLEAR_OFFER = 'CLEAR_OFFER'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
 
 export const startGame = () => ({

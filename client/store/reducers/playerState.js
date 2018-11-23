@@ -7,7 +7,8 @@ import {
   MAKE_OFFER,
   RECEIVE_OFFER,
   ACCEPT_OFFER,
-  REJECT_OFFER
+  REJECT_OFFER,
+  CLEAR_OFFER
 } from '../actions'
 
 const playerState = {
@@ -69,6 +70,11 @@ export default function(state = playerState, action) {
         ...state,
         currentTrade: action.currentTrade
       }
+    case CLEAR_OFFER:
+      return {
+        ...state,
+        currentTrade: null
+      }
     case RECEIVE_OFFER:
       console.log('RECEIVE_OFFER', action.currentTrade)
       return {
@@ -117,18 +123,15 @@ export default function(state = playerState, action) {
       if (action.playerNumber === state.playerNumber) {
         // if you're the player who rejected the offer
         return {...state, currentTrade: null}
-      } else if (state.playerNumber === state.currentTrade.playerNumber) {
+      } else {
         // if you're the person who made the offer
         return {
           ...state,
           currentTrade: {
             ...state.currentTrade,
-            rejected: state.currentTrade.rejected++
+            rejected: state.currentTrade.rejected + 1
           }
         }
-      } else {
-        // everyone else
-        return state
       }
 
     default:

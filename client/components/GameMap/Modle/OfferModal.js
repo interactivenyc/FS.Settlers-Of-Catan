@@ -15,33 +15,41 @@ class OfferModal extends React.Component {
   }
 
   isAcceptable() {
-    const wantCards = this.props.playerState.currentTrade.wantCards
+    console.log('[ OfferModal ] isAcceptable', this.props.currentTrade)
+    if (!this.props.currentTrade) {
+      this.props.toggleModal(false)
+      return false
+    } else {
+      const wantCards = this.props.playerState.currentTrade.wantCards
 
-    console.log('[ OfferModal ] isAcceptable trader wants', wantCards)
-    console.log('[ OfferModal ] isAcceptable player has', this.props.resources)
+      console.log('[ OfferModal ] isAcceptable trader wants', wantCards)
+      console.log(
+        '[ OfferModal ] isAcceptable player has',
+        this.props.resources
+      )
 
-    for (let i = 0; i < wantCards.length; i++) {
-      if (
-        this.getResourceCount(wantCards[i].type) >=
-        this.getWantCount(wantCards[i].type)
-      ) {
-        console.log('[ OfferModal ] isAcceptable YES', wantCards[i].type)
-      } else {
-        console.log('[ OfferModal ] isAcceptable NO', wantCards[i].type)
-        return false
+      for (let i = 0; i < wantCards.length; i++) {
+        if (
+          this.getResourceCount(wantCards[i].type) >=
+          this.getWantCount(wantCards[i].type)
+        ) {
+          console.log('[ OfferModal ] isAcceptable YES', wantCards[i].type)
+        } else {
+          console.log('[ OfferModal ] isAcceptable NO', wantCards[i].type)
+          return false
+        }
       }
+      return true
     }
-
-    return true
   }
 
-  accept(e) {
+  accept() {
     console.log('[ OfferModal ] accept', this.props.playerState.playerNumber)
     this.props.acceptOffer(this.props.playerState.playerNumber)
     this.toggleModal(false)
   }
 
-  reject(e) {
+  reject() {
     console.log('[ OfferModal ] reject', this.props.playerState.playerNumber)
     this.props.rejectOffer(this.props.playerState.playerNumber)
     this.toggleModal(false)
@@ -69,7 +77,14 @@ class OfferModal extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    console.log('[ OfferModal ] componentDidUpdate', this.props.currentTrade)
+
+    if (!this.props.currentTrade) this.props.toggleModal(false)
+  }
+
   render() {
+    console.log('[ OfferModal ] render')
     return (
       <div className="game-modle game-modle-active">
         <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
