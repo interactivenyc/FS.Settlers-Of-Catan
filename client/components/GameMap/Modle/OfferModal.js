@@ -8,7 +8,6 @@ class OfferModal extends React.Component {
     this.toggleModal = this.props.toggleModal
 
     this.getResourceCount = this.getResourceCount.bind(this)
-    this.getOfferCount = this.getOfferCount.bind(this)
     this.getWantCount = this.getWantCount.bind(this)
     this.isAcceptable = this.isAcceptable.bind(this)
     this.accept = this.accept.bind(this)
@@ -16,22 +15,15 @@ class OfferModal extends React.Component {
   }
 
   isAcceptable() {
-    if (this.props.playerState.currentTrade.wantCards)
-      console.log(
-        '[ OfferModal ] isAcceptable trader wants',
-        this.props.playerState.currentTrade.wantCards
-      )
-    if (this.props.resources)
-      console.log(
-        '[ OfferModal ] isAcceptable player has',
-        this.props.resources
-      )
     const wantCards = this.props.playerState.currentTrade.wantCards
+
+    console.log('[ OfferModal ] isAcceptable trader wants', wantCards)
+    console.log('[ OfferModal ] isAcceptable player has', this.props.resources)
 
     for (let i = 0; i < wantCards.length; i++) {
       if (
         this.getResourceCount(wantCards[i].type) >=
-        this.getCount(wantCards[i].type, wantCards)
+        this.getWantCount(wantCards[i].type)
       ) {
         console.log('[ OfferModal ] isAcceptable YES', wantCards[i].type)
       } else {
@@ -48,11 +40,13 @@ class OfferModal extends React.Component {
     this.props.acceptOffer(this.props.playerState.playerNumber)
     this.toggleModal(false)
   }
+
   reject(e) {
     console.log('[ OfferModal ] reject', this.props.playerState.playerNumber)
     this.props.rejectOffer(this.props.playerState.playerNumber)
     this.toggleModal(false)
   }
+
   getResourceCount(type) {
     let found = this.props.resources.find(element => {
       return element.type === type
@@ -63,30 +57,9 @@ class OfferModal extends React.Component {
       return 0
     }
   }
-  getOfferCount(type) {
-    let found = this.state.offerCards.find(element => {
-      return element.type === type
-    })
-    if (found) {
-      return found.quantity
-    } else {
-      return 0
-    }
-  }
-
-  getCount(type, deck) {
-    let found = deck.find(element => {
-      return element.type === type
-    })
-    if (found) {
-      return found.quantity
-    } else {
-      return 0
-    }
-  }
 
   getWantCount(type) {
-    let found = this.state.wantCards.find(element => {
+    let found = this.props.playerState.currentTrade.wantCards.find(element => {
       return element.type === type
     })
     if (found) {
