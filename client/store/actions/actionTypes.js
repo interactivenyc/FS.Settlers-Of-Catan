@@ -49,7 +49,6 @@ export const updateScorePlayer = updatedScore => ({
 
 // game State action types
 export const START_GAME = 'START_GAME'
-export const SET_GAME_USERS = 'SET_GAME_USERS'
 export const NEXT_PLAYER = 'NEXT_PLAYER'
 export const TOGGLE_MODAL = 'TOGGLE_MODAL'
 export const DISTRIBUTE_RESOURCE = 'DISTRIBUTE_RESOURCE'
