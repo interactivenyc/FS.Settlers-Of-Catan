@@ -70,17 +70,25 @@ export default function(state = playerState, action) {
       }
     case ACCEPT_OFFER:
       console.log('ACCEPT_OFFER', state.playerNumber, action)
-      if (state.currentTrade.playerNumber === state.playerNumber) {
-        console.log('Your offer has been accepted')
-      } else if (action.playerNumber === state.playerNumber) {
-        console.log('finalize transfer for the person who accepted')
-      } else {
-        console.log('ignore this transaction')
+      if (state.currentTrade) {
+        if (state.currentTrade.playerNumber === state.playerNumber) {
+          console.log('Your offer has been accepted')
+        } else if (action.playerNumber === state.playerNumber) {
+          console.log('finalize transfer for the person who accepted')
+        } else {
+          console.log('ignore this transaction')
+        }
       }
       return {...state, currentTrade: null}
     case REJECT_OFFER:
       console.log('REJECT_OFFER', action)
-      return {...state, currentTrade: null}
+      if (action.playerNumber === state.playerNumber) {
+        // if you're the player who rejected the offer, set currentTrade to null
+        return {...state, currentTrade: null}
+      } else {
+        return state
+      }
+
     default:
       return state
   }

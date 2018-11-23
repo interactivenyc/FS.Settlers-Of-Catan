@@ -174,11 +174,13 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('set-game-users', users => {
+      console.log('[ GameLobby ] set-game-users users', users)
       this.props.setGameUsers(users)
-      this.props.history.push('/map')
     })
 
     socket.on('start-game', (board, user) => {
+      console.log('[ GameLobby ] start-game user', user)
+
       this.setState({
         gameId: '',
         inGame: true
@@ -186,6 +188,7 @@ export class GameLobby extends React.Component {
 
       this.props.deserializeBoard(board)
       this.props.assignPlayer(user.number, user.color)
+      this.props.history.push('/map')
     })
 
     socket.on('update-chat', chatList => {

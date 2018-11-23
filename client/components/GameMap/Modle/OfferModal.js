@@ -10,8 +10,37 @@ class OfferModal extends React.Component {
     this.getResourceCount = this.getResourceCount.bind(this)
     this.getOfferCount = this.getOfferCount.bind(this)
     this.getWantCount = this.getWantCount.bind(this)
+    this.isAcceptable = this.isAcceptable.bind(this)
     this.accept = this.accept.bind(this)
     this.reject = this.reject.bind(this)
+  }
+
+  isAcceptable() {
+    if (this.props.playerState.currentTrade.wantCards)
+      console.log(
+        '[ OfferModal ] isAcceptable trader wants',
+        this.props.playerState.currentTrade.wantCards
+      )
+    if (this.props.resources)
+      console.log(
+        '[ OfferModal ] isAcceptable player has',
+        this.props.resources
+      )
+    const wantCards = this.props.playerState.currentTrade.wantCards
+
+    for (let i = 0; i < wantCards.length; i++) {
+      if (
+        this.getResourceCount(wantCards[i].type) >=
+        this.getCount(wantCards[i].type, wantCards)
+      ) {
+        console.log('[ OfferModal ] isAcceptable YES', wantCards[i].type)
+      } else {
+        console.log('[ OfferModal ] isAcceptable NO', wantCards[i].type)
+        return false
+      }
+    }
+
+    return true
   }
 
   accept(e) {
@@ -36,6 +65,17 @@ class OfferModal extends React.Component {
   }
   getOfferCount(type) {
     let found = this.state.offerCards.find(element => {
+      return element.type === type
+    })
+    if (found) {
+      return found.quantity
+    } else {
+      return 0
+    }
+  }
+
+  getCount(type, deck) {
+    let found = deck.find(element => {
       return element.type === type
     })
     if (found) {
@@ -78,6 +118,7 @@ class OfferModal extends React.Component {
             My Offer = &nbsp;
           </button>
           <button
+            disabled={!this.isAcceptable()}
             onClick={this.accept}
             className="build-modal-button"
             type="button"
