@@ -90,7 +90,11 @@ export default function(state = playerState, action) {
             let resource = getResource(state, offerCards[i].type)
             resource.quantity -= offerCards[i].quantity
           }
-          return {...state, currentTrade: null, resources: [...state.resources]}
+          return {
+            ...state,
+            currentTrade: {accepted: true},
+            resources: [...state.resources]
+          }
         } else if (action.playerNumber === state.playerNumber) {
           console.log('finalize transfer for the person who accepted')
           const wantCards = state.currentTrade.wantCards
@@ -111,9 +115,19 @@ export default function(state = playerState, action) {
     case REJECT_OFFER:
       console.log('REJECT_OFFER', action)
       if (action.playerNumber === state.playerNumber) {
-        // if you're the player who rejected the offer, set currentTrade to null
+        // if you're the player who rejected the offer
         return {...state, currentTrade: null}
+      } else if (state.playerNumber === state.currentTrade.playerNumber) {
+        // if you're the person who made the offer
+        return {
+          ...state,
+          currentTrade: {
+            ...state.currentTrade,
+            rejected: state.currentTrade.rejected++
+          }
+        }
       } else {
+        // everyone else
         return state
       }
 

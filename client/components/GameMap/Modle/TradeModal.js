@@ -72,7 +72,9 @@ class TradeModal extends React.Component {
     const currentTrade = {
       offerCards: this.state.offerCards,
       wantCards: this.state.wantCards,
-      playerNumber: this.props.playerState.playerNumber
+      playerNumber: this.props.playerState.playerNumber,
+      accepted: false,
+      rejected: 0
     }
     this.props.makeOffer(currentTrade)
   }
@@ -105,6 +107,24 @@ class TradeModal extends React.Component {
       return found.quantity
     } else {
       return 0
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.currentTrade) {
+      console.log(
+        '[ TradeModal ] trade result accepted/rejected',
+        this.props.currentTrade.accepted,
+        this.props.currentTrade.rejected
+      )
+      if (this.props.currentTrade.accepted) {
+        console.log('[ TradeModal ] final result ACCEPTED')
+      } else if (
+        this.props.currentTrade.rejected ===
+        this.props.numPlayers - 1
+      ) {
+        console.log('[ TradeModal ] final result REJECTED')
+      }
     }
   }
 
@@ -288,7 +308,8 @@ const mapState = state => {
   return {
     resources: state.playerState.resources,
     currentTrade: state.playerState.currentTrade,
-    playerState: state.playerState
+    playerState: state.playerState,
+    numPlayers: state.gameState.players.length
   }
 }
 
