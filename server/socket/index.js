@@ -6,7 +6,7 @@ module.exports = io => {
   let activeGames = {'Default Game': {}}
   let gameDecks = {}
   let chatHistory = []
-  const maxUsers = 2
+  const numPlayers = 4
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
@@ -96,7 +96,7 @@ module.exports = io => {
        * START NEW GAME
        */
 
-      if (userKeys.length === maxUsers) {
+      if (userKeys.length === numPlayers) {
         const board = await Game.create({
           board_data: JSON.stringify(initializedBoardData)
         })
