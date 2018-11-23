@@ -7,22 +7,35 @@ import {
 import Board from '../../board'
 
 const defaultBoard = {}
-let newBoard
 
 export default function(state = defaultBoard, action) {
   switch (action.type) {
     case GET_BOARD:
       return action.board
     case CREATE_ROAD:
-      newBoard = new Board(JSON.stringify(state))
-      newBoard.edges[action.id].color = action.color
-      newBoard.edges[action.id].player = action.number
-      return newBoard
+      return {
+        ...state,
+        edges: {
+          ...state.edges,
+          [action.id]: {
+            ...state.edges[action.id],
+            color: action.color,
+            player: action.number
+          }
+        }
+      }
     case CREATE_SETTLEMENT:
-      newBoard = new Board(JSON.stringify(state))
-      newBoard.vertices[action.id].color = action.color
-      newBoard.vertices[action.id].player = action.number
-      return newBoard
+      return {
+        ...state,
+        vertices: {
+          ...state.vertices,
+          [action.id]: {
+            ...state.vertices[action.id],
+            color: action.color,
+            player: action.number
+          }
+        }
+      }
     case MOVE_ROBBER:
       return {...state, robberLocation: action.resource}
     default:
