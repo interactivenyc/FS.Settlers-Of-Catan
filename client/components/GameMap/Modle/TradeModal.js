@@ -71,7 +71,10 @@ class TradeModal extends React.Component {
     console.log('[ TradeModal ] submit trade', e.target)
     const currentTrade = {
       offerCards: this.state.offerCards,
-      wantCards: this.state.wantCards
+      wantCards: this.state.wantCards,
+      playerNumber: this.props.playerState.playerNumber,
+      accepted: false,
+      rejected: 0
     }
     this.props.makeOffer(currentTrade)
   }
@@ -107,37 +110,30 @@ class TradeModal extends React.Component {
     }
   }
 
-  componentDidMount() {
-    try {
-      if (
-        this.props.currentTrade.wantCards > 0 ||
-        this.props.currentTrade.offerCards > 0
-      ) {
-        console.log('[ TradeModal ] MOUNT display trade being offered')
-      } else {
-        console.log('[ TradeModal ] MOUNT initiate a new trade')
-      }
-    } catch (error) {
-      console.log(
-        '[ TradeModal ] MOUNT componentDidMount something went wrong with check state'
-      )
-    }
-  }
-
   componentDidUpdate() {
-    // try {
-    //   if (
-    //     this.props.currentTrade.wantCards > 0 ||
-    //     this.props.currentTrade.offerCards > 0
-    //   ) {
-    //     console.log('[ TradeModal ] UPDATE display trade being offered')
-    //   } else {
-    //     console.log('[ TradeModal ] UPDATE initiate a new trade')
-    //   }
-    // } catch (error) {
-    //   console.log('[ TradeModal ] UPDATE something went wrong with check state')
-    //   console.log(error)
-    // }
+    console.log('[ TradeModal ] componentDidUpdate')
+
+    if (this.props.currentTrade) {
+      console.log(
+        '[ TradeModal ] trade result accepted/rejected',
+        this.props.currentTrade.accepted,
+        this.props.currentTrade.rejected
+      )
+      if (this.props.currentTrade.accepted) {
+        console.log('[ TradeModal ] final result ACCEPTED')
+        window.alert('your offer was accepted')
+        this.props.clearOffer()
+        this.props.toggleModal(false)
+      } else if (
+        this.props.currentTrade.rejected ===
+        this.props.numPlayers - 1
+      ) {
+        console.log('[ TradeModal ] final result REJECTED')
+        window.alert('your offer was rejected')
+        this.props.clearOffer()
+        this.props.toggleModal(false)
+      }
+    }
   }
 
   render() {
@@ -319,13 +315,16 @@ const mapState = state => {
 
   return {
     resources: state.playerState.resources,
-    currentTrade: state.gameState.currentTrade
+    currentTrade: state.playerState.currentTrade,
+    playerState: state.playerState,
+    numPlayers: state.gameState.players.length
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    makeOffer: currentTrade => dispatch(actions.makeOffer(currentTrade))
+    makeOffer: currentTrade => dispatch(actions.makeOffer(currentTrade)),
+    clearOffer: () => dispatch(actions.clearOffer())
   }
 }
 
