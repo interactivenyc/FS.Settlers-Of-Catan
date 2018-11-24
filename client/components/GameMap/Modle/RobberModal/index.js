@@ -91,7 +91,7 @@ class RobberModal extends Component {
         <button
           type="button"
           disabled={total !== discard}
-          className="confirm-btn"
+          className={`confirm-btn ${total === discard && 'visible'}`}
           onClick={() => {
             robberDiscardThunk({
               discard,

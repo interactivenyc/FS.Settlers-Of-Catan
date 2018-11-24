@@ -88,7 +88,13 @@
   color: var(--color-white);
   cursor: pointer;
   align-self: flex-end;
+  opacity: 0;
+  transition: all 0.2s;
 }
 .confirm-btn:hover {
   background-color: var(--color-blue);
+}
+
+.visible {
+  opacity: 1;
 }
