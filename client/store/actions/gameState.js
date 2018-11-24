@@ -8,7 +8,8 @@ import {
   moveRobber,
   updateScore,
   updateScorePlayer,
-  updatePlayers
+  updatePlayers,
+  changePhase
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
@@ -89,7 +90,11 @@ export const newDiceRoll = () => {
 
 export const moveRobberThunk = id => (dispatch, getState) => {
   const resource = {...getState().board.resources[id]}
+
   dispatch(moveRobber(resource))
+  dispatch(changePhase(''))
+  socket.emit('dispatch', moveRobber(resource))
+  socket.emit('dispatch', changePhase(''))
 }
 
 export const adjustScore = scoreChange => {

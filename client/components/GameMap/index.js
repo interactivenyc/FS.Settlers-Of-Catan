@@ -40,8 +40,8 @@ class GameMap extends Component {
   }
 
   handleMoveRobber = id => {
-    const {moveRobberThunk, diceTotal, allResponded} = this.props
-    if (allResponded && diceTotal === 7) moveRobberThunk(id)
+    const {moveRobberThunk, phase} = this.props
+    if (phase === 'moveRobber') moveRobberThunk(id)
   }
 
   render() {
@@ -92,7 +92,7 @@ const mapStateToProps = state => {
     die1: gameState.die1,
     die2: gameState.die2,
     diceTotal: gameState.die1 + gameState.die2,
-    allResponded: gameState.players.every(player => player.responded)
+    phase: gameState.phase
   }
 }
 
