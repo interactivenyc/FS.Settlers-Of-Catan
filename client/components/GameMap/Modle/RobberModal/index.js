@@ -69,8 +69,16 @@ class RobberModal extends Component {
     this.setState({robber: from, playerResources: to})
   }
 
-  render() {
+  handleClickConfirm = () => {
     const {toggleModal, player, robberDiscardThunk} = this.props
+    const {discard, playerResources} = this.state
+    const id = player.playerNumber
+
+    robberDiscardThunk({discard, id, resources: playerResources})
+    toggleModal(false)
+  }
+
+  render() {
     const {robber, discard, playerResources} = this.state
     const total = robber.reduce((acc, val) => acc + val.quantity, 0)
 
@@ -92,14 +100,7 @@ class RobberModal extends Component {
           type="button"
           disabled={total !== discard}
           className={`confirm-btn ${total === discard && 'visible'}`}
-          onClick={() => {
-            robberDiscardThunk({
-              discard,
-              id: player.playerNumber,
-              resources: this.state.playerResources
-            })
-            toggleModal(false)
-          }}
+          onClick={this.handleClickConfirm}
         >
           discard
         </button>

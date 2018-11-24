@@ -7,7 +7,8 @@ import {
   toggleModal,
   moveRobber,
   updateScore,
-  updateScorePlayer
+  updateScorePlayer,
+  updatePlayers
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
@@ -43,13 +44,16 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   })
 }
 
-export const robberThunk = id => (dispatch, getState) => {
+export const robberThunk = () => (dispatch, getState) => {
   const {playerState, gameState} = getState()
+
   const resources = gameState.players.filter(
     player => player.id === playerState.playerNumber
   )[0].resources
 
-  if (resources > 7) dispatch(toggleModal('robber'))
+  if (resources > 7) {
+    dispatch(toggleModal('robber'))
+  }
 }
 
 export const newDiceRoll = () => {
@@ -63,12 +67,20 @@ export const newDiceRoll = () => {
     dispatch(rollDice(dieRolls))
     socket.emit('dispatch', rollDice(dieRolls))
 
-    const newState = getState().gameState
-    const newDiceTotal = newState.die1 + newState.die2
+    const {gameState} = getState()
+    const newDiceTotal = gameState.die1 + gameState.die2
 
-    dispatch(distributeResourcesThunk(newState.die1 + newState.die2))
+    dispatch(distributeResourcesThunk(newDiceTotal))
 
     if (newDiceTotal === 7) {
+      const players = gameState.players.map(
+        player =>
+          player.resources > 7 ? {...player, responded: false} : player
+      )
+
+      dispatch(updatePlayers(players))
+      socket.emit('dispatch', updatePlayers(players))
+
       dispatch(robberThunk())
       socket.emit('dispatchThunk', {action: 'robberThunk'})
     }

@@ -26,17 +26,11 @@ class GameMap extends Component {
   }
 
   handleClick = e => {
-    const {
-      changeRoadThunk,
-      changeVertexThunk,
-      player,
-      playerTurn,
-      moveRobberThunk
-    } = this.props
+    const {changeRoadThunk, changeVertexThunk, playerTurn, player} = this.props
 
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
-        moveRobberThunk(e.target.dataset.resourceId)
+        this.handleMoveRobber(e.target.dataset.resourceId)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -45,12 +39,20 @@ class GameMap extends Component {
     }
   }
 
+  handleMoveRobber = id => {
+    const {moveRobberThunk, diceTotal, allResponded} = this.props
+    if (allResponded && diceTotal === 7) moveRobberThunk(id)
+  }
+
   render() {
     const {players, visible, playerTurn, player} = this.props
 
     return (
       <div className="board-container">
-        <Players players={players} playerTurn={playerTurn} />
+        <Players
+          players={players.filter(p => p.id !== player.playerNumber)}
+          playerTurn={playerTurn}
+        />
         <Modle
           visible={visible}
           toggleModal={this.props.toggleModal}
@@ -83,14 +85,14 @@ const mapStateToProps = state => {
   const {board, gameState, playerState} = state
   return {
     board,
-    players: gameState.players.filter(
-      player => player.id !== playerState.playerNumber
-    ),
+    players: gameState.players,
     player: playerState,
     visible: gameState.modle,
     playerTurn: gameState.playerTurn,
     die1: gameState.die1,
-    die2: gameState.die2
+    die2: gameState.die2,
+    diceTotal: gameState.die1 + gameState.die2,
+    allResponded: gameState.players.every(player => player.responded)
   }
 }
 

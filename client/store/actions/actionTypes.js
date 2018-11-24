@@ -61,6 +61,7 @@ export const DISTRIBUTE_RESOURCE = 'DISTRIBUTE_RESOURCE'
 export const DISTRIBUTE_RESOURCE_PLAYER = 'DISTRIBUTE_RESOURCE_PLAYER'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
 export const UPDATE_PLAYERS = 'UPDATE_PLAYERS'
+export const CHANGE_PHASE = 'CHANGE_PHASE'
 
 export const updatePlayers = players => ({type: UPDATE_PLAYERS, players})
 export const startGame = () => ({
@@ -84,3 +85,4 @@ export const updateScore = (playerId, updatedScore) => ({
   playerId,
   updatedScore
 })
+export const changePhase = phase => ({type: CHANGE_PHASE, phase})

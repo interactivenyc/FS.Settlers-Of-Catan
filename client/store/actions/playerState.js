@@ -1,4 +1,10 @@
-import {deleteCard, addCard, updatePlayers, setResources} from './actionTypes'
+import {
+  deleteCard,
+  addCard,
+  updatePlayers,
+  setResources,
+  changePhase
+} from './actionTypes'
 import socket from '../../socket'
 
 export const playCard = playedCard => {
@@ -24,10 +30,19 @@ export const robberDiscardThunk = ({resources, id, discard}) => (
   const players = getState().gameState.players.map(
     player =>
       player.id === id
-        ? {...player, resources: player.resources - discard}
+        ? {...player, resources: player.resources - discard, responded: true}
         : player
   )
   dispatch(updatePlayers(players))
   dispatch(setResources(resources))
   socket.emit('dispatch', updatePlayers(players))
+
+  const allResponded = getState().gameState.players.every(
+    player => player.responded
+  )
+
+  if (allResponded) {
+    dispatch(changePhase('moveRobber'))
+    socket.emit('dispatch', changePhase('moveRobber'))
+  }
 }

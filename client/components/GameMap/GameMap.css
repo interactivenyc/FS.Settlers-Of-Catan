@@ -47,6 +47,10 @@
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
+.hover-hex {
+  opacity: 0.5;
+}
+
 .inner-hexagon h1 {
   text-shadow: 2px 2px #2f3542;
   color: white;

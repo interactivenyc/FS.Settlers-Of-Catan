@@ -6,17 +6,19 @@ import {
   ROLL_DICE,
   TOGGLE_MODAL,
   UPDATE_SCORE,
-  UPDATE_PLAYERS
+  UPDATE_PLAYERS,
+  CHANGE_PHASE
 } from '../actions'
 
 const defaultState = {
+  phase: '',
   playerTurn: 1,
   modle: false,
   players: [
-    {id: 1, resources: 0, score: 0},
-    {id: 2, resources: 0, score: 0},
-    {id: 3, resources: 0, score: 0},
-    {id: 4, resources: 0, score: 0}
+    {id: 1, resources: 0, score: 0, responded: true},
+    {id: 2, resources: 0, score: 0, responded: true},
+    {id: 3, resources: 0, score: 0, responded: true},
+    {id: 4, resources: 0, score: 0, responded: true}
   ],
   die1: 0,
   die2: 0
@@ -61,6 +63,8 @@ const gameState = (state = defaultState, action) => {
       }
     case UPDATE_PLAYERS:
       return {...state, players: action.players}
+    case CHANGE_PHASE:
+      return {...state, phase: action.phase}
     default:
       return state
   }
