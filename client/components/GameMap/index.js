@@ -52,7 +52,9 @@ class GameMap extends Component {
   }
 
   handlePlayCard = event => {
-    console.log(event)
+    if (event === 'vp') {
+      this.props.adjustScore(1)
+    }
     this.props.playCard(event)
   }
 
