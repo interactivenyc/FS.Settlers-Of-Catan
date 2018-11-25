@@ -26,11 +26,19 @@ class GameMap extends Component {
   }
 
   handleClick = e => {
-    const {changeRoadThunk, changeVertexThunk, playerTurn, player} = this.props
+    const {
+      changeRoadThunk,
+      changeVertexThunk,
+      playerTurn,
+      player,
+      phase
+    } = this.props
 
     if (playerTurn === player.playerNumber) {
-      if (e.target.classList.contains('robber-hover')) {
-        this.handleMoveRobber(e.target.dataset.resourceId)
+      if (phase === 'moveRobber') {
+        this.handleMoveRobber(e)
+      } else if (phase === 'rob') {
+        this.handleRobPlayer(e)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -39,9 +47,25 @@ class GameMap extends Component {
     }
   }
 
-  handleMoveRobber = id => {
-    const {moveRobberThunk, phase} = this.props
-    if (phase === 'moveRobber') moveRobberThunk(id)
+  handleMoveRobber = e => {
+    const {moveRobberThunk} = this.props
+    const id = e.target.dataset.resourceId
+    const elem = e.target.classList
+    if (elem.contains('robber-hover')) moveRobberThunk(id)
+  }
+
+  handleRobPlayer = e => {
+    const id = e.target.id
+    const elem = e.target.classList
+    const {vertices} = this.props.board
+    const {playerNumber} = this.props.player
+
+    if (elem.contains('settlement-hover')) {
+      socket.emit('dispatchThunk', {
+        action: 'robPlayer',
+        args: [vertices[id].player, playerNumber]
+      })
+    }
   }
 
   render() {

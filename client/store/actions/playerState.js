@@ -3,8 +3,15 @@ import {
   addCard,
   updatePlayers,
   setResources,
-  changePhase
+  changePhase,
+  distributeResourcePlayer
 } from './actionTypes'
+
+import {
+  adjustResourcesFromTo,
+  subtractResourceCard,
+  createResourceCardsArray
+} from './helpers'
 import socket from '../../socket'
 
 export const playCard = playedCard => {
@@ -44,5 +51,24 @@ export const robberDiscardThunk = ({resources, id, discard}) => (
   if (allResponded) {
     dispatch(changePhase('moveRobber'))
     socket.emit('dispatch', changePhase('moveRobber'))
+  }
+}
+
+export const robPlayer = (from, to) => (dispatch, getState) => {
+  const {playerState, gameState} = getState()
+  const {playerNumber, resources} = playerState
+
+  if (playerNumber === from) {
+    const resourceCards = createResourceCardsArray(resources)
+    const card = resourceCards[Math.floor(Math.random() * resourceCards.length)]
+    const players = adjustResourcesFromTo(from, to, gameState.players)
+    const newResources = subtractResourceCard(card, resources)
+
+    dispatch(updatePlayers(players))
+    dispatch(setResources(newResources))
+    dispatch(changePhase(''))
+    socket.emit('dispatch', updatePlayers(players))
+    socket.emit('dispatch', distributeResourcePlayer(card, to))
+    socket.emit('dispatch', changePhase(''))
   }
 }

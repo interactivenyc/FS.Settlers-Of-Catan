@@ -35,6 +35,8 @@ export const ADD_CARD = 'ADD_CARD'
 export const DELETE_CARD = 'DELETE_CARD'
 export const UPDATE_SCORE_PLAYER = 'UPDATE_SCORE_PLAYER'
 export const SET_RESOURCES = 'SET_RESOURCES'
+export const ROB_PLAYER = 'ROB_PLAYER'
+
 export const assignPlayer = (number, color) => ({
   type: ASSIGN_PLAYER,
   number,
