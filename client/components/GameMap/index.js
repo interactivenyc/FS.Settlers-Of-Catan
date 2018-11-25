@@ -29,7 +29,7 @@ class GameMap extends Component {
     const {changeRoadThunk, changeVertexThunk, playerTurn, player} = this.props
 
     if (playerTurn === player.playerNumber) {
-      if (e.target.classList.contains('inner-hexagon')) {
+      if (e.target.classList.contains('robber-hover')) {
         this.handleMoveRobber(e.target.dataset.resourceId)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)

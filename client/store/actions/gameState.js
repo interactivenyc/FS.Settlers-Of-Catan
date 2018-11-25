@@ -92,9 +92,9 @@ export const moveRobberThunk = id => (dispatch, getState) => {
   const resource = {...getState().board.resources[id]}
 
   dispatch(moveRobber(resource))
-  dispatch(changePhase(''))
+  dispatch(changePhase('rob'))
   socket.emit('dispatch', moveRobber(resource))
-  socket.emit('dispatch', changePhase(''))
+  socket.emit('dispatch', changePhase('rob'))
 }
 
 export const adjustScore = scoreChange => {

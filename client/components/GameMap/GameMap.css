@@ -82,12 +82,26 @@
   background-image: url('../../../public/images/resources/pasture.png');
 }
 
-.robber {
+.robber-hover {
+  opacity: 1;
+}
+
+.robber,
+.robber-hover:hover {
   background-image: url('../../../public/images/robber.png');
   background-size: cover;
   height: 100px;
   width: 50px;
   transform: translateY(-10%);
+}
+
+.robber-hover:hover h1 {
+  display: none;
+}
+
+.robber-hover:hover {
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 .resource-number {
@@ -156,6 +170,15 @@
   top: 75%;
   left: 100%;
   transform: translate(-50%, -50%);
+}
+
+.settlement-hover {
+  opacity: 1;
+}
+
+.settlement-hover:hover {
+  opacity: 0.5;
+  cursor: pointer;
 }
 
 .board-row {
