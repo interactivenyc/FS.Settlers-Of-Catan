@@ -54,6 +54,7 @@ class GameMap extends Component {
           toggleModal={this.props.toggleModal}
           buyaCard={this.buyaCard}
           adjustScore={this.props.adjustScore}
+          player={player}
         />
         <GameBoard
           adjust={-25}

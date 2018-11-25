@@ -197,7 +197,7 @@
   align-items: center;
 }
 
-.build-modal-button:hover {
+.build-modal-button-active:hover {
   outline: #ffb732 solid 6px;
 }
 
