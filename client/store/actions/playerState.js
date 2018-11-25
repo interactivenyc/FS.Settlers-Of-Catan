@@ -4,7 +4,12 @@ import {
   updatePlayers,
   setResources,
   changePhase,
-  distributeResourcePlayer
+  distributeResourcePlayer,
+  MAKE_OFFER,
+  RECEIVE_OFFER,
+  ACCEPT_OFFER,
+  REJECT_OFFER,
+  CLEAR_OFFER
 } from './actionTypes'
 
 import {
@@ -12,6 +17,7 @@ import {
   subtractResourceCard,
   createResourceCardsArray
 } from './helpers'
+
 import socket from '../../socket'
 
 export const playCard = playedCard => {
@@ -71,4 +77,38 @@ export const robPlayer = (from, to) => (dispatch, getState) => {
     socket.emit('dispatch', distributeResourcePlayer(card, to))
     socket.emit('dispatch', changePhase(''))
   }
+}
+
+export const makeOffer = currentTrade => {
+  socket.emit('dispatch', {
+    type: RECEIVE_OFFER,
+    currentTrade
+  })
+  return {type: MAKE_OFFER, currentTrade}
+}
+
+export const receiveOffer = currentTrade => {
+  return {type: RECEIVE_OFFER, currentTrade}
+}
+
+export const acceptOffer = playerNumber => {
+  console.log('acceptOffer', playerNumber)
+  socket.emit('dispatch', {
+    type: ACCEPT_OFFER,
+    playerNumber
+  })
+  return {type: ACCEPT_OFFER, playerNumber}
+}
+
+export const rejectOffer = playerNumber => {
+  console.log('rejectOffer', playerNumber)
+  socket.emit('dispatch', {
+    type: REJECT_OFFER,
+    playerNumber
+  })
+  return {type: REJECT_OFFER, playerNumber}
+}
+
+export const clearOffer = () => {
+  return {type: CLEAR_OFFER}
 }

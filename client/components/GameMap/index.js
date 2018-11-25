@@ -23,12 +23,18 @@ class GameMap extends Component {
 
   componentDidUpdate() {
     try {
-      if (
-        this.props.currentTrade.wantCards.length > 0 ||
-        this.props.currentTrade.offerCards.length > 0
-      ) {
+      if (this.props.currentTrade) {
         console.log('[ GameMap ] UPDATE display trade being offered')
-        // this.props.toggleModal('trade')
+        if (this.props.visible) {
+          console.log(
+            '[ GameMap ] UPDATE if visible, this is person making offer'
+          )
+        } else {
+          console.log(
+            '[ GameMap ] UPDATE if not visible, this is person receiving offer'
+          )
+          this.props.toggleModal('offer')
+        }
       }
     } catch (error) {
       console.log(
@@ -136,7 +142,7 @@ const mapStateToProps = state => {
     die2: gameState.die2,
     diceTotal: gameState.die1 + gameState.die2,
     phase: gameState.phase,
-    currentTrade: gameState.currentTrade
+    currentTrade: playerState.currentTrade
   }
 }
 

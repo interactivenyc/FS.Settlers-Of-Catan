@@ -35,14 +35,18 @@ const GameList = props => {
         {Object.keys(props.activeGames).map(key => {
           return (
             <tr key={key}>
-              <td gameid={key} onClick={props.clickGame}>
-                {`${key} (${Object.keys(props.activeGames[key]).length})`}
-              </td>
-              <td>
+              <td gameid={key}>
                 <button type="button" gameid={key} onClick={getClickFunction()}>
                   {getButtonText()}
                 </button>
+                <span
+                  className="gameText"
+                  onClick={props.clickGame}
+                >{`${key} [ ${
+                  Object.keys(props.activeGames[key]).length
+                } ]`}</span>
               </td>
+              <td />
             </tr>
           )
         })}

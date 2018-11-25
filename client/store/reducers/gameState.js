@@ -1,4 +1,3 @@
-import socket from '../../socket'
 import {
   START_GAME,
   NEXT_PLAYER,
@@ -7,8 +6,6 @@ import {
   ROLL_DICE,
   TOGGLE_MODAL,
   CHANGE_PHASE,
-  MAKE_OFFER,
-  RECEIVE_OFFER,
   UPDATE_SCORE,
   UPDATE_PLAYERS
 } from '../actions'
@@ -18,12 +15,9 @@ const defaultState = {
   playerTurn: 1,
   modle: false,
   players: [
-    {id: 1, resources: 0, score: 0, responded: true},
-    {id: 2, resources: 0, score: 0, responded: true},
-    {id: 3, resources: 0, score: 0, responded: true},
-    {id: 4, resources: 0, score: 0, responded: true}
+    // These objects are defined in case SET_GAME_USERS below
+    // {id: 1, userProfile: {}, score:0}
   ],
-  currentTrade: {offerCards: [], wantCards: []},
   die1: 0,
   die2: 0
 }
@@ -32,13 +26,30 @@ const defaultState = {
 const gameState = (state = defaultState, action) => {
   switch (action.type) {
     case SET_GAME_USERS:
-      return {...state, players: action.users}
+      console.log('SET_GAME_USERS', action.users)
+      var players = []
+      for (let i = 0; i < action.users.length; i++) {
+        let user = {
+          id: action.users[i].playerNumber,
+          userProfile: action.users[i],
+          resources: 0,
+          responded: true,
+          longestRoad: 0,
+          score: 0
+        }
+        console.log('PUSH_USERS', user)
+        players.push(user)
+      }
+      return {...state, players}
     case START_GAME:
       return {...state, playerTurn: action.playerTurn, modle: action.modle}
     case NEXT_PLAYER:
       return {
         ...state,
-        playerTurn: action.playerNumber + 1 < 5 ? action.playerNumber + 1 : 1
+        playerTurn:
+          action.playerNumber + 1 <= state.players.length
+            ? action.playerNumber + 1
+            : 1
       }
     case TOGGLE_MODAL:
       return {...state, modle: action.modal}
@@ -57,17 +68,7 @@ const gameState = (state = defaultState, action) => {
         die1: action.dieRolls[0],
         die2: action.dieRolls[1]
       }
-    case MAKE_OFFER:
-      return {
-        ...state,
-        currentTrade: action.currentTrade
-      }
-    case RECEIVE_OFFER:
-      console.log('RECEIVE_OFFER', action.currentTrade)
-      return {
-        ...state,
-        currentTrade: action.currentTrade
-      }
+
     case UPDATE_SCORE:
       return {
         ...state,

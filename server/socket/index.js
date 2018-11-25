@@ -1,11 +1,9 @@
 const Game = require('../db').model('game')
-const Board = require('./board')
 const initializedBoardData = require('./initializedBoard')
 
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
-  let gamesInProgress = {}
   let gameDecks = {}
   let chatHistory = []
 
@@ -68,6 +66,18 @@ module.exports = io => {
   }
 
   io.on('connection', socket => {
+    /*******************************************
+     * GAME LISTENERS
+     *******************************************/
+    socket.on('get-dev-card', gameId => {
+      let card = getRandomCard(gameId)
+      io.sockets.emit('send-card-to-user', card)
+    })
+
+    /*******************************************
+     * LOBBY LISTENERS
+     *******************************************/
+
     console.log(`A socket connection to the server has been made: ${socket.id}`)
     socket.broadcast.emit('player-joined', socket.id)
 
@@ -86,26 +96,29 @@ module.exports = io => {
       /**
        * START NEW GAME
        */
-      if (userKeys.length === maxUsers) {
+
+      if (userKeys.length === numPlayers) {
         const board = await Game.create({
           board_data: JSON.stringify(initializedBoardData)
         })
 
-        let gameUsers = {}
-        let playerNum = 0
+        let gameUsers = []
+        let playerNumber = 0
         userKeys.forEach(socketId => {
           delete activeGames[gameId][socketId]
           let user = userLobby[socketId]
-          user.playerNum = playerNum++
-          gameUsers[playerNum] = user
+          playerNumber++
+          user.playerNumber = playerNumber
+          gameUsers.push(user)
           delete userLobby[socketId]
 
           io.to(socketId).emit('start-game', board.board_data, {
-            number: playerNum,
-            color: colors[playerNum]
+            number: playerNumber,
+            color: colors[playerNumber],
+            userProfile: user
           })
         })
-
+        io.sockets.emit('set-game-users', gameUsers)
         io.sockets.emit('update-lobby', userLobby, activeGames)
       }
     })
@@ -114,11 +127,6 @@ module.exports = io => {
       log('reset-all-games')
       resetAllGames()
       io.sockets.emit('games-reset', activeGames)
-    })
-
-    socket.on('get-dev-card', gameId => {
-      let card = getRandomCard(gameId)
-      io.sockets.emit('send-card-to-user', card)
     })
 
     socket.on('disconnect', () => {
@@ -160,9 +168,15 @@ module.exports = io => {
      */
 
     socket.on('dispatch', value => {
+      console.log('dispatch - this is an opportunity to update state on server')
+      console.log(value)
       socket.broadcast.emit('dispatch', value)
     })
     socket.on('dispatchThunk', action => {
+      console.log(
+        'dispatchThunk - this is an opportunity to update state on server'
+      )
+      console.log(action)
       socket.broadcast.emit('dispatchThunk', action)
     })
 
