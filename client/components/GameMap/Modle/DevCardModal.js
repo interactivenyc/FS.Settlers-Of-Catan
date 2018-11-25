@@ -10,6 +10,7 @@ const DevCardModal = ({toggleModal, buyaCard, adjustScore}) => {
         />
       </div>
       <div className="build-modal">
+        <div />
         <button
           className="build-modal-button"
           onClick={() => {
