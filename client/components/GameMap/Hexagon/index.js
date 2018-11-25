@@ -23,6 +23,7 @@ class Hexagon extends Component {
 
     if (robber.vertices && robPlayer) {
       isSettled = robber.vertices
+        .map(vertex => board.vertices[vertex.id])
         .filter(vertex => vertex.color && vertex.player !== playerNumber)
         .map(vertex => vertex.id)
         .includes(id)

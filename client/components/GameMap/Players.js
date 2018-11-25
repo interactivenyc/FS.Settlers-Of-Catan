@@ -3,7 +3,7 @@ import React from 'react'
 const Players = ({players, playerTurn}) => {
   return (
     <div className="player-container">
-      {players.map(({id, resources, score}) => (
+      {players.map(({id, resources, score, longestRoad}) => (
         <div
           key={id}
           className={`player player-${id} ${playerTurn == id &&
@@ -13,6 +13,7 @@ const Players = ({players, playerTurn}) => {
           <div className="score">
             <p>{`Score: ${score}`}</p>
             <p>{`Resources: ${resources}`}</p>
+            <p>{`Longest Road: ${longestRoad}`}</p>
           </div>
         </div>
       ))}
