@@ -64,11 +64,14 @@ export const robPlayer = (from, to) => (dispatch, getState) => {
     const players = adjustResourcesFromTo(from, to, gameState.players)
     const newResources = subtractResourceCard(card, resources)
 
-    dispatch(updatePlayers(players))
-    dispatch(setResources(newResources))
+    if (resourceCards.length) {
+      dispatch(updatePlayers(players))
+      dispatch(setResources(newResources))
+      socket.emit('dispatch', updatePlayers(players))
+      socket.emit('dispatch', distributeResourcePlayer(card, to))
+    }
+
     dispatch(changePhase(''))
-    socket.emit('dispatch', updatePlayers(players))
-    socket.emit('dispatch', distributeResourcePlayer(card, to))
     socket.emit('dispatch', changePhase(''))
   }
 }
