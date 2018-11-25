@@ -1,6 +1,6 @@
 import {
   ADD_CARD,
-  REMOVE_CARD,
+  DELETE_CARD,
   ASSIGN_PLAYER,
   DISTRIBUTE_RESOURCE_PLAYER,
   UPDATE_SCORE_PLAYER,
@@ -41,7 +41,7 @@ export default function(state = playerState, action) {
         ...state,
         playerHand: action.hand
       }
-    case REMOVE_CARD:
+    case DELETE_CARD:
       return {
         ...state,
         playerHand: action.hand

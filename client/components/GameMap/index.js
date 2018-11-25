@@ -51,6 +51,11 @@ class GameMap extends Component {
     socket.emit('get-dev-card', 'defaultGame')
   }
 
+  handlePlayCard = event => {
+    console.log(event)
+    this.props.playCard(event)
+  }
+
   handleClick = e => {
     const {
       changeRoadThunk,
@@ -83,6 +88,7 @@ class GameMap extends Component {
           buyaCard={this.buyaCard}
           adjustScore={this.props.adjustScore}
           playerHand={this.props.playerHand}
+          handlePlayCard={this.handlePlayCard}
         />
         <GameBoard
           adjust={-25}
@@ -131,5 +137,6 @@ export default connect(mapStateToProps, {
   distributeResourcesThunk: actions.distributeResourcesThunk,
   newDiceRoll: actions.newDiceRoll,
   buyCard: actions.buyCard,
-  adjustScore: actions.adjustScore
+  adjustScore: actions.adjustScore,
+  playCard: actions.playCard
 })(GameMap)
