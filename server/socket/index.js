@@ -6,8 +6,7 @@ module.exports = io => {
   let activeGames = {'Default Game': {}}
   let gameDecks = {}
   let chatHistory = []
-
-  const maxUsers = 4
+  const numPlayers = 3
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
