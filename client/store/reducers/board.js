@@ -1,4 +1,9 @@
-import {GET_BOARD, CREATE_ROAD, CREATE_SETTLEMENT} from '../actions'
+import {
+  GET_BOARD,
+  CREATE_ROAD,
+  CREATE_SETTLEMENT,
+  MOVE_ROBBER
+} from '../actions'
 import Board from '../../board'
 
 const defaultBoard = {}
@@ -31,6 +36,8 @@ export default function(state = defaultBoard, action) {
           }
         }
       }
+    case MOVE_ROBBER:
+      return {...state, robberLocation: action.resource}
     default:
       return state
   }

@@ -19,6 +19,32 @@ class GameMap extends Component {
 
   componentDidMount() {
     socket.on('dispatch', action => store.dispatch(action))
+    socket.on('dispatchThunk', ({action, args}) =>
+      store.dispatch(actions[action].apply(this, args))
+    )
+  }
+
+  componentDidUpdate() {
+    try {
+      if (this.props.currentTrade) {
+        console.log('[ GameMap ] UPDATE display trade being offered')
+        if (this.props.visible) {
+          console.log(
+            '[ GameMap ] UPDATE if visible, this is person making offer'
+          )
+        } else {
+          console.log(
+            '[ GameMap ] UPDATE if not visible, this is person receiving offer'
+          )
+          this.props.toggleModal('offer')
+        }
+      }
+    } catch (error) {
+      console.log(
+        '[ GameMap ] componentDidUpdate something went wrong with check state'
+      )
+      console.log(error)
+    }
   }
 
   buyaCard() {
@@ -26,11 +52,17 @@ class GameMap extends Component {
   }
 
   handleClick = e => {
-    const {changeRoadThunk, changeVertexThunk, player, playerTurn} = this.props
+    const {
+      changeRoadThunk,
+      changeVertexThunk,
+      player,
+      playerTurn,
+      moveRobberThunk
+    } = this.props
 
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
-        // this.props.changeResourceThunk(e.target.id)
+        moveRobberThunk(e.target.dataset.resourceId)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -84,12 +116,15 @@ const mapStateToProps = state => {
     playerTurn: gameState.playerTurn,
     die1: gameState.die1,
     die2: gameState.die2,
-    playerHand: playerState.playerHand
+    playerHand: playerState.playerHand,
+    diceTotal: gameState.die1 + gameState.die2,
+    currentTrade: playerState.currentTrade
   }
 }
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
+  moveRobberThunk: actions.moveRobberThunk,
   changeVertexThunk: actions.changeVertexThunk,
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,

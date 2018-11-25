@@ -2,7 +2,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import socket from '../../socket'
 import './GameLobby.css'
-import {deserializeBoard} from '../../store/actions'
 import UserList from './UserList'
 import GameList from './GameList'
 import GameState from './GameState'
@@ -12,7 +11,6 @@ import * as actions from '../../store/actions'
 export class GameLobby extends React.Component {
   constructor(props) {
     super(props)
-    console.log('[ GameLobby ] constructor')
 
     this.state = {
       inLobby: false,
@@ -21,7 +19,7 @@ export class GameLobby extends React.Component {
       gameId: '',
       userLobby: {},
       activeGames: {},
-      chatList: ['chat', 'feature', 'coming', 'soon']
+      chatList: []
     }
     this.setupSocket()
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
@@ -32,11 +30,8 @@ export class GameLobby extends React.Component {
   }
 
   componentDidMount() {
-    console.log('BOARD', JSON.stringify(this.props.board))
-    console.log('[ GameLobby ] componentDidMount', this.props)
     this.tryJoinLobby()
   }
-
   componentDidUpdate() {
     this.tryJoinLobby()
   }
@@ -51,7 +46,6 @@ export class GameLobby extends React.Component {
       this.state.inLobby === false &&
       this.state.inGame === false
     ) {
-      console.log('[ GameLobby ] join-lobby')
       this.setState({
         inLobby: true
       })
@@ -64,15 +58,12 @@ export class GameLobby extends React.Component {
   }
 
   clickUser(e) {
-    console.log('[ GameLobby ] clickUser', e.target.innerHTML)
+    // console.log('[ GameLobby ] clickUser', e.target.innerHTML)
   }
 
   clickGame(e) {
-    console.log(
-      '[ GameLobby ] clickGame',
-      e.target.getAttribute('gameid'),
-      this.state.activeGames
-    )
+    console.log('clickGame')
+
     this.setState({
       gameId: e.target.getAttribute('gameid')
     })
@@ -80,7 +71,8 @@ export class GameLobby extends React.Component {
   }
 
   leaveGame(e) {
-    console.log('[ GameLobby ] leaveGame', e.target.getAttribute('gameid'))
+    console.log('leaveGame')
+
     this.setState({
       gameId: ''
     })
@@ -90,9 +82,11 @@ export class GameLobby extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <h1>Lobby</h1>
+        <h3>
+          Lobby - {this.props.user.email} - {this.state.socketId}
+        </h3>
 
-        <table>
+        <table className="tableContainer">
           <tbody>
             <tr>
               <td>
@@ -109,39 +103,30 @@ export class GameLobby extends React.Component {
                   socketId={this.state.socketId}
                   gameId={this.state.gameId}
                 />
+                <p />
+                <button type="button" onClick={this.resetAllGames}>
+                  Reset All Games
+                </button>
               </td>
             </tr>
             <tr>
               <td>
-                <GameChat
-                  updateChat={this.updateChat}
-                  chatList={this.state.chatList}
-                />
+                <GameChat chatList={this.state.chatList} />
               </td>
-              <td>{/* <GameState state={this.state} /> */}</td>
+              <td>
+                <GameState state={this.state} />
+              </td>
             </tr>
           </tbody>
         </table>
-
-        <p />
-
-        <button type="button" onClick={this.resetAllGames}>
-          Reset All Games
-        </button>
       </React.Fragment>
     )
   }
 
   setupSocket() {
-    // console.log('[ GameLobby ] setupSocket', socket.id)
-
-    socket.on('player-joined', () => {
-      console.log('[ GameLobby ] player-joined')
-    })
+    socket.on('player-joined', () => {})
 
     socket.on('update-lobby', (userLobby, activeGames, chatList) => {
-      console.log('[ GameLobby ] update-lobby', this.state)
-
       if (!this.state.inLobby) return
       if (this.state.inGame) return
 
@@ -151,15 +136,14 @@ export class GameLobby extends React.Component {
        * previously selected one
        */
       if (this.state.socketId !== socket.id && this.state.socketId !== '') {
-        console.log(
-          '[ GameLobby ] SOCKET ID HAS CHANGED',
-          this.state.socketId,
-          socket.id
-        )
         if (this.state.gameId !== '') {
+          console.log('join-game on update-lobby')
+
           socket.emit('join-game', this.state.gameId)
         }
       }
+
+      if (!chatList) chatList = this.state.chatList
 
       this.setState({
         socketId: socket.id,
@@ -170,21 +154,18 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('game-joined', activeGames => {
-      console.log('[ GameLobby ] game-joined')
       this.setState({
         activeGames
       })
     })
 
     socket.on('games-reset', activeGames => {
-      console.log('[ GameLobby ] games-reset')
       this.setState({
         activeGames
       })
     })
 
     socket.on('lobby-left', userLobby => {
-      console.log('[ GameLobby ] lobby-left')
       if (!this.state.inGame) {
         this.setState({
           userLobby
@@ -192,12 +173,19 @@ export class GameLobby extends React.Component {
       }
     })
 
+    socket.on('set-game-users', users => {
+      console.log('[ GameLobby ] set-game-users users', users)
+      this.props.setGameUsers(users)
+    })
+
     socket.on('start-game', (board, user) => {
-      console.log('[ GameLobby ] start-game - setting inLobby false')
+      console.log('[ GameLobby ] start-game user', user)
+
       this.setState({
         gameId: '',
         inGame: true
       })
+
       this.props.deserializeBoard(board)
       this.props.assignPlayer(user.number, user.color)
       this.props.history.push('/map')
@@ -239,8 +227,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    deserializeBoard: board => dispatch(deserializeBoard(board)),
-    setGameUsers: users => dispatch(actions.setGameUsers(users)),
+    deserializeBoard: board => dispatch(actions.deserializeBoard(board)),
+    setGameUsers: user => dispatch(actions.setGameUsers(user)),
     assignPlayer: (number, color) =>
       dispatch(actions.assignPlayer(number, color))
   }

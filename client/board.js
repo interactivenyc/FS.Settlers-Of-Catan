@@ -87,6 +87,8 @@ class Board {
 
     console.log('CREATE ALL UNIQUE OBJECTS')
 
+    this.robberLocation = jsonData.robberLocation
+
     for (let prop in jsonData.resources) {
       if (jsonData.resources.hasOwnProperty(prop)) {
         let resource = jsonData.resources[prop]

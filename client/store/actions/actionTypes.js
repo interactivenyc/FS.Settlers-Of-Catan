@@ -10,8 +10,23 @@ export const GET_BOARD = 'GET_BOARD'
 export const CREATE_ROAD = 'CREATE_ROAD'
 export const CREATE_SETTLEMENT = 'CREATE_SETTLEMENT'
 export const ROLL_DICE = 'ROLL_DICE'
+export const MOVE_ROBBER = 'MOVE_ROBBER'
+
 export const getBoard = board => ({type: GET_BOARD, board})
 export const rollDice = dieRolls => ({type: ROLL_DICE, dieRolls})
+export const moveRobber = resource => ({type: MOVE_ROBBER, resource})
+export const createRoad = (id, color, number) => ({
+  type: CREATE_ROAD,
+  id,
+  color,
+  number
+})
+export const createSettlement = (id, color, number) => ({
+  type: CREATE_SETTLEMENT,
+  id,
+  color,
+  number
+})
 
 //Player State Action Types
 export const ASSIGN_PLAYER = 'ASSIGN_PLAYER'
@@ -32,20 +47,6 @@ export const updateScorePlayer = updatedScore => ({
   updatedScore
 })
 
-//build action Types
-export const createRoad = (id, color, number) => ({
-  type: CREATE_ROAD,
-  id,
-  color,
-  number
-})
-export const createSettlement = (id, color, number) => ({
-  type: CREATE_SETTLEMENT,
-  id,
-  color,
-  number
-})
-
 // game State action types
 export const START_GAME = 'START_GAME'
 export const SET_GAME_USERS = 'SET_GAME_USERS'
@@ -53,6 +54,11 @@ export const NEXT_PLAYER = 'NEXT_PLAYER'
 export const TOGGLE_MODAL = 'TOGGLE_MODAL'
 export const DISTRIBUTE_RESOURCE = 'DISTRIBUTE_RESOURCE'
 export const DISTRIBUTE_RESOURCE_PLAYER = 'DISTRIBUTE_RESOURCE_PLAYER'
+export const MAKE_OFFER = 'MAKE_OFFER'
+export const RECEIVE_OFFER = 'RECEIVE_OFFER'
+export const ACCEPT_OFFER = 'ACCEPT_OFFER'
+export const REJECT_OFFER = 'REJECT_OFFER'
+export const CLEAR_OFFER = 'CLEAR_OFFER'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
 
 export const startGame = () => ({

@@ -3,20 +3,16 @@ import socket from '../../socket'
 
 export default class GameChat extends React.Component {
   constructor(props) {
-    console.log('[ GameChat ] constructor', props)
-
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
     this.scroll = this.scroll.bind(this)
   }
 
   componentDidMount() {
-    console.log('[ GameChat ] this.props.chatList', this.props.chatList)
     this.scroll()
   }
 
   componentDidUpdate() {
-    console.log('[ GameChat ] this.props.chatList', this.props.chatList)
     this.scroll()
   }
 
