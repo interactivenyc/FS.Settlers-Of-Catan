@@ -17,11 +17,24 @@ export const getEdgeNeighborsColor = (edge, board) => {
   }, [])
 }
 
+export const getEdgeNeighbors = (edge, board) => {
+  const obj = {[edge.id]: true}
+
+  const neighbors = [...edge.vertices[0].edges, ...edge.vertices[1].edges]
+
+  return neighbors.reduce((acc, val) => {
+    if (!obj[val.id]) {
+      acc.push({...board.edges[val.id]})
+      obj[val.id] = true
+    }
+
+    return acc
+  }, [])
+}
+
 // Gets currently selected vertice neighbors and returns them in array
 export const getVerticeNeighbors = (vertice, board) => {
   const edges = vertice.edges
-
-  console.log('EDGES', edges)
 
   return edges.map(
     curEdge =>

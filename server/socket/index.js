@@ -9,6 +9,8 @@ module.exports = io => {
   let gameDecks = {}
   let chatHistory = []
 
+  const maxUsers = 4
+
   //Fisher-Yates Shuffle
   function shuffle(array) {
     var currentIndex = array.length,
@@ -46,8 +48,6 @@ module.exports = io => {
   }
 
   generateDeck()
-
-  const maxUsers = 4
 
   /**
    * THESE ARE VARS USED BY RYAN - TO INTEGRATE

@@ -1,6 +1,8 @@
 import {
   nextPlayer,
   SET_GAME_USERS,
+  MAKE_OFFER,
+  RECEIVE_OFFER,
   distributeResource,
   distributeResourcePlayer,
   rollDice,
@@ -28,6 +30,7 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
       if (vertices[vertex.id].player) {
         dispatch(distributeResource(vertices[vertex.id].player))
         socket.emit('dispatch', distributeResource(vertices[vertex.id].player))
+
         dispatch(
           distributeResourcePlayer(resource.type, vertices[vertex.id].player)
         )
@@ -85,6 +88,18 @@ export const newDiceRoll = () => {
       }
     }
   }
+}
+
+export const makeOffer = currentTrade => {
+  socket.emit('dispatch', {
+    type: RECEIVE_OFFER,
+    currentTrade: currentTrade
+  })
+  return {type: MAKE_OFFER, currentTrade}
+}
+
+export const receiveOffer = currentTrade => {
+  return {type: RECEIVE_OFFER, currentTrade}
 }
 
 export const moveRobberThunk = id => (dispatch, getState) => {

@@ -1,3 +1,4 @@
+import socket from '../../socket'
 import {
   START_GAME,
   NEXT_PLAYER,
@@ -5,9 +6,11 @@ import {
   DISTRIBUTE_RESOURCE,
   ROLL_DICE,
   TOGGLE_MODAL,
+  CHANGE_PHASE,
+  MAKE_OFFER,
+  RECEIVE_OFFER,
   UPDATE_SCORE,
-  UPDATE_PLAYERS,
-  CHANGE_PHASE
+  UPDATE_PLAYERS
 } from '../actions'
 
 const defaultState = {
@@ -20,10 +23,12 @@ const defaultState = {
     {id: 3, resources: 0, score: 0, responded: true},
     {id: 4, resources: 0, score: 0, responded: true}
   ],
+  currentTrade: {offerCards: [], wantCards: []},
   die1: 0,
   die2: 0
 }
 
+/* eslint-disable complexity */
 const gameState = (state = defaultState, action) => {
   switch (action.type) {
     case SET_GAME_USERS:
@@ -51,6 +56,17 @@ const gameState = (state = defaultState, action) => {
         ...state,
         die1: action.dieRolls[0],
         die2: action.dieRolls[1]
+      }
+    case MAKE_OFFER:
+      return {
+        ...state,
+        currentTrade: action.currentTrade
+      }
+    case RECEIVE_OFFER:
+      console.log('RECEIVE_OFFER', action.currentTrade)
+      return {
+        ...state,
+        currentTrade: action.currentTrade
       }
     case UPDATE_SCORE:
       return {
