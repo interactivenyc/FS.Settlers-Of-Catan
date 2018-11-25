@@ -16,11 +16,6 @@ import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
 
-export const nextPlayerThunk = playerNumber => dispatch => {
-  dispatch(nextPlayer(playerNumber))
-  socket.emit('dispatch', nextPlayer(playerNumber))
-}
-
 export const distributeResourcesThunk = num => (dispatch, getState) => {
   const {resources, vertices} = getState().board
 
@@ -79,11 +74,15 @@ export const newDiceRoll = () => {
           player.resources > 7 ? {...player, responded: false} : player
       )
 
-      dispatch(updatePlayers(players))
-      socket.emit('dispatch', updatePlayers(players))
-
-      dispatch(robberThunk())
-      socket.emit('dispatchThunk', {action: 'robberThunk'})
+      if (players.every(player => player.responded)) {
+        dispatch(changePhase('moveRobber'))
+        socket.emit('dispatch', changePhase('moveRobber'))
+      } else {
+        dispatch(updatePlayers(players))
+        socket.emit('dispatch', updatePlayers(players))
+        dispatch(robberThunk())
+        socket.emit('dispatchThunk', {action: 'robberThunk'})
+      }
     }
   }
 }
@@ -111,4 +110,18 @@ export const adjustScore = scoreChange => {
     dispatch(updateScore(updatedScore))
     dispatch(updateScorePlayer(playerId, updatedScore))
   }
+}
+
+export const startTurnThunk = () => (dispatch, getState) => {
+  const {playerState, gameState} = getState()
+
+  if (playerState.playerNumber === gameState.playerTurn) {
+    dispatch(newDiceRoll())
+  }
+}
+
+export const nextPlayerThunk = playerNumber => dispatch => {
+  dispatch(nextPlayer(playerNumber))
+  socket.emit('dispatch', nextPlayer(playerNumber))
+  socket.emit('dispatchThunk', {action: 'startTurnThunk'})
 }

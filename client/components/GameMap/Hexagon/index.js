@@ -10,7 +10,9 @@ class Hexagon extends Component {
     const {resource} = gameOptions
 
     return `resource-number ${robberLocation.id === resource &&
-      'robber'} ${moveRobber && 'robber-hover'}`
+      'robber'} ${moveRobber &&
+      robberLocation.id !== resource &&
+      'robber-hover'}`
   }
 
   handleSettlementClassList = (pos, id, vertices) => {

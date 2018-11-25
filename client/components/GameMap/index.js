@@ -51,7 +51,9 @@ class GameMap extends Component {
     const {moveRobberThunk} = this.props
     const id = e.target.dataset.resourceId
     const elem = e.target.classList
-    if (elem.contains('robber-hover')) moveRobberThunk(id)
+    if (elem.contains('robber-hover')) {
+      moveRobberThunk(id)
+    }
   }
 
   handleRobPlayer = e => {
