@@ -1,5 +1,5 @@
 import React from 'react'
-const DevCardModal = ({toggleModal, buyaCard, adjustScore}) => {
+const DevCardModal = ({toggleModal, buyaCard, adjustScore, playerHand}) => {
   return (
     <div className="game-modle game-modle-active">
       <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
@@ -9,6 +9,7 @@ const DevCardModal = ({toggleModal, buyaCard, adjustScore}) => {
           style={{float: 'right', fontSize: '10pt'}}
         />
       </div>
+      <div>{playerHand.map((el, i) => <li key={i}>{el}</li>)}</div>
       <div className="build-modal">
         <div />
         <button

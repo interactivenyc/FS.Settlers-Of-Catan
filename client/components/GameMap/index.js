@@ -19,7 +19,6 @@ class GameMap extends Component {
 
   componentDidMount() {
     socket.on('dispatch', action => store.dispatch(action))
-    console.log(typeof this.buyaCard)
   }
 
   buyaCard() {
@@ -51,6 +50,7 @@ class GameMap extends Component {
           toggleModal={this.props.toggleModal}
           buyaCard={this.buyaCard}
           adjustScore={this.props.adjustScore}
+          playerHand={this.props.playerHand}
         />
         <GameBoard
           adjust={-25}
@@ -83,7 +83,8 @@ const mapStateToProps = state => {
     visible: gameState.modle,
     playerTurn: gameState.playerTurn,
     die1: gameState.die1,
-    die2: gameState.die2
+    die2: gameState.die2,
+    playerHand: playerState.playerHand
   }
 }
 
