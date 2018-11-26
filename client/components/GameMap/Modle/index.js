@@ -4,6 +4,7 @@ import DevCardModal from './DevCardModal'
 import RobberModal from './RobberModal'
 import TradeModal from './TradeModal'
 import OfferModal from './OfferModal'
+import Plenty from './Plenty'
 
 const Modle = ({
   visible,
@@ -41,6 +42,8 @@ const Modle = ({
         return <TradeModal toggleModal={toggleModal} />
       case 'offer':
         return <OfferModal toggleModal={toggleModal} />
+      case 'plenty':
+        return <Plenty />
       default:
         return <div />
     }

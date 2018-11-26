@@ -9,7 +9,8 @@ import {
   RECEIVE_OFFER,
   ACCEPT_OFFER,
   REJECT_OFFER,
-  CLEAR_OFFER
+  CLEAR_OFFER,
+  toggleModal
 } from './actionTypes'
 
 import {
@@ -25,6 +26,22 @@ export const playCard = playedCard => {
     let {playerHand} = getState().playerState
     let elToRemove = playerHand.indexOf(playedCard)
     let updatedHand = playerHand.filter((card, i) => i !== elToRemove)
+    if (event === 'vp') {
+      this.props.adjustScore(1)
+    }
+    if (playedCard === 'plenty') {
+      dispatch(toggleModal('plenty'))
+      console.log('reach if', playedCard)
+    }
+    if (playedCard === 'knight') {
+      console.log('knight')
+    }
+    if (playedCard === 'monopoly') {
+      console.log('monopoly')
+    }
+    if (playedCard === 'roadBuilding') {
+      console.log('roadbuilding')
+    }
     dispatch(deleteCard(updatedHand))
   }
 }

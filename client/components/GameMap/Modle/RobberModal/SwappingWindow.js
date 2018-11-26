@@ -4,7 +4,8 @@ const SwappingWindow = ({
   resource,
   robber,
   handleClickAdd,
-  handleClickSubtract
+  handleClickSubtract,
+  displayValue
 }) => {
   return (
     <div key={resource.type} className="robber-modal-group">
@@ -33,7 +34,7 @@ const SwappingWindow = ({
       </div>
       <div className="robber-modal-item resource-group">
         <div className={`modal-resource ${resource.type}`} />
-        <h2>{resource.quantity}</h2>
+        <h2>{displayValue && resource.quantity}</h2>
       </div>
     </div>
   )

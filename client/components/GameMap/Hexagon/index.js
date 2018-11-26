@@ -5,7 +5,7 @@ import Edges from './Edges'
 
 class Hexagon extends Component {
   componentDidUpdate() {
-    if (this.props.moveRobber) window.alert('move the robber')
+    // if (this.props.moveRobber) window.alert('move the robber')
   }
   handleResourceClassList = () => {
     const {moveRobber, board, gameOptions} = this.props
