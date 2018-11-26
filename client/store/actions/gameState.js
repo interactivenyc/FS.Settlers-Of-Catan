@@ -98,6 +98,8 @@ export const moveRobberThunk = id => (dispatch, getState) => {
 
   const phase = isRobable ? 'rob' : ''
 
+  if (phase === 'rob') window.alert('select a settlement to rob')
+
   dispatch(moveRobber(resource))
   dispatch(changePhase(phase))
   socket.emit('dispatch', moveRobber(resource))
