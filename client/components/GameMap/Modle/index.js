@@ -13,12 +13,19 @@ const Modle = ({
   playerHand,
   handlePlayCard,
   player,
+  changeGamePhase,
   robberDiscardThunk
 }) => {
   const setUpModal = modalType => {
     switch (modalType) {
       case 'build':
-        return <BuildModal toggleModal={toggleModal} />
+        return (
+          <BuildModal
+            toggleModal={toggleModal}
+            player={player}
+            changeGamePhase={changeGamePhase}
+          />
+        )
       case 'showDevCards':
         return (
           <DevCardModal
