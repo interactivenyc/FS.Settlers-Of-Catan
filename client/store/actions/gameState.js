@@ -115,8 +115,8 @@ export const newDiceRoll = () => {
 
 export const moveRobberThunk = id => (dispatch, getState) => {
   const {board, playerState: {playerNumber}} = getState()
-  const resource = {...board.resources[id]}
-
+  const resource = board.resources[id]
+  console.log(board, resource)
   const isRobable = resource.vertices
     .map(vertex => board.vertices[vertex.id])
     .filter(vertex => vertex.player !== playerNumber && vertex.player).length
