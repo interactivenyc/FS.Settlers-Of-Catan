@@ -6,7 +6,7 @@ module.exports = io => {
   let activeGames = {'Default Game': {}}
   let gameDecks = {}
   let chatHistory = []
-  const numPlayers = 4
+  const numPlayers = 2
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
@@ -64,6 +64,12 @@ module.exports = io => {
     activeGames = {'Default Game': {}}
   }
 
+  function updateLobby() {
+    io.sockets
+      .in('lobby')
+      .emit('update-lobby', userLobby, activeGames, chatHistory)
+  }
+
   io.on('connection', socket => {
     /*******************************************
      * GAME LISTENERS
@@ -78,19 +84,25 @@ module.exports = io => {
      *******************************************/
 
     console.log(`A socket connection to the server has been made: ${socket.id}`)
-    socket.broadcast.emit('player-joined', socket.id)
 
     socket.on('join-lobby', user => {
       userLobby[socket.id] = user
-      // console.log('userLobby', userLobby, '\nactiveGames', activeGames)
-      io.sockets.emit('update-lobby', userLobby, activeGames, chatHistory)
+      socket.join('lobby')
+      updateLobby()
+    })
+
+    socket.on('switch-room', room => {
+      socket.leave('lobby')
+      socket.join(room)
+      io.sockets.in('lobby').emit('log-server-message', 'message to lobby')
+      updateLobby()
+      io.sockets.in(room).emit('log-server-message', `message to ${room}`)
     })
 
     socket.on('join-game', async gameId => {
       console.log('join-game gameId', gameId)
       activeGames[gameId][socket.id] = userLobby[socket.id]
-      // console.log('join-game activeGames', activeGames)
-      io.sockets.emit('game-joined', activeGames)
+      updateLobby()
       const userKeys = Object.keys(activeGames[gameId])
       /**
        * START NEW GAME
@@ -111,28 +123,31 @@ module.exports = io => {
           gameUsers.push(user)
           delete userLobby[socketId]
 
+          socket.leave('lobby')
+          socket.join('gameroom')
+
           io.to(socketId).emit('start-game', board.board_data, {
             number: playerNumber,
             color: colors[playerNumber],
             userProfile: user
           })
         })
-        io.sockets.emit('set-game-users', gameUsers)
-        io.sockets.emit('update-lobby', userLobby, activeGames)
+        io.sockets.in('gameroom').emit('set-game-users', gameUsers)
+        updateLobby()
       }
     })
 
     socket.on('reset-all-games', () => {
       log('reset-all-games')
       resetAllGames()
-      io.sockets.emit('games-reset', activeGames)
+      updateLobby()
     })
 
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
       delete userLobby[socket.id]
       delete activeGames['Default Game'][socket.id]
-      io.sockets.emit('lobby-left', userLobby)
+      updateLobby()
     })
 
     socket.on('delete-user-from-game', (email, gameId) => {
@@ -151,7 +166,7 @@ module.exports = io => {
       console.log('leave-game', gameId, socket.id)
       if (gameId) {
         delete activeGames[gameId][socket.id]
-        io.sockets.emit('update-lobby', userLobby, activeGames)
+        updateLobby()
       }
     })
 
@@ -159,7 +174,7 @@ module.exports = io => {
       console.log('send-message', message)
 
       chatHistory.push(message)
-      io.sockets.emit('update-chat', chatHistory)
+      io.sockets.in('lobby').emit('update-chat', chatHistory)
     })
 
     /**

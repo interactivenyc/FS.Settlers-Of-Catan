@@ -10,4 +10,8 @@ socket.on('connect', () => {
   console.log('Connected!')
 })
 
+socket.on('connectToRoom', roomId => {
+  console.log('You are connected to room:', roomId)
+})
+
 export default socket
