@@ -4,6 +4,8 @@ import DevCardModal from './DevCardModal'
 import RobberModal from './RobberModal'
 import TradeModal from './TradeModal'
 import OfferModal from './OfferModal'
+import Plenty from './Plenty'
+import Monopoly from './Monopoly'
 
 const Modle = ({
   visible,
@@ -13,8 +15,10 @@ const Modle = ({
   playerHand,
   handlePlayCard,
   player,
+  plentyThunk,
   changeGamePhase,
-  robberDiscardThunk
+  robberDiscardThunk,
+  monopoly
 }) => {
   const setUpModal = modalType => {
     switch (modalType) {
@@ -48,6 +52,16 @@ const Modle = ({
         return <TradeModal toggleModal={toggleModal} />
       case 'offer':
         return <OfferModal toggleModal={toggleModal} />
+      case 'plenty':
+        return (
+          <Plenty
+            plentyThunk={plentyThunk}
+            player={player}
+            toggleModal={toggleModal}
+          />
+        )
+      case 'monopoly':
+        return <Monopoly monopoly={monopoly} toggleModal={toggleModal} />
       default:
         return <div />
     }

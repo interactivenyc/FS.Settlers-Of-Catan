@@ -29,14 +29,6 @@ const DevCardModal = ({
       </div>
       <div className="build-modal">
         <div />
-        <button
-          className="build-modal-button"
-          onClick={() => {
-            adjustScore(1)
-          }}
-        >
-          PlayVPCard
-        </button>
 
         <button onClick={buyaCard} className="build-modal-button">
           Get New Development Card = &nbsp;<div className="modal-resource pasture" />

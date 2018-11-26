@@ -49,11 +49,8 @@ class GameMap extends Component {
     socket.emit('get-dev-card', 'defaultGame')
   }
 
-  handlePlayCard = event => {
-    if (event === 'vp') {
-      this.props.adjustScore(1)
-    }
-    this.props.playCard(event)
+  handlePlayCard = card => {
+    this.props.playCard(card)
   }
 
   handleClick = e => {
@@ -137,6 +134,9 @@ class GameMap extends Component {
           player={player}
           playerHand={this.props.playerHand}
           handlePlayCard={this.handlePlayCard}
+          setResources={this.props.setResources}
+          plentyThunk={this.props.plentyThunk}
+          monopoly={this.props.monopoly}
         />
         <GameBoard
           adjust={-25}
@@ -158,6 +158,7 @@ class GameMap extends Component {
           nextPlayerThunk={this.props.nextPlayerThunk}
           toggleModal={this.props.toggleModal}
           newDiceRoll={this.props.newDiceRoll}
+          changePhase={this.props.changePhase}
           changeGamePhase={changeGamePhase}
         />
       </div>
@@ -195,5 +196,9 @@ export default connect(mapStateToProps, {
   changeGamePhase: actions.changeGamePhase,
   buildCityThunk: actions.buildCityThunk,
   robberDiscardThunk: actions.robberDiscardThunk,
-  playCard: actions.playCard
+  playCard: actions.playCard,
+  changePhase: actions.changePhase,
+  setResources: actions.setResources,
+  plentyThunk: actions.plentyThunk,
+  monopoly: actions.monopoly
 })(GameMap)

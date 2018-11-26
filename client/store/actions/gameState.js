@@ -9,10 +9,12 @@ import {
   updateScore,
   updateScorePlayer,
   updatePlayers,
-  changePhase
+  changePhase,
+  setResources
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
+import {get} from 'https'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
 
@@ -133,10 +135,17 @@ export const moveRobberThunk = id => (dispatch, getState) => {
 export const adjustScore = scoreChange => {
   return (dispatch, getState) => {
     let playerScore = getState().playerState.score
-    let playerId = getState().playerState.playerNumber
     let updatedScore = playerScore + scoreChange
+    let playerNumber = getState().playerState.playerNumber
+    let playersArr = getState().gameState.players.map(el => {
+      if (playerNumber === el.id) {
+        return {...el, score: updatedScore}
+      } else {
+        return {...el}
+      }
+    })
 
-    dispatch(updateScore(playerId, updatedScore))
+    dispatch(updatePlayers(playersArr, updatedScore))
     dispatch(updateScorePlayer(updatedScore))
   }
 }
@@ -153,4 +162,83 @@ export const nextPlayerThunk = playerNumber => dispatch => {
   dispatch(nextPlayer(playerNumber))
   socket.emit('dispatch', nextPlayer(playerNumber))
   socket.emit('dispatchThunk', {action: 'startTurnThunk'})
+}
+
+export const plentyThunk = resources => (dispatch, getState) => {
+  dispatch(setResources(resources))
+  socket.emit('dispatch', setResources(resources))
+  let playerNumber = getState().playerState.playerNumber
+  let playersArr = getState().gameState.players.map(el => {
+    if (playerNumber === el.id) {
+      return {...el, resources: el.resources + 2}
+    } else {
+      return el
+    }
+  })
+  dispatch(updatePlayers(playersArr))
+  socket.emit('dispatch', updatePlayers(playersArr))
+}
+
+export const sendResources = (type, quantity, player) => (
+  dispatch,
+  getState
+) => {
+  const playerId = getState().playerState.playerNumber
+  if (playerId === player) {
+    const newResources = getState().playerState.resources.map(el => {
+      if (el.type === type) {
+        return {...el, quantity: el.quantity + quantity}
+      } else {
+        return el
+      }
+    })
+    let playersArr = getState().gameState.players.map(el => {
+      if (playerId === el.id) {
+        return {...el, resources: el.resources + quantity}
+      } else {
+        return el
+      }
+    })
+
+    dispatch(setResources(newResources))
+    dispatch(updatePlayers(playersArr))
+    socket.emit('dispatch', updatePlayers(playersArr))
+  }
+}
+
+export const depleteResources = (type, player) => (dispatch, getState) => {
+  let numDepletedResources
+  const newResources = getState().playerState.resources.map(el => {
+    if (el.type === type) {
+      numDepletedResources = el.quantity
+      return {...el, quantity: 0}
+    } else {
+      return el
+    }
+  })
+  let playerNumber = getState().playerState.playerNumber
+  let playersArr = getState().gameState.players.map(el => {
+    if (playerNumber === el.id) {
+      return {...el, resources: el.resources - numDepletedResources}
+    } else {
+      return el
+    }
+  })
+
+  dispatch(setResources(newResources))
+  dispatch(updatePlayers(playersArr))
+  socket.emit('dispatchThunk', {
+    action: 'sendResources',
+    args: [type, numDepletedResources, player]
+  })
+}
+
+export const monopoly = type => {
+  return (dispatch, getState) => {
+    const player = getState().playerState.playerNumber
+    socket.emit('dispatchThunk', {
+      action: 'depleteResources',
+      args: [type, player]
+    })
+  }
 }
