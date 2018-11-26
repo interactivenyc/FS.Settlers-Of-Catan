@@ -51,7 +51,7 @@ const gameState = (state = defaultState, action) => {
       return {
         ...state,
         players: state.players.map(player => {
-          return player.id === action.id
+          return player.id === action.playerId
             ? {...player, resources: player.resources + 1}
             : player
         })
