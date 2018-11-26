@@ -136,6 +136,7 @@ class GameMap extends Component {
           handlePlayCard={this.handlePlayCard}
           setResources={this.props.setResources}
           plentyThunk={this.props.plentyThunk}
+          monopoly={this.props.monopoly}
         />
         <GameBoard
           adjust={-25}
@@ -198,5 +199,6 @@ export default connect(mapStateToProps, {
   playCard: actions.playCard,
   changePhase: actions.changePhase,
   setResources: actions.setResources,
-  plentyThunk: actions.plentyThunk
+  plentyThunk: actions.plentyThunk,
+  monopoly: actions.monopoly
 })(GameMap)

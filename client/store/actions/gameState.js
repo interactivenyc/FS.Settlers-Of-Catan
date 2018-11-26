@@ -207,7 +207,6 @@ export const sendResources = (type, quantity, player) => (
 }
 
 export const depleteResources = (type, player) => (dispatch, getState) => {
-  console.log(player)
   let numDepletedResources
   const newResources = getState().playerState.resources.map(el => {
     if (el.type === type) {

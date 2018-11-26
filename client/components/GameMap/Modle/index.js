@@ -5,6 +5,7 @@ import RobberModal from './RobberModal'
 import TradeModal from './TradeModal'
 import OfferModal from './OfferModal'
 import Plenty from './Plenty'
+import Monopoly from './Monopoly'
 
 const Modle = ({
   visible,
@@ -16,7 +17,8 @@ const Modle = ({
   player,
   plentyThunk,
   changeGamePhase,
-  robberDiscardThunk
+  robberDiscardThunk,
+  monopoly
 }) => {
   const setUpModal = modalType => {
     switch (modalType) {
@@ -58,6 +60,8 @@ const Modle = ({
             toggleModal={toggleModal}
           />
         )
+      case 'monopoly':
+        return <Monopoly monopoly={monopoly} toggleModal={toggleModal} />
       default:
         return <div />
     }
