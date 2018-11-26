@@ -37,6 +37,9 @@ export const ADD_CARD = 'ADD_CARD'
 export const DELETE_CARD = 'DELETE_CARD'
 export const UPDATE_SCORE_PLAYER = 'UPDATE_SCORE_PLAYER'
 export const USE_RESOURCES = 'USE_RESOURCES'
+export const SET_RESOURCES = 'SET_RESOURCES'
+export const ROB_PLAYER = 'ROB_PLAYER'
+
 export const assignPlayer = (number, color) => ({
   type: ASSIGN_PLAYER,
   number,
@@ -50,6 +53,10 @@ export const updateScorePlayer = updatedScore => ({
   updatedScore
 })
 export const useResources = resources => ({type: USE_RESOURCES, resources})
+export const setResources = resources => ({
+  type: SET_RESOURCES,
+  resources
+})
 
 // game State action types
 export const START_GAME = 'START_GAME'
@@ -65,7 +72,10 @@ export const REJECT_OFFER = 'REJECT_OFFER'
 export const CLEAR_OFFER = 'CLEAR_OFFER'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
 export const CHANGE_GAME_PHASE = 'CHANGE_GAME_PHASE'
+export const UPDATE_PLAYERS = 'UPDATE_PLAYERS'
+export const CHANGE_PHASE = 'CHANGE_PHASE'
 
+export const updatePlayers = players => ({type: UPDATE_PLAYERS, players})
 export const startGame = () => ({
   type: START_GAME,
   modle: false,
@@ -94,3 +104,4 @@ export const updateScore = (playerId, updatedScore) => ({
 })
 
 export const changeGamePhase = phase => ({type: CHANGE_GAME_PHASE, phase})
+export const changePhase = phase => ({type: CHANGE_PHASE, phase})

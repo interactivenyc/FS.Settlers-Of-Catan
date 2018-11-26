@@ -56,7 +56,8 @@ class Vertices extends React.Component {
       bottomLeftAnchor,
       bottomRightAnchor,
       bottomAnchor,
-      player
+      player,
+      handleSettlementClassList
     } = this.props
 
     return (
@@ -67,7 +68,7 @@ class Vertices extends React.Component {
         <Fragment>
           <div
             id={vert[1]}
-            className={`city city-1 ${vertices[vert[1]].color} ${
+            className={`${handleSettlementClassList(1, vert[1], vertices)} ${
               vertices[vert[1]].locationType
             }-player-${vertices[vert[1]].player} ${this.state.city[1]}-city-${
               player.playerNumber
@@ -77,7 +78,7 @@ class Vertices extends React.Component {
           />
           <div
             id={vert[2]}
-            className={`city city-2 ${vertices[vert[2]].color} ${
+            className={`${handleSettlementClassList(2, vert[2], vertices)} ${
               vertices[vert[2]].locationType
             }-player-${vertices[vert[2]].player} ${this.state.city[2]}-city-${
               player.playerNumber
@@ -88,7 +89,7 @@ class Vertices extends React.Component {
           {anchor && (
             <div
               id={vert[3]}
-              className={`city city-3 ${vertices[vert[3]].color} ${
+              className={`${handleSettlementClassList(3, vert[3], vertices)} ${
                 vertices[vert[3]].locationType
               }-player-${vertices[vert[3]].player} ${this.state.city[3]}-city-${
                 player.playerNumber
@@ -100,7 +101,7 @@ class Vertices extends React.Component {
           {bottomLeftAnchor && (
             <div
               id={vert[4]}
-              className={`city city-4 ${vertices[vert[4]].color} ${
+              className={`${handleSettlementClassList(4, vert[4], vertices)} ${
                 vertices[vert[4]].locationType
               }-player-${vertices[vert[4]].player} ${this.state.city[4]}-city-${
                 player.playerNumber
@@ -112,7 +113,7 @@ class Vertices extends React.Component {
           {bottomRightAnchor && (
             <div
               id={vert[6]}
-              className={`city city-6 ${vertices[vert[6]].color} ${
+              className={`${handleSettlementClassList(6, vert[6], vertices)} ${
                 vertices[vert[6]].locationType
               }-player-${vertices[vert[6]].player} ${this.state.city[6]}-city-${
                 player.playerNumber
@@ -124,7 +125,7 @@ class Vertices extends React.Component {
           {bottomAnchor && (
             <div
               id={vert[5]}
-              className={`city city-5 ${vertices[vert[5]].color} ${
+              className={`${handleSettlementClassList(5, vert[5], vertices)} ${
                 vertices[vert[5]].locationType
               }-player-${vertices[vert[5]].player} ${this.state.city[5]}-city-${
                 player.playerNumber

@@ -7,17 +7,14 @@ import {
   toggleModal,
   moveRobber,
   updateScore,
-  updateScorePlayer
+  updateScorePlayer,
+  updatePlayers,
+  changePhase
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
-
-export const nextPlayerThunk = playerNumber => dispatch => {
-  dispatch(nextPlayer(playerNumber))
-  socket.emit('dispatch', nextPlayer(playerNumber))
-}
 
 export const distributeResourcesThunk = num => (dispatch, getState) => {
   const {resources, vertices} = getState().board
@@ -69,13 +66,16 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   })
 }
 
-export const robberThunk = id => (dispatch, getState) => {
+export const robberThunk = () => (dispatch, getState) => {
   const {playerState, gameState} = getState()
+
   const resources = gameState.players.filter(
     player => player.id === playerState.playerNumber
   )[0].resources
 
-  if (resources > 7) dispatch(toggleModal('robber'))
+  if (resources > 7) {
+    dispatch(toggleModal('robber'))
+  }
 }
 
 export const newDiceRoll = () => {
@@ -89,21 +89,46 @@ export const newDiceRoll = () => {
     dispatch(rollDice(dieRolls))
     socket.emit('dispatch', rollDice(dieRolls))
 
-    const newState = getState().gameState
-    const newDiceTotal = newState.die1 + newState.die2
+    const {gameState} = getState()
+    const newDiceTotal = gameState.die1 + gameState.die2
 
-    dispatch(distributeResourcesThunk(newState.die1 + newState.die2))
+    dispatch(distributeResourcesThunk(newDiceTotal))
 
     if (newDiceTotal === 7) {
-      dispatch(robberThunk())
-      socket.emit('dispatchThunk', {action: 'robberThunk'})
+      const players = gameState.players.map(
+        player =>
+          player.resources > 7 ? {...player, responded: false} : player
+      )
+
+      if (players.every(player => player.responded)) {
+        dispatch(changePhase('moveRobber'))
+        socket.emit('dispatch', changePhase('moveRobber'))
+      } else {
+        dispatch(updatePlayers(players))
+        socket.emit('dispatch', updatePlayers(players))
+        dispatch(robberThunk())
+        socket.emit('dispatchThunk', {action: 'robberThunk'})
+      }
     }
   }
 }
 
 export const moveRobberThunk = id => (dispatch, getState) => {
-  const resource = {...getState().board.resources[id]}
+  const {board, playerState: {playerNumber}} = getState()
+  const resource = {...board.resources[id]}
+
+  const isRobable = resource.vertices
+    .map(vertex => board.vertices[vertex.id])
+    .filter(vertex => vertex.player !== playerNumber && vertex.player).length
+
+  const phase = isRobable ? 'rob' : ''
+
+  if (phase === 'rob') window.alert('select a settlement to rob')
+
   dispatch(moveRobber(resource))
+  dispatch(changePhase(phase))
+  socket.emit('dispatch', moveRobber(resource))
+  socket.emit('dispatch', changePhase(phase))
 }
 
 export const adjustScore = scoreChange => {
@@ -115,4 +140,18 @@ export const adjustScore = scoreChange => {
     dispatch(updateScore(playerId, updatedScore))
     dispatch(updateScorePlayer(updatedScore))
   }
+}
+
+export const startTurnThunk = () => (dispatch, getState) => {
+  const {playerState, gameState} = getState()
+
+  if (playerState.playerNumber === gameState.playerTurn) {
+    dispatch(newDiceRoll())
+  }
+}
+
+export const nextPlayerThunk = playerNumber => dispatch => {
+  dispatch(nextPlayer(playerNumber))
+  socket.emit('dispatch', nextPlayer(playerNumber))
+  socket.emit('dispatchThunk', {action: 'startTurnThunk'})
 }

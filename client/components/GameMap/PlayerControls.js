@@ -23,9 +23,6 @@ const PlayerControls = ({
         ))}
         {playerTurn === player.playerNumber && (
           <div className="section-btns">
-            <button onClick={newDiceRoll} className="btn" type="button">
-              Roll
-            </button>
             <button
               className="btn"
               onClick={() => {

@@ -6,7 +6,9 @@ import {
   ROLL_DICE,
   TOGGLE_MODAL,
   UPDATE_SCORE,
-  CHANGE_GAME_PHASE
+  CHANGE_GAME_PHASE,
+  CHANGE_PHASE,
+  UPDATE_PLAYERS
 } from '../actions'
 
 const defaultState = {
@@ -31,8 +33,10 @@ const gameState = (state = defaultState, action) => {
         let user = {
           id: action.users[i].playerNumber,
           userProfile: action.users[i],
-          score: 0,
-          resources: 0
+          resources: 0,
+          responded: true,
+          longestRoad: 0,
+          score: 0
         }
         console.log('PUSH_USERS', user)
         players.push(user)
@@ -80,6 +84,10 @@ const gameState = (state = defaultState, action) => {
         ...state,
         phase: action.phase
       }
+    case UPDATE_PLAYERS:
+      return {...state, players: action.players}
+    case CHANGE_PHASE:
+      return {...state, phase: action.phase}
     default:
       return state
   }

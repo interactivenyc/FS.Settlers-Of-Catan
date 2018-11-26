@@ -13,7 +13,8 @@ const Modle = ({
   playerHand,
   handlePlayCard,
   player,
-  changeGamePhase
+  changeGamePhase,
+  robberDiscardThunk
 }) => {
   const setUpModal = modalType => {
     switch (modalType) {
@@ -36,7 +37,13 @@ const Modle = ({
           />
         )
       case 'robber':
-        return <RobberModal toggleModal={toggleModal} />
+        return (
+          <RobberModal
+            player={player}
+            toggleModal={toggleModal}
+            robberDiscardThunk={robberDiscardThunk}
+          />
+        )
       case 'trade':
         return <TradeModal toggleModal={toggleModal} />
       case 'offer':
