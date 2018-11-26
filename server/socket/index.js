@@ -37,7 +37,6 @@ module.exports = io => {
     }
     shuffle(cards)
     gameDecks.defaultGame = cards
-    // console.log(gameDecks.defaultGame)
   }
 
   function getRandomCard(gameId) {
