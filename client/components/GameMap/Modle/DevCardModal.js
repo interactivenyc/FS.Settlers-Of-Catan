@@ -1,5 +1,11 @@
 import React from 'react'
-const DevCardModal = ({toggleModal, buyaCard, adjustScore}) => {
+const DevCardModal = ({
+  toggleModal,
+  buyaCard,
+  adjustScore,
+  playerHand,
+  handlePlayCard
+}) => {
   return (
     <div>
       <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
@@ -9,7 +15,20 @@ const DevCardModal = ({toggleModal, buyaCard, adjustScore}) => {
           style={{float: 'right', fontSize: '10pt'}}
         />
       </div>
+      <div>
+        {playerHand.map((el, i) => (
+          <button
+            onClick={() => {
+              handlePlayCard(el)
+            }}
+            key={i}
+          >
+            {el}
+          </button>
+        ))}
+      </div>
       <div className="build-modal">
+        <div />
         <button
           className="build-modal-button"
           onClick={() => {

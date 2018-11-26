@@ -110,14 +110,9 @@ export const adjustScore = scoreChange => {
   return (dispatch, getState) => {
     let playerScore = getState().playerState.score
     let playerId = getState().playerState.playerNumber
-    let updatedScore = 0
-    if (scoreChange > 0) {
-      updatedScore = playerScore + scoreChange
-    }
-    if (scoreChange < 0) {
-      updatedScore = playerScore - scoreChange
-    }
-    dispatch(updateScore(updatedScore))
-    dispatch(updateScorePlayer(playerId, updatedScore))
+    let updatedScore = playerScore + scoreChange
+
+    dispatch(updateScore(playerId, updatedScore))
+    dispatch(updateScorePlayer(updatedScore))
   }
 }
