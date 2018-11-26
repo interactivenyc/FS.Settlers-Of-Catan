@@ -111,10 +111,17 @@ export const moveRobberThunk = id => (dispatch, getState) => {
 export const adjustScore = scoreChange => {
   return (dispatch, getState) => {
     let playerScore = getState().playerState.score
-    let playerId = getState().playerState.playerNumber
     let updatedScore = playerScore + scoreChange
+    let playerNumber = getState().playerState.playerNumber
+    let playersArr = getState().gameState.players.map(el => {
+      if (playerNumber === el.id) {
+        return {...el, score: updatedScore}
+      } else {
+        return {...el}
+      }
+    })
 
-    dispatch(updateScore(playerId, updatedScore))
+    dispatch(updatePlayers(playersArr, updatedScore))
     dispatch(updateScorePlayer(updatedScore))
   }
 }
@@ -137,13 +144,19 @@ export const plentyThunk = resources => (dispatch, getState) => {
   dispatch(setResources(resources))
   socket.emit('dispatch', setResources(resources))
   let playerNumber = getState().playerState.playerNumber
-  let players = getState().players.map(el => {
+  let playersArr = getState().gameState.players.map(el => {
     if (playerNumber === el.id) {
       return {...el, resources: el.resources + 2}
     } else {
       return {...el}
     }
   })
-  dispatch(updatePlayers(players))
-  socket.emit('dispatch', updatePlayers(players))
+  dispatch(updatePlayers(playersArr))
+  socket.emit('dispatch', updatePlayers(playersArr))
+}
+
+export const monopoly = () => {
+  return (dispatch, getState) => {
+    socket.emit('dispatch', updatePlayers(playersArr))
+  }
 }

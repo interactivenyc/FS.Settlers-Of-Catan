@@ -15,7 +15,7 @@ const Modle = ({
   handlePlayCard,
   player,
   robberDiscardThunk,
-  setResources
+  plentyThunk
 }) => {
   const setUpModal = modalType => {
     switch (modalType) {

@@ -19,6 +19,8 @@ import {
   createResourceCardsArray
 } from './helpers'
 
+import {adjustScore, monopoly} from './gameState'
+
 import socket from '../../socket'
 
 export const playCard = playedCard => {
@@ -26,18 +28,17 @@ export const playCard = playedCard => {
     let {playerHand} = getState().playerState
     let elToRemove = playerHand.indexOf(playedCard)
     let updatedHand = playerHand.filter((card, i) => i !== elToRemove)
-    if (event === 'vp') {
-      this.props.adjustScore(1)
+    if (playedCard === 'vp') {
+      dispatch(adjustScore(1))
     }
     if (playedCard === 'plenty') {
       dispatch(toggleModal('plenty'))
-      console.log('reach if', playedCard)
     }
     if (playedCard === 'knight') {
       console.log('knight')
     }
     if (playedCard === 'monopoly') {
-      console.log('monopoly')
+      dispatch(monopoly())
     }
     if (playedCard === 'roadBuilding') {
       console.log('roadbuilding')

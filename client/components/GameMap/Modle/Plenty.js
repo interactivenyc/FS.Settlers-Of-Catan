@@ -62,7 +62,7 @@ class Plenty extends Component {
   }
 
   handleClickConfirm = () => {
-    const {toggleModal, player, setResources} = this.props
+    const {toggleModal, player, plentyThunk} = this.props
     const {discard, choice} = this.state
     const resources = player.resources
     const choices = choice.reduce((acc, val) => {

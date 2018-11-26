@@ -49,21 +49,6 @@ class GameMap extends Component {
   }
 
   handlePlayCard = card => {
-    if (event === 'vp') {
-      this.props.adjustScore(1)
-    }
-    if (event === 'plenty') {
-      console.log('plenty')
-    }
-    if (card === 'knight') {
-      console.log('knight')
-    }
-    if (card === 'monopoly') {
-      console.log('monopoly')
-    }
-    if (card === 'roadBuilding') {
-      console.log('roadbuilding')
-    }
     this.props.playCard(card)
   }
 
@@ -131,6 +116,7 @@ class GameMap extends Component {
           playerHand={this.props.playerHand}
           handlePlayCard={this.handlePlayCard}
           setResources={this.props.setResources}
+          plentyThunk={this.props.plentyThunk}
         />
         <GameBoard
           adjust={-25}
