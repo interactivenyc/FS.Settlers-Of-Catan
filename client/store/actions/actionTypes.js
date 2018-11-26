@@ -15,7 +15,7 @@ export const BUILD_CITY = 'BUILD_CITY'
 
 export const getBoard = board => ({type: GET_BOARD, board})
 export const rollDice = dieRolls => ({type: ROLL_DICE, dieRolls})
-export const moveRobber = resource => ({type: MOVE_ROBBER, resource})
+export const moveRobber = resourceId => ({type: MOVE_ROBBER, resourceId})
 export const createRoad = (id, color, number) => ({
   type: CREATE_ROAD,
   id,

@@ -74,18 +74,21 @@ class BuildModal extends React.Component {
 
   handleClick = event => {
     const {changeGamePhase, toggleModal} = this.props
-    switch (event.target.id) {
-      case 'road': {
-        changeGamePhase('build road')
-        return toggleModal(false)
-      }
-      case 'settlement': {
-        changeGamePhase('build settlement')
-        return toggleModal(false)
-      }
-      case 'city': {
-        changeGamePhase('build city')
-        return toggleModal(false)
+
+    if (!event.target.disabled && !event.target.parentElement.disabled) {
+      switch (event.target.id || event.target.parentElement.id) {
+        case 'road': {
+          changeGamePhase('build road')
+          return toggleModal(false)
+        }
+        case 'settlement': {
+          changeGamePhase('build settlement')
+          return toggleModal(false)
+        }
+        case 'city': {
+          changeGamePhase('build city')
+          return toggleModal(false)
+        }
       }
     }
   }

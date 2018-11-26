@@ -3,8 +3,6 @@
 export const getEdgeNeighborsColor = (edge, board) => {
   const obj = {[edge.id]: true}
 
-  console.log(edge)
-
   const neighbors = [...edge.vertices[0].edges, ...edge.vertices[1].edges]
 
   return neighbors.reduce((acc, val) => {

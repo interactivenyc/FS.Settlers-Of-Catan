@@ -31,7 +31,11 @@ class Vertices extends React.Component {
       const vertex = vertices[event.target.id]
       const targetVertId = event.target.getAttribute('stateid')
 
-      if (phase === 'build city' && vertex.color === player.color) {
+      if (
+        phase === 'build city' &&
+        vertex.color === player.color &&
+        vertex.locationType === 'settlement'
+      ) {
         this.setState({city: {...this.state.city, [targetVertId]: 'valid'}})
       } else if (phase === 'build settlement') {
         const neighbors = getVerticeNeighbors(vertex, this.props.board)

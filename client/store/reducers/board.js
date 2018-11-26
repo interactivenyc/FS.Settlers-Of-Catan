@@ -43,8 +43,15 @@ export default function(state = defaultBoard, action) {
           }
         }
       }
-    case MOVE_ROBBER:
-      return {...state, robberLocation: action.resource}
+    case MOVE_ROBBER: {
+      let resource
+      for (const res in state.resources) {
+        if (state.resources[res].id === action.resourceId) {
+          resource = state.resources[res]
+        }
+      }
+      return {...state, robberLocation: resource}
+    }
     default:
       return state
   }
