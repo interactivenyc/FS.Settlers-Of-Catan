@@ -224,7 +224,7 @@
   align-items: center;
 }
 
-.build-modal-button:hover {
+.build-modal-button-active:hover {
   outline: #ffb732 solid 6px;
 }
 
@@ -278,6 +278,14 @@
 }
 
 .modal-resource {
+  width: 90px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.build-modal-resource {
   width: 90px;
   height: 100px;
   background-repeat: no-repeat;
@@ -393,4 +401,89 @@
 
 .cur-player {
   outline: 5px solid #ecf0f1;
+}
+
+.build-player-1:hover {
+  background-color: var(--color-red);
+}
+
+.build-player-2:hover {
+  background-color: var(--color-green);
+}
+
+.build-player-3:hover {
+  background-color: var(--color-blue);
+}
+
+.build-player-4:hover {
+  background-color: var(--color-orange);
+}
+
+.city-player-1 {
+  outline: var(--color-red) solid 3px;
+}
+
+.city-player-2 {
+  outline: var(--color-green) solid 3px;
+}
+
+.city-player-3 {
+  outline: var(--color-blue) solid 3px;
+}
+
+.city-player-4 {
+  outline: var(--color-orange) solid 3px;
+}
+
+.valid-city-1:hover {
+  outline: var(--color-red) solid 3px;
+}
+
+.valid-city-2:hover {
+  outline: var(--color-green) solid 3px;
+}
+
+.valid-city-3:hover {
+  outline: var(--color-blue) solid 3px;
+}
+
+.valid-city-4:hover {
+  outline: var(--color-orange) solid 3px;
+}
+
+.player-alert {
+  font-size: 20pt;
+  color: black;
+  position: absolute;
+  top: 120px;
+  left: 200px;
+  z-index: 2;
+  overflow-wrap: normal;
+  max-width: 250px;
+  padding: 5px;
+  line-height: 1.5em;
+  font-family: 'Fantasy', 'Luminari', 'fantasy';
+  text-align: center;
+}
+
+.player-alert-button {
+  font-size: 20pt;
+  color: black;
+  background-color: lightgrey;
+  position: absolute;
+  top: 130px;
+  right: 240px;
+  z-index: 2;
+  overflow-wrap: normal;
+  max-width: 250px;
+  padding: 5px;
+  line-height: 1.5em;
+  font-family: 'Fantasy', 'Luminari', 'fantasy';
+  text-align: center;
+  border-radius: 10px;
+  border: maroon solid 4px;
+}
+
+.player-alert-button:hover {
+  background-color: darkgrey;
 }

@@ -5,13 +5,13 @@ import {
   DISTRIBUTE_RESOURCE,
   ROLL_DICE,
   TOGGLE_MODAL,
-  CHANGE_PHASE,
   UPDATE_SCORE,
+  CHANGE_GAME_PHASE,
+  CHANGE_PHASE,
   UPDATE_PLAYERS
 } from '../actions'
 
 const defaultState = {
-  phase: '',
   playerTurn: 1,
   modle: false,
   players: [
@@ -19,7 +19,8 @@ const defaultState = {
     // {id: 1, userProfile: {}, score:0}
   ],
   die1: 0,
-  die2: 0
+  die2: 0,
+  phase: null
 }
 
 /* eslint-disable complexity */
@@ -58,7 +59,7 @@ const gameState = (state = defaultState, action) => {
         ...state,
         players: state.players.map(player => {
           return player.id === action.id
-            ? {...player, resources: player.resources + 1}
+            ? {...player, resources: player.resources + action.quantity}
             : player
         })
       }
@@ -73,10 +74,15 @@ const gameState = (state = defaultState, action) => {
       return {
         ...state,
         players: state.players.map(player => {
-          return player.id === action.id
+          return player.id === action.playerId
             ? {...player, score: action.updatedScore}
             : player
         })
+      }
+    case CHANGE_GAME_PHASE:
+      return {
+        ...state,
+        phase: action.phase
       }
     case UPDATE_PLAYERS:
       return {...state, players: action.players}

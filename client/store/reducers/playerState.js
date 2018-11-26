@@ -9,7 +9,8 @@ import {
   RECEIVE_OFFER,
   ACCEPT_OFFER,
   REJECT_OFFER,
-  CLEAR_OFFER
+  CLEAR_OFFER,
+  USE_RESOURCES
 } from '../actions'
 
 const playerState = {
@@ -17,11 +18,11 @@ const playerState = {
   color: null,
   playerNumber: null,
   resources: [
-    {type: 'forest', quantity: 0},
-    {type: 'field', quantity: 0},
-    {type: 'hill', quantity: 0},
-    {type: 'mountain', quantity: 0},
-    {type: 'pasture', quantity: 0}
+    {type: 'forest', quantity: 5},
+    {type: 'field', quantity: 5},
+    {type: 'hill', quantity: 5},
+    {type: 'mountain', quantity: 6},
+    {type: 'pasture', quantity: 5}
   ],
   currentTrade: null,
   score: 0
@@ -56,7 +57,7 @@ export default function(state = playerState, action) {
             resources: state.resources.map(
               resource =>
                 resource.type === action.resource
-                  ? {...resource, quantity: resource.quantity + 1}
+                  ? {...resource, quantity: resource.quantity + action.quantity}
                   : resource
             )
           }
@@ -136,7 +137,16 @@ export default function(state = playerState, action) {
           }
         }
       }
-
+    case USE_RESOURCES: {
+      const newPlayerState = {...state}
+      action.resources.forEach(resource => {
+        for (const res in newPlayerState.resources) {
+          if (newPlayerState.resources[res].type === resource) {
+            newPlayerState.resources[res].quantity--
+          }
+        }
+      })
+    }
     default:
       return state
   }

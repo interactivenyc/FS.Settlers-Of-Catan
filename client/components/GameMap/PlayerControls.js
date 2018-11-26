@@ -6,7 +6,9 @@ const PlayerControls = ({
   nextPlayerThunk,
   toggleModal,
   newDiceRoll,
-  changePhase
+  changePhase,
+  distributeResources,
+  changeGamePhase
 }) => {
   return (
     <div
@@ -27,7 +29,10 @@ const PlayerControls = ({
             </button>
             <button
               className="btn"
-              onClick={() => toggleModal('build')}
+              onClick={() => {
+                toggleModal('build')
+                changeGamePhase(null)
+              }}
               type="button"
             >
               Build

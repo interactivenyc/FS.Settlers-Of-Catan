@@ -67,7 +67,7 @@ class Hexagon extends Component {
               <h1>{!!number && robberLocation.id !== resource && number}</h1>
             </div>
           </div>
-          <Edges sides={sides} edges={edges} />
+          <Edges sides={sides} edges={edges} {...this.props} />
         </div>
       </div>
     )
