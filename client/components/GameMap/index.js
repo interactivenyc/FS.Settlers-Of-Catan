@@ -130,6 +130,7 @@ class GameMap extends Component {
           player={player}
           playerHand={this.props.playerHand}
           handlePlayCard={this.handlePlayCard}
+          setResources={this.props.setResources}
         />
         <GameBoard
           adjust={-25}
@@ -181,5 +182,7 @@ export default connect(mapStateToProps, {
   adjustScore: actions.adjustScore,
   robberDiscardThunk: actions.robberDiscardThunk,
   playCard: actions.playCard,
-  changePhase: actions.changePhase
+  changePhase: actions.changePhase,
+  setResources: actions.setResources,
+  plentyThunk: actions.plentyThunk
 })(GameMap)

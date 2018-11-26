@@ -9,10 +9,12 @@ import {
   updateScore,
   updateScorePlayer,
   updatePlayers,
-  changePhase
+  changePhase,
+  setResources
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
+import {get} from 'https'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
 
@@ -129,4 +131,19 @@ export const nextPlayerThunk = playerNumber => dispatch => {
   dispatch(nextPlayer(playerNumber))
   socket.emit('dispatch', nextPlayer(playerNumber))
   socket.emit('dispatchThunk', {action: 'startTurnThunk'})
+}
+
+export const plentyThunk = resources => (dispatch, getState) => {
+  dispatch(setResources(resources))
+  socket.emit('dispatch', setResources(resources))
+  let playerNumber = getState().playerState.playerNumber
+  let players = getState().players.map(el => {
+    if (playerNumber === el.id) {
+      return {...el, resources: el.resources + 2}
+    } else {
+      return {...el}
+    }
+  })
+  dispatch(updatePlayers(players))
+  socket.emit('dispatch', updatePlayers(players))
 }

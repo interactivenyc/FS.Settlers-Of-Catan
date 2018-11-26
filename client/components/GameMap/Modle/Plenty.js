@@ -46,12 +46,9 @@ class Plenty extends Component {
   handleClickSubtract = e => {
     let {start, choice} = this.state
     const type = e.target.dataset.resource
-    const total = start.reduce((acc, val) => acc + val.quantity, 0)
-    console.log(total)
-    if (total < this.state.discard) {
-      const [from, to] = this.swapResources(type, choice, start)
-      this.setState({start: to, choice: from})
-    }
+
+    const [from, to] = this.swapResources(type, choice, start)
+    this.setState({start: to, choice: from})
   }
 
   handleClickAdd = e => {
@@ -64,15 +61,22 @@ class Plenty extends Component {
     }
   }
 
-  //   handleClickConfirm = () => {
-  //     const {toggleModal, player} = this.props
-  //     const {discard, choice} = this.state
-  //     const id = player.playerNumber
-
-  // robberDiscardThunk({discard, id, resources: start2})
-  //     toggleModal(false)
-  //   }
+  handleClickConfirm = () => {
+    const {toggleModal, player, setResources} = this.props
+    const {discard, choice} = this.state
+    const resources = player.resources
+    const choices = choice.reduce((acc, val) => {
+      acc[val.type] = val.quantity
+      return acc
+    }, {})
+    const newResources = player.resources.map(el => {
+      return {...el, quantity: el.quantity + choices[el.type]}
+    })
+    plentyThunk(newResources)
+    toggleModal(false)
+  }
   render() {
+    let total = this.state.choice.reduce((acc, val) => acc + val.quantity, 0)
     return (
       <div className="robber-modal-container">
         <h1>{`Select  ${this.state.discard} resource cards`}</h1>
@@ -89,8 +93,8 @@ class Plenty extends Component {
         </div>
         <button
           type="button"
-          disabled={0 !== this.state.discard}
-          className={`confirm-btn ${0 === this.state.discard && 'visible'}`}
+          disabled={total !== this.state.discard}
+          className={`confirm-btn ${total === this.state.discard && 'visible'}`}
           onClick={this.handleClickConfirm}
         >
           accept

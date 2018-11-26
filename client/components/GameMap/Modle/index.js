@@ -14,7 +14,8 @@ const Modle = ({
   playerHand,
   handlePlayCard,
   player,
-  robberDiscardThunk
+  robberDiscardThunk,
+  setResources
 }) => {
   const setUpModal = modalType => {
     switch (modalType) {
@@ -43,7 +44,13 @@ const Modle = ({
       case 'offer':
         return <OfferModal toggleModal={toggleModal} />
       case 'plenty':
-        return <Plenty />
+        return (
+          <Plenty
+            plentyThunk={plentyThunk}
+            player={player}
+            toggleModal={toggleModal}
+          />
+        )
       default:
         return <div />
     }
