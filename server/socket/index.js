@@ -5,8 +5,17 @@ module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
   let gameDecks = {}
-  let chatHistory = []
+  let chatHistory = {Lobby: [], 'Default Game': []}
   const numPlayers = 2
+
+  class User {
+    constructor(data) {
+      this.id = data.id
+      this.email = data.email
+      this.activeGame = 'Default Game'
+      this.activeRoom = 'Lobby'
+    }
+  }
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
@@ -67,7 +76,7 @@ module.exports = io => {
   function updateLobby() {
     io.sockets
       .in('lobby')
-      .emit('update-lobby', userLobby, activeGames, chatHistory)
+      .emit('update-lobby', userLobby, activeGames, chatHistory.Lobby)
   }
 
   io.on('connection', socket => {
@@ -86,7 +95,8 @@ module.exports = io => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
     socket.on('join-lobby', user => {
-      userLobby[socket.id] = user
+      let gameUser = new User(user)
+      userLobby[socket.id] = gameUser
       socket.join('lobby')
       updateLobby()
     })
@@ -170,11 +180,12 @@ module.exports = io => {
       }
     })
 
-    socket.on('send-message', message => {
-      console.log('send-message', message)
+    socket.on('send-message', (message, room) => {
+      console.log('send-message', room, message)
+      if (!room) room = 'Lobby'
 
-      chatHistory.push(message)
-      io.sockets.in('lobby').emit('update-chat', chatHistory)
+      chatHistory[room].push(message)
+      io.sockets.in('lobby').emit('update-chat', chatHistory[room])
     })
 
     /**
