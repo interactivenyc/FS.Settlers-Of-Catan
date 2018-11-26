@@ -9,9 +9,11 @@ module.exports = io => {
   const numPlayers = 2
 
   class User {
-    constructor(data) {
+    constructor(data, socketId) {
       this.id = data.id
       this.email = data.email
+      this.username = data.username || data.email.split('@')[0]
+      this.socketId = socketId
       this.activeGame = 'Default Game'
       this.activeRoom = 'Lobby'
     }
@@ -79,6 +81,15 @@ module.exports = io => {
       .emit('update-lobby', userLobby, activeGames, chatHistory.Lobby)
   }
 
+  function leaveAllRooms(socket) {
+    for (let roomId in socket.rooms) {
+      if (socket.rooms.hasOwnProperty(roomId)) {
+        socket.emit('log-server-message', `leaving room ${roomId}`)
+        socket.leave(socket.rooms[roomId])
+      }
+    }
+  }
+
   io.on('connection', socket => {
     /*******************************************
      * GAME LISTENERS
@@ -95,18 +106,24 @@ module.exports = io => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
     socket.on('join-lobby', user => {
-      let gameUser = new User(user)
+      let gameUser = new User(user, socket.id)
       userLobby[socket.id] = gameUser
+      leaveAllRooms(socket)
       socket.join('lobby')
+      socket.emit('connectToRoom', 'Lobby')
       updateLobby()
     })
 
     socket.on('switch-room', room => {
-      socket.leave('lobby')
+      leaveAllRooms(socket)
       socket.join(room)
+
+      console.log('User Rooms: ', socket.rooms)
+
       io.sockets.in('lobby').emit('log-server-message', 'message to lobby')
       updateLobby()
       io.sockets.in(room).emit('log-server-message', `message to ${room}`)
+      socket.emit('connectToRoom', room)
     })
 
     socket.on('join-game', async gameId => {
@@ -184,7 +201,7 @@ module.exports = io => {
       console.log('send-message', room, message)
       if (!room) room = 'Lobby'
 
-      chatHistory[room].push(message)
+      chatHistory[room].push({username: userLobby[socket.id].username, message})
       io.sockets.in('lobby').emit('update-chat', chatHistory[room])
     })
 

@@ -37,7 +37,7 @@ export default class GameChat extends React.Component {
           <tr>
             <td>
               <div id="scrollText" className="scrollText">
-                <pre>{this.props.chatList.join('\n\r')}</pre>
+                <pre>{this.props.chatList.join('\n')}</pre>
               </div>
             </td>
           </tr>
