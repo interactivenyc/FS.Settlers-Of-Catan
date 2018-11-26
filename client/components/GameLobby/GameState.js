@@ -9,7 +9,9 @@ const GameState = props => {
         </tr>
         <tr>
           <td>
-            <pre>{JSON.stringify(props.state, null, 2)}</pre>
+            <div className="scrollTextJSON">
+              <pre>{JSON.stringify(props.state, null, 2)}</pre>
+            </div>
           </td>
         </tr>
       </tbody>

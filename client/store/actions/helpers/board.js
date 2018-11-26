@@ -44,6 +44,7 @@ export const validateChangeEdge = (playerState, edge, neighbors, board) => {
 
 // all adjacent vertices must have no settlements & must be two roads of same color from vertex
 export const validateChangeVertice = (neighbors, color) => {
+  // also cannot have more than 5 total settlements (would need to upgrade to city) - need to implement this
   const subjectVertex = neighbors[neighbors.length - 1]
 
   let verifyConnectingRoads = false

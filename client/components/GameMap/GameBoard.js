@@ -6,7 +6,17 @@ import Dice from '../Dice'
 
 const mapAdjust = 5
 
-const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
+const GameBoard = ({
+  adjust,
+  handleClick,
+  board,
+  die1,
+  die2,
+  player,
+  phase,
+  changeGamePhase,
+  playerTurn
+}) => {
   return (
     <div className="board" onClick={e => handleClick(e)}>
       <MapRow style={{transform: 'translateY(60%)'}}>
@@ -15,6 +25,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           image={board.resources[gameOptions.row1.hex1.id].type}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           style={{transform: `translateX(-${mapAdjust}%)`}}
@@ -23,6 +36,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           cityAdjust={adjust}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           style={{transform: `translateX(-${mapAdjust * 2}%)`}}
@@ -33,6 +49,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           anchorAdjust={adjust}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
       </MapRow>
       <MapRow style={{transform: 'translateY(30%)'}}>
@@ -41,6 +60,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           image={board.resources[gameOptions.row2.hex1.id].type}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row2.hex2}
@@ -49,6 +71,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           cityAdjust={adjust}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row2.hex3}
@@ -57,6 +82,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           cityAdjust={adjust * 2}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row2.hex4}
@@ -67,6 +95,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           anchorAdjust={adjust * 2}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
       </MapRow>
       <MapRow>
@@ -76,6 +107,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           bottomLeftAnchor
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row3.hex2}
@@ -84,6 +118,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           cityAdjust={adjust}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row3.hex3}
@@ -92,6 +129,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           cityAdjust={adjust * 2}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row3.hex4}
@@ -100,6 +140,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           cityAdjust={adjust * 3}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row3.hex5}
@@ -111,6 +154,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           bottomRightAnchor
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
       </MapRow>
       <MapRow style={{transform: 'translateY(-30%)'}}>
@@ -120,6 +166,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           bottomLeftAnchor
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row4.hex2}
@@ -128,6 +177,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           cityAdjust={adjust}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row4.hex3}
@@ -136,6 +188,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           cityAdjust={adjust * 2}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row4.hex4}
@@ -147,6 +202,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           bottomRightAnchor
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
       </MapRow>
       <MapRow style={{transform: 'translateY(-60%)'}}>
@@ -159,6 +217,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           anchorAdjust={adjust * -1}
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row5.hex2}
@@ -168,6 +229,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           bottomAnchor
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
         <Hexagon
           gameOptions={gameOptions.row5.hex3}
@@ -181,6 +245,9 @@ const GameBoard = ({adjust, handleClick, board, die1, die2, player}) => {
           bottomAnchor
           board={board}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
         />
       </MapRow>
       <Dice die1={die1} die2={die2} />

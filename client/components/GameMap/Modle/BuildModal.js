@@ -72,11 +72,29 @@ class BuildModal extends React.Component {
     }
   }
 
+  handleClick = event => {
+    const {changeGamePhase, toggleModal} = this.props
+    switch (event.target.id) {
+      case 'road': {
+        changeGamePhase('build road')
+        return toggleModal(false)
+      }
+      case 'settlement': {
+        changeGamePhase('build settlement')
+        return toggleModal(false)
+      }
+      case 'city': {
+        changeGamePhase('build city')
+        return toggleModal(false)
+      }
+    }
+  }
+
   render() {
     const {toggleModal} = this.props
 
     return (
-      <div>
+      <div onClick={event => this.handleClick(event)}>
         <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
           Build
           <button
@@ -88,36 +106,39 @@ class BuildModal extends React.Component {
         </div>
         <div className="build-modal">
           <button
+            id="road"
             className={`build-modal-button build-modal-button-${
               this.state.road.toggle
             }`}
             disabled={this.state.road.toggle === 'inactive'}
           >
-            Road = &nbsp;<div className="modal-resource hill" />
-            <div className="modal-resource forest" />
+            Road = &nbsp;<div className="build-modal-resource hill" />
+            <div className="build-modal-resource forest" />
           </button>
           <button
+            id="settlement"
             className={`build-modal-button build-modal-button-${
               this.state.settlement.toggle
             }`}
             disabled={this.state.settlement.toggle === 'inactive'}
           >
-            Settlement = &nbsp;<div className="modal-resource hill" />
-            <div className="modal-resource forest" />
-            <div className="modal-resource field" />
-            <div className="modal-resource pasture" />
+            Settlement = &nbsp;<div className="build-modal-resource hill" />
+            <div className="build-modal-resource forest" />
+            <div className="build-modal-resource field" />
+            <div className="build-modal-resource pasture" />
           </button>
           <button
+            id="city"
             className={`build-modal-button build-modal-button-${
               this.state.city.toggle
             }`}
             disabled={this.state.city.toggle === 'inactive'}
           >
-            City = &nbsp;<div className="modal-resource field" />
-            <div className="modal-resource field" />
-            <div className="modal-resource mountain" />
-            <div className="modal-resource mountain" />
-            <div className="modal-resource mountain" />
+            City = &nbsp;<div className="build-modal-resource field" />
+            <div className="build-modal-resource field" />
+            <div className="build-modal-resource mountain" />
+            <div className="build-modal-resource mountain" />
+            <div className="build-modal-resource mountain" />
           </button>
         </div>
       </div>

@@ -8,6 +8,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../store/actions'
 import socket from '../../socket'
 import store from '../../store'
+import PlayerAlerts from './PlayerAlerts'
 
 class GameMap extends Component {
   constructor(props) {
@@ -24,37 +25,83 @@ class GameMap extends Component {
     )
   }
 
+  componentDidUpdate() {
+    try {
+      if (this.props.currentTrade) {
+        console.log('[ GameMap ] UPDATE display trade being offered')
+        if (this.props.visible) {
+          console.log(
+            '[ GameMap ] UPDATE if visible, this is person making offer'
+          )
+        } else {
+          console.log(
+            '[ GameMap ] UPDATE if not visible, this is person receiving offer'
+          )
+          this.props.toggleModal('offer')
+        }
+      }
+    } catch (error) {
+      console.log(
+        '[ GameMap ] componentDidUpdate something went wrong with check state'
+      )
+      console.log(error)
+    }
+  }
+
   buyaCard() {
     socket.emit('get-dev-card', 'defaultGame')
   }
 
   handleClick = e => {
-    const {changeRoadThunk, changeVertexThunk, player, playerTurn} = this.props
+    const {
+      changeRoadThunk,
+      changeVertexThunk,
+      player,
+      playerTurn,
+      moveRobberThunk,
+      phase,
+      buildCityThunk
+    } = this.props
 
     if (playerTurn === player.playerNumber) {
       if (e.target.classList.contains('inner-hexagon')) {
-        console.log(e.target.id)
-        // this.props.moveRobber(e.target.id)
-      } else if (e.target.classList.contains('side')) {
+        moveRobberThunk(e.target.dataset.resourceId)
+      } else if (
+        e.target.classList.contains('side') &&
+        phase === 'build road'
+      ) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
-        changeVertexThunk(e.target.id)
+        if (phase === 'build city') {
+          buildCityThunk(e.target.id)
+        } else if (phase === 'build settlement') {
+          changeVertexThunk(e.target.id)
+        }
       }
     }
   }
 
   render() {
-    const {players, visible, playerTurn, player} = this.props
+    const {
+      players,
+      visible,
+      playerTurn,
+      player,
+      changeGamePhase,
+      phase
+    } = this.props
 
     return (
       <div className="board-container">
         <Players players={players} playerTurn={playerTurn} />
+        <PlayerAlerts phase={phase} changeGamePhase={changeGamePhase} />
         <Modle
           visible={visible}
           toggleModal={this.props.toggleModal}
           buyaCard={this.buyaCard}
           adjustScore={this.props.adjustScore}
           player={player}
+          changeGamePhase={changeGamePhase}
         />
         <GameBoard
           adjust={-25}
@@ -63,6 +110,11 @@ class GameMap extends Component {
           die1={this.props.die1}
           die2={this.props.die2}
           player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
+          changeRoadThunk={this.props.changeRoadThunk}
+          changeVertexThunk={this.props.changeVertexThunk}
         />
         <PlayerControls
           distributeResources={this.props.distributeResourcesThunk}
@@ -71,6 +123,7 @@ class GameMap extends Component {
           nextPlayerThunk={this.props.nextPlayerThunk}
           toggleModal={this.props.toggleModal}
           newDiceRoll={this.props.newDiceRoll}
+          changeGamePhase={changeGamePhase}
         />
       </div>
     )
@@ -84,22 +137,27 @@ const mapStateToProps = state => {
     players: gameState.players.filter(
       player => player.id !== playerState.playerNumber
     ),
+    phase: gameState.phase,
     player: playerState,
     visible: gameState.modle,
     playerTurn: gameState.playerTurn,
     die1: gameState.die1,
-    die2: gameState.die2
+    die2: gameState.die2,
+    diceTotal: gameState.die1 + gameState.die2,
+    currentTrade: playerState.currentTrade
   }
 }
 
 export default connect(mapStateToProps, {
   changeRoadThunk: actions.changeRoadThunk,
-  moveRobber: actions.maveRobber,
+  moveRobberThunk: actions.moveRobberThunk,
   changeVertexThunk: actions.changeVertexThunk,
   nextPlayerThunk: actions.nextPlayerThunk,
   toggleModal: actions.toggleModal,
   distributeResourcesThunk: actions.distributeResourcesThunk,
   newDiceRoll: actions.newDiceRoll,
   buyCard: actions.buyCard,
-  adjustScore: actions.adjustScore
+  adjustScore: actions.adjustScore,
+  changeGamePhase: actions.changeGamePhase,
+  buildCityThunk: actions.buildCityThunk
 })(GameMap)

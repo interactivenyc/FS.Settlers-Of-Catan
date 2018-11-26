@@ -4,9 +4,10 @@ import {
   distributeResource,
   distributeResourcePlayer,
   rollDice,
+  toggleModal,
+  moveRobber,
   updateScore,
-  updateScorePlayer,
-  toggleModal
+  updateScorePlayer
 } from './actionTypes'
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
@@ -28,22 +29,47 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   newResources.forEach(resource => {
     resource.vertices.forEach(vertex => {
       if (vertices[vertex.id].player) {
-        dispatch(distributeResource(vertices[vertex.id].player))
-        socket.emit('dispatch', distributeResource(vertices[vertex.id].player))
-        dispatch(
-          distributeResourcePlayer(resource.type, vertices[vertex.id].player)
-        )
-        socket.emit(
-          'dispatch',
-          distributeResourcePlayer(resource.type, vertices[vertex.id].player)
-        )
+        if (vertices[vertex.id].locationType === 'city') {
+          dispatch(distributeResource(vertices[vertex.id].player, 2))
+          socket.emit(
+            'dispatch',
+            distributeResource(vertices[vertex.id].player, 2)
+          )
+          dispatch(
+            distributeResourcePlayer(
+              resource.type,
+              vertices[vertex.id].player,
+              2
+            )
+          )
+          socket.emit(
+            'dispatch',
+            distributeResourcePlayer(
+              resource.type,
+              vertices[vertex.id].player,
+              2
+            )
+          )
+        } else {
+          dispatch(distributeResource(vertices[vertex.id].player))
+          socket.emit(
+            'dispatch',
+            distributeResource(vertices[vertex.id].player)
+          )
+          dispatch(
+            distributeResourcePlayer(resource.type, vertices[vertex.id].player)
+          )
+          socket.emit(
+            'dispatch',
+            distributeResourcePlayer(resource.type, vertices[vertex.id].player)
+          )
+        }
       }
     })
   })
 }
 
 export const robberThunk = id => (dispatch, getState) => {
-  console.log('ARGUMENTS', id)
   const {playerState, gameState} = getState()
   const resources = gameState.players.filter(
     player => player.id === playerState.playerNumber
@@ -73,6 +99,11 @@ export const newDiceRoll = () => {
       socket.emit('dispatchThunk', {action: 'robberThunk'})
     }
   }
+}
+
+export const moveRobberThunk = id => (dispatch, getState) => {
+  const resource = {...getState().board.resources[id]}
+  dispatch(moveRobber(resource))
 }
 
 export const adjustScore = scoreChange => {

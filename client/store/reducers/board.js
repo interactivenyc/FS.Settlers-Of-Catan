@@ -1,4 +1,10 @@
-import {GET_BOARD, CREATE_ROAD, CREATE_SETTLEMENT} from '../actions'
+import {
+  GET_BOARD,
+  CREATE_ROAD,
+  CREATE_SETTLEMENT,
+  MOVE_ROBBER,
+  BUILD_CITY
+} from '../actions'
 import Board from '../../board'
 
 const defaultBoard = {}
@@ -21,10 +27,24 @@ export default function(state = defaultBoard, action) {
           [action.id]: {
             ...state.vertices[action.id],
             color: action.color,
-            player: action.number
+            player: action.number,
+            locationType: 'settlement'
           }
         }
       }
+    case BUILD_CITY:
+      return {
+        ...state,
+        vertices: {
+          ...state.vertices,
+          [action.id]: {
+            ...state.vertices[action.id],
+            locationType: 'city'
+          }
+        }
+      }
+    case MOVE_ROBBER:
+      return {...state, robberLocation: action.resource}
     default:
       return state
   }

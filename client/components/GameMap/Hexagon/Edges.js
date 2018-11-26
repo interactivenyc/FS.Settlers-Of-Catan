@@ -18,47 +18,42 @@ class Edges extends React.Component {
   }
 
   componentDidMount() {
-    const {sides, edges, board, player} = this.props
-    for (const side in sides) {
-      const edge = edges[sides[side]]
-      const neighbors = getEdgeNeighborsColor(edge, board)
-
-      if (validateChangeEdge(player, edge, neighbors, board)) {
-        this.setState({[side]: `build-player-${player.playerNumber}`})
-      }
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
-      const {sides, edges, board, player} = this.props
+    const {sides, edges, board, player, playerTurn, phase} = this.props
+    if (playerTurn === player.playerNumber) {
       for (const side in sides) {
         const edge = edges[sides[side]]
         const neighbors = getEdgeNeighborsColor(edge, board)
 
-        if (validateChangeEdge(player, edge, neighbors, board)) {
+        if (
+          validateChangeEdge(player, edge, neighbors, board) &&
+          phase === 'build road'
+        ) {
           this.setState({[side]: `build-player-${player.playerNumber}`})
+        } else {
+          this.setState({[side]: null})
         }
       }
     }
   }
 
-  // handleMouseEnter = event => {
-  //   //need to be able to access hidden divs
-  //   const { edges, player, board } = this.props
-  //   const edge = edges[event.target.id]
-  //   const neighbors = getEdgeNeighborsColor(edge, board)
+  componentDidUpdate(prevProps) {
+    const {sides, edges, board, player, playerTurn, phase} = this.props
+    if (prevProps !== this.props && playerTurn === player.playerNumber) {
+      for (const side in sides) {
+        const edge = edges[sides[side]]
+        const neighbors = getEdgeNeighborsColor(edge, board)
 
-  //   if (validateChangeEdge(player, edge, neighbors, board)) {
-  //     const targetEdgeId = event.target.getAttribute('stateid')
-  //     this.setState({ [targetEdgeId]: `build-player-${player.playerNumber}` })
-  //   }
-  // }
-
-  // handleMouseLeave = event => {
-  //   const targetEdgeId = event.target.getAttribute('stateid')
-  //   this.setState({ [targetEdgeId]: null })
-  // }
+        if (
+          validateChangeEdge(player, edge, neighbors, board) &&
+          phase === 'build road'
+        ) {
+          this.setState({[side]: `build-player-${player.playerNumber}`})
+        } else {
+          this.setState({[side]: null})
+        }
+      }
+    }
+  }
 
   render() {
     const {sides, edges} = this.props

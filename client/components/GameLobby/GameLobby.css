@@ -1,7 +1,28 @@
-.tableDisplay,
-.tableDisplay th {
-  border: 1px solid black;
+body {
+  background-color: rgb(255, 242, 232);
+}
+
+.tableContainer {
   width: 100%;
+}
+
+.tableContainer th {
+  color: white;
+  background-color: rgb(126, 55, 0);
+}
+
+.tableContainer td {
+  vertical-align: top;
+  padding: 8px;
+}
+
+.tableDisplay {
+  width: 100%;
+}
+
+.tableDisplay td {
+  padding: 6px 0px 0px 10px;
+  background-color: rgb(255, 253, 251);
 }
 
 .scrollText {
@@ -9,10 +30,20 @@
   height: 250px;
 }
 
-td {
-  vertical-align: top;
+.scrollTextJSON {
+  overflow: auto;
+  height: 280px;
 }
 
-button {
+.gameText {
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+.tableContainer button {
   outline: none;
+  color: white;
+  background-color: rgb(126, 55, 0);
+  padding: 8px;
+  margin: 8px;
 }
