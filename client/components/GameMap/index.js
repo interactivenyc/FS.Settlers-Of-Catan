@@ -10,18 +10,15 @@ import socket from '../../socket'
 import store from '../../store'
 
 class GameMap extends Component {
-  constructor(props) {
-    super(props)
-    socket.on('send-card-to-user', card => {
-      this.props.buyCard(card)
-    })
-  }
-
   componentDidMount() {
     socket.on('dispatch', action => store.dispatch(action))
     socket.on('dispatchThunk', ({action, args}) =>
       store.dispatch(actions[action].apply(this, args))
     )
+
+    socket.on('send-card-to-user', card => {
+      this.props.buyCard(card)
+    })
   }
 
   componentDidUpdate() {
@@ -62,14 +59,16 @@ class GameMap extends Component {
     const {
       changeRoadThunk,
       changeVertexThunk,
-      player,
       playerTurn,
-      moveRobberThunk
+      player,
+      phase
     } = this.props
 
     if (playerTurn === player.playerNumber) {
-      if (e.target.classList.contains('inner-hexagon')) {
-        moveRobberThunk(e.target.dataset.resourceId)
+      if (phase === 'moveRobber') {
+        this.handleMoveRobber(e)
+      } else if (phase === 'rob') {
+        this.handleRobPlayer(e)
       } else if (e.target.classList.contains('side')) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -78,17 +77,45 @@ class GameMap extends Component {
     }
   }
 
+  handleMoveRobber = e => {
+    const {moveRobberThunk} = this.props
+    const id = e.target.dataset.resourceId
+    const elem = e.target.classList
+    if (elem.contains('robber-hover')) {
+      moveRobberThunk(id)
+    }
+  }
+
+  handleRobPlayer = e => {
+    const id = e.target.id
+    const elem = e.target.classList
+    const {vertices} = this.props.board
+    const {playerNumber} = this.props.player
+
+    if (elem.contains('settlement-hover')) {
+      socket.emit('dispatchThunk', {
+        action: 'robPlayer',
+        args: [vertices[id].player, playerNumber]
+      })
+    }
+  }
+
   render() {
     const {players, visible, playerTurn, player} = this.props
 
     return (
       <div className="board-container">
-        <Players players={players} playerTurn={playerTurn} />
+        <Players
+          players={players.filter(p => p.id !== player.playerNumber)}
+          playerTurn={playerTurn}
+        />
         <Modle
           visible={visible}
           toggleModal={this.props.toggleModal}
           buyaCard={this.buyaCard}
           adjustScore={this.props.adjustScore}
+          robberDiscardThunk={this.props.robberDiscardThunk}
+          player={player}
           playerHand={this.props.playerHand}
           handlePlayCard={this.handlePlayCard}
         />
@@ -116,9 +143,7 @@ const mapStateToProps = state => {
   const {board, gameState, playerState} = state
   return {
     board,
-    players: gameState.players.filter(
-      player => player.id !== playerState.playerNumber
-    ),
+    players: gameState.players,
     player: playerState,
     visible: gameState.modle,
     playerTurn: gameState.playerTurn,
@@ -126,6 +151,7 @@ const mapStateToProps = state => {
     die2: gameState.die2,
     playerHand: playerState.playerHand,
     diceTotal: gameState.die1 + gameState.die2,
+    phase: gameState.phase,
     currentTrade: playerState.currentTrade
   }
 }
@@ -140,5 +166,6 @@ export default connect(mapStateToProps, {
   newDiceRoll: actions.newDiceRoll,
   buyCard: actions.buyCard,
   adjustScore: actions.adjustScore,
+  robberDiscardThunk: actions.robberDiscardThunk,
   playCard: actions.playCard
 })(GameMap)

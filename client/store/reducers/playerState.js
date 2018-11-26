@@ -4,6 +4,7 @@ import {
   ASSIGN_PLAYER,
   DISTRIBUTE_RESOURCE_PLAYER,
   UPDATE_SCORE_PLAYER,
+  SET_RESOURCES,
   MAKE_OFFER,
   RECEIVE_OFFER,
   ACCEPT_OFFER,
@@ -65,6 +66,8 @@ export default function(state = playerState, action) {
         ...state,
         score: action.updatedScore
       }
+    case SET_RESOURCES:
+      return {...state, resources: action.resources}
     case MAKE_OFFER:
       return {
         ...state,

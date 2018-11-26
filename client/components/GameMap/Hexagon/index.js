@@ -1,33 +1,88 @@
-import React from 'react'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import Vertices from './Vertices'
 import Edges from './Edges'
 
-const Hexagon = props => {
-  const {resource, vert, sides} = props.gameOptions
-  const {vertices, edges, robberLocation} = props.board
+class Hexagon extends Component {
+  componentDidUpdate() {
+    if (this.props.moveRobber) window.alert('move the robber')
+  }
+  handleResourceClassList = () => {
+    const {moveRobber, board, gameOptions} = this.props
+    const {robberLocation} = board
+    const {resource} = gameOptions
 
-  const number = props.board.resources[props.gameOptions.id].diceTarget
+    return `resource-number ${robberLocation.id === resource &&
+      'robber'} ${moveRobber &&
+      robberLocation.id !== resource &&
+      'robber-hover'}`
+  }
 
-  return (
-    <div className="hexagon-container" style={{...props.style}}>
-      <Vertices {...props} vertices={vertices} vert={vert} />
-      <div className="hexagon">
+  handleSettlementClassList = (pos, id, vertices) => {
+    const color = vertices[id].color
+    const {board, playerNumber, robPlayer} = this.props
+    const robber = board.robberLocation
+    let isSettled
+
+    if (robber.vertices && robPlayer) {
+      isSettled = robber.vertices
+        .map(vertex => board.vertices[vertex.id])
+        .filter(vertex => vertex.color && vertex.player !== playerNumber)
+        .map(vertex => vertex.id)
+        .includes(id)
+    }
+
+    return `city city-${pos} ${color} ${isSettled && 'settlement-hover'}`
+  }
+
+  render() {
+    const {board, style, gameOptions, image} = this.props
+    const {resource, vert, sides} = gameOptions
+    const {vertices, edges, robberLocation} = this.props.board
+
+    const number = board.resources[gameOptions.id].diceTarget
+
+    return (
+      <div className="hexagon-container" style={{...style}}>
+        <Vertices
+          {...this.props}
+          handleSettlementClassList={this.handleSettlementClassList}
+          vertices={vertices}
+          vert={vert}
+        />
         <div
-          id={resource}
-          data-resource-id={props.gameOptions.id}
-          className={`inner-hexagon hexagon-image ${props.image}`}
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseOut}
+          className="hexagon"
         >
           <div
-            className={`resource-number ${robberLocation.id === resource &&
-              'robber'}`}
+            id={resource}
+            data-resource-id={gameOptions.id}
+            className={`inner-hexagon hexagon-image ${image}`}
           >
-            <h1>{!!number && robberLocation.id !== resource && number}</h1>
+            <div
+              data-resource-id={gameOptions.id}
+              className={this.handleResourceClassList()}
+            >
+              <h1>{!!number && robberLocation.id !== resource && number}</h1>
+            </div>
           </div>
+          <Edges sides={sides} edges={edges} />
         </div>
-        <Edges sides={sides} edges={edges} />
       </div>
-    </div>
-  )
+    )
+  }
 }
 
-export default Hexagon
+const mapStateToProps = state => {
+  const {gameState: {phase, playerTurn}, playerState: {playerNumber}} = state
+  const isPlayerTurn = playerNumber === playerTurn
+  return {
+    moveRobber: phase === 'moveRobber' && isPlayerTurn,
+    robPlayer: phase === 'rob' && isPlayerTurn,
+    playerNumber,
+    phase
+  }
+}
+
+export default connect(mapStateToProps, null)(Hexagon)

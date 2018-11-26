@@ -5,10 +5,13 @@ import {
   DISTRIBUTE_RESOURCE,
   ROLL_DICE,
   TOGGLE_MODAL,
-  UPDATE_SCORE
+  CHANGE_PHASE,
+  UPDATE_SCORE,
+  UPDATE_PLAYERS
 } from '../actions'
 
 const defaultState = {
+  phase: '',
   playerTurn: 1,
   modle: false,
   players: [
@@ -29,6 +32,9 @@ const gameState = (state = defaultState, action) => {
         let user = {
           id: action.users[i].playerNumber,
           userProfile: action.users[i],
+          resources: 0,
+          responded: true,
+          longestRoad: 0,
           score: 0
         }
         console.log('PUSH_USERS', user)
@@ -51,7 +57,7 @@ const gameState = (state = defaultState, action) => {
       return {
         ...state,
         players: state.players.map(player => {
-          return player.id === action.playerId
+          return player.id === action.id
             ? {...player, resources: player.resources + 1}
             : player
         })
@@ -72,6 +78,10 @@ const gameState = (state = defaultState, action) => {
             : player
         })
       }
+    case UPDATE_PLAYERS:
+      return {...state, players: action.players}
+    case CHANGE_PHASE:
+      return {...state, phase: action.phase}
     default:
       return state
   }

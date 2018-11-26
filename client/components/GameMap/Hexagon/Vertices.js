@@ -6,34 +6,41 @@ const Vertices = ({
   vertices,
   bottomLeftAnchor,
   bottomRightAnchor,
-  bottomAnchor
+  bottomAnchor,
+  handleSettlementClassList
 }) => {
   return (
     <Fragment>
-      <div id={vert[1]} className={`city city-1 ${vertices[vert[1]].color}`} />
-      <div id={vert[2]} className={`city city-2 ${vertices[vert[2]].color}`} />
+      <div
+        id={vert[1]}
+        className={handleSettlementClassList(1, vert[1], vertices)}
+      />
+      <div
+        id={vert[2]}
+        className={handleSettlementClassList(2, vert[2], vertices)}
+      />
       {anchor && (
         <div
           id={vert[3]}
-          className={`city city-3 ${vertices[vert[3]].color}`}
+          className={handleSettlementClassList(3, vert[3], vertices)}
         />
       )}
       {bottomLeftAnchor && (
         <div
           id={vert[4]}
-          className={`city city-4 ${vertices[vert[4]].color}`}
+          className={handleSettlementClassList(4, vert[4], vertices)}
         />
       )}
       {bottomRightAnchor && (
         <div
           id={vert[6]}
-          className={`city city-6 ${vertices[vert[6]].color}`}
+          className={handleSettlementClassList(6, vert[6], vertices)}
         />
       )}
       {bottomAnchor && (
         <div
           id={vert[5]}
-          className={`city city-5 ${vertices[vert[5]].color}`}
+          className={handleSettlementClassList(5, vert[5], vertices)}
         />
       )}
     </Fragment>
