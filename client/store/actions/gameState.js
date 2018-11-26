@@ -148,15 +148,74 @@ export const plentyThunk = resources => (dispatch, getState) => {
     if (playerNumber === el.id) {
       return {...el, resources: el.resources + 2}
     } else {
-      return {...el}
+      return el
     }
   })
   dispatch(updatePlayers(playersArr))
   socket.emit('dispatch', updatePlayers(playersArr))
 }
 
-export const monopoly = () => {
-  return (dispatch, getState) => {
+export const sendResources = (type, quantity, player) => (
+  dispatch,
+  getState
+) => {
+  const playerId = getState().playerState.playerNumber
+  if (playerId === player) {
+    const newResources = getState().playerState.resources.map(el => {
+      if (el.type === type) {
+        return {...el, quantity: el.quantity + quantity}
+      } else {
+        return el
+      }
+    })
+    let playersArr = getState().gameState.players.map(el => {
+      if (playerId === el.id) {
+        return {...el, resources: el.resources + quantity}
+      } else {
+        return el
+      }
+    })
+
+    dispatch(setResources(newResources))
+    dispatch(updatePlayers(playersArr))
     socket.emit('dispatch', updatePlayers(playersArr))
+  }
+}
+
+export const depleteResources = (type, player) => (dispatch, getState) => {
+  console.log(player)
+  let numDepletedResources
+  const newResources = getState().playerState.resources.map(el => {
+    if (el.type === type) {
+      numDepletedResources = el.quantity
+      return {...el, quantity: 0}
+    } else {
+      return el
+    }
+  })
+  let playerNumber = getState().playerState.playerNumber
+  let playersArr = getState().gameState.players.map(el => {
+    if (playerNumber === el.id) {
+      return {...el, resources: el.resources - numDepletedResources}
+    } else {
+      return el
+    }
+  })
+
+  dispatch(setResources(newResources))
+  dispatch(updatePlayers(playersArr))
+  socket.emit('dispatchThunk', {
+    action: 'sendResources',
+    args: [type, numDepletedResources, player]
+  })
+}
+
+export const monopoly = type => {
+  return (dispatch, getState) => {
+    const player = getState().playerState.playerNumber
+    socket.emit('dispatchThunk', {
+      action: 'depleteResources',
+      args: [type, player]
+    })
   }
 }

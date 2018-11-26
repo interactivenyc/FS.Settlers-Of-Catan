@@ -38,9 +38,9 @@ export const playCard = playedCard => {
       console.log('knight')
     }
     if (playedCard === 'monopoly') {
-      dispatch(monopoly())
+      dispatch(monopoly('forest'))
     }
-    if (playedCard === 'roadBuilding') {
+    if (playedCard === 'road') {
       console.log('roadbuilding')
     }
     dispatch(deleteCard(updatedHand))

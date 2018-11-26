@@ -6,7 +6,7 @@ module.exports = io => {
   let activeGames = {'Default Game': {}}
   let gameDecks = {}
   let chatHistory = []
-  const numPlayers = 1
+  const numPlayers = 4
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
@@ -70,7 +70,7 @@ module.exports = io => {
      *******************************************/
     socket.on('get-dev-card', gameId => {
       let card = getRandomCard(gameId)
-      io.sockets.emit('send-card-to-user', card)
+      socket.emit('send-card-to-user', card)
     })
 
     /*******************************************
