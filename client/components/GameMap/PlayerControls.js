@@ -4,7 +4,6 @@ const PlayerControls = ({
   playerTurn,
   player,
   nextPlayerThunk,
-  distributeResources,
   toggleModal,
   newDiceRoll
 }) => {

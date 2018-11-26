@@ -89,12 +89,19 @@ export const newDiceRoll = () => {
 }
 
 export const moveRobberThunk = id => (dispatch, getState) => {
-  const resource = {...getState().board.resources[id]}
+  const {board, playerState: {playerNumber}} = getState()
+  const resource = {...board.resources[id]}
+
+  const isRobable = resource.vertices
+    .map(vertex => board.vertices[vertex.id])
+    .filter(vertex => vertex.player !== playerNumber && vertex.player).length
+
+  const phase = isRobable ? 'rob' : ''
 
   dispatch(moveRobber(resource))
-  dispatch(changePhase('rob'))
+  dispatch(changePhase(phase))
   socket.emit('dispatch', moveRobber(resource))
-  socket.emit('dispatch', changePhase('rob'))
+  socket.emit('dispatch', changePhase(phase))
 }
 
 export const adjustScore = scoreChange => {
