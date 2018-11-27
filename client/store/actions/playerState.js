@@ -10,7 +10,8 @@ import {
   ACCEPT_OFFER,
   REJECT_OFFER,
   CLEAR_OFFER,
-  toggleModal
+  toggleModal,
+  changeGamePhase
 } from './actionTypes'
 
 import {
@@ -42,6 +43,8 @@ export const playCard = playedCard => {
     }
     if (playedCard === 'road') {
       console.log('roadbuilding')
+      dispatch(toggleModal(null))
+      dispatch(changeGamePhase('build road dev'))
     }
     dispatch(deleteCard(updatedHand))
   }
