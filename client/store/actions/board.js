@@ -20,6 +20,7 @@ import {
   updatePlayers
 } from './actionTypes'
 import socket from '../../socket'
+import {adjustScore} from '../actions'
 
 export const deserializeBoard = boardData => dispatch => {
   const board = new Board(boardData)
@@ -41,7 +42,7 @@ export const changeVertexThunk = id => (dispatch, getState) => {
     dispatch(useResources(['hill', 'field', 'forest', 'pasture']))
     dispatch(distributeResource(playerState.playerNumber, -4))
     socket.emit('dispatch', distributeResource(playerState.playerNumber, -4))
-    dispatch(updateScorePlayer(playerState.score + 1))
+    dispatch(adjustScore(1))
     socket.emit(
       'dispatch',
       updateScore(playerState.playerNumber, playerState.score + 1)
@@ -65,7 +66,7 @@ export const buildCityThunk = id => (dispatch, getState) => {
     )
     dispatch(distributeResource(playerState.playerNumber, -5))
     socket.emit('dispatch', distributeResource(playerState.playerNumber, -5))
-    dispatch(updateScorePlayer(playerState.score + 1))
+    dispatch(adjustScore(1))
     socket.emit(
       'dispatch',
       updateScore(playerState.playerNumber, playerState.score + 1)
@@ -88,8 +89,9 @@ export const longestRoad = (edge, board, id) => (dispatch, getState) => {
 }
 
 export const changeRoadThunk = id => (dispatch, getState) => {
-  const {board, playerState} = getState()
+  const {board, playerState, gameState} = getState()
   const edge = board.edges[id]
+  console.log('the edge', edge)
   const neighbors = getEdgeNeighborsColor(edge, board)
 
   if (validateChangeEdge(playerState, edge, neighbors, board)) {
@@ -98,11 +100,16 @@ export const changeRoadThunk = id => (dispatch, getState) => {
       'dispatch',
       createRoad(id, playerState.color, playerState.playerNumber)
     )
-    dispatch(changeGamePhase(null))
-    dispatch(useResources(['hill', 'forest']))
-    dispatch(distributeResource(playerState.playerNumber, -2))
-    socket.emit('dispatch', distributeResource(playerState.playerNumber, -2))
-
+    if (gameState.phase === 'build road') {
+      dispatch(changeGamePhase(null))
+      dispatch(useResources(['hill', 'forest']))
+      dispatch(distributeResource(playerState.playerNumber, -2))
+      socket.emit('dispatch', distributeResource(playerState.playerNumber, -2))
+    } else if (gameState.phase === 'build road dev') {
+      dispatch(changeGamePhase('build road dev 2'))
+    } else if (gameState.phase === 'build road dev 2') {
+      dispatch(changeGamePhase(null))
+    }
     const newBoard = getState().board
     const newEdge = newBoard.edges[id]
 

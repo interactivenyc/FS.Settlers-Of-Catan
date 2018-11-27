@@ -44,6 +44,16 @@ export default class PlayerAlerts extends React.Component {
             </button>
           </div>
         )}
+        {phase === 'build road dev' && (
+          <div>
+            <div className="player-alert">Click to build a road!</div>
+          </div>
+        )}
+        {phase === 'build road dev 2' && (
+          <div>
+            <div className="player-alert">Click to build a second road!</div>
+          </div>
+        )}
       </div>
     )
   }

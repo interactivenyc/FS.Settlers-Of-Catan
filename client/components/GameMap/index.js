@@ -71,7 +71,9 @@ class GameMap extends Component {
         this.handleRobPlayer(e)
       } else if (
         e.target.classList.contains('side') &&
-        phase === 'build road'
+        (phase === 'build road' ||
+          phase === 'build road dev' ||
+          phase === 'build road dev 2')
       ) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
