@@ -1,6 +1,8 @@
 import React from 'react'
 
 const GameList = props => {
+  let keyIndex = 0
+
   function getButtonText() {
     if (isInGame()) {
       return 'LEAVE'
@@ -18,6 +20,8 @@ const GameList = props => {
   }
 
   function isInGame() {
+    console.log('[ GameList ]', props)
+
     const keys = Object.keys(props.activeGames['Default Game'])
     if (keys.includes(props.socketId)) {
       return true
@@ -34,7 +38,7 @@ const GameList = props => {
         </tr>
         {Object.keys(props.activeGames).map(key => {
           return (
-            <tr key={key}>
+            <tr key={keyIndex++}>
               <td gameid={key}>
                 <button type="button" gameid={key} onClick={getClickFunction()}>
                   {getButtonText()}

@@ -1,22 +1,48 @@
-const Game = require('../db').model('game')
+const GameDB = require('../db').model('game')
 const initializedBoardData = require('./initializedBoard')
 
 module.exports = io => {
-  let userLobby = {}
-  let activeGames = {'Default Game': {}}
-  let gameDecks = {}
-  let chatHistory = {Lobby: [], 'Default Game': []}
+  let games = {}
+  let users = {}
   const numPlayers = 2
 
   class User {
-    constructor(data, socketId) {
+    constructor(users, data, socketId) {
       this.id = data.id
       this.email = data.email
       this.username = data.username || data.email.split('@')[0]
       this.socketId = socketId
-      this.activeGame = 'Default Game'
       this.activeRoom = 'Lobby'
+      users[this.socketId] = this
     }
+  }
+
+  class GameInstance {
+    constructor(games, name) {
+      console.log('GameInstance - name', name)
+
+      this.name = name
+      this.users = {}
+      this.chatList = []
+      this.deck = generateDeck(games, name)
+
+      games[name] = this
+    }
+  }
+
+  createLobby()
+  createDefaultGame()
+
+  function createLobby() {
+    console.log('createLobby')
+    let lobby = new GameInstance(games, 'Lobby')
+    games.Lobby = lobby
+  }
+
+  function createDefaultGame() {
+    console.log('createDefaultGame')
+    let lobby = new GameInstance(games, 'Default Game')
+    games['Default Game'] = lobby
   }
 
   //Fisher-Yates Shuffle
@@ -37,8 +63,8 @@ module.exports = io => {
     return array
   }
 
-  function generateDeck() {
-    console.log('generate deck')
+  function generateDeck(games, gameName) {
+    console.log('generate deck', gameName, games)
     const cards = ['monopoly', 'monopoly', 'road', 'road', 'plenty', 'plenty']
     for (let i = 0; i < 14; i++) {
       cards.push('knight')
@@ -47,14 +73,14 @@ module.exports = io => {
       cards.push('vp')
     }
     shuffle(cards)
-    gameDecks.defaultGame = cards
+
+    // console.log('generate cards', cards)
+    return cards
   }
 
-  function getRandomCard(gameId) {
-    return gameDecks[gameId].pop()
+  function getRandomCard(gameName) {
+    return games[gameName].deck.pop()
   }
-
-  generateDeck()
 
   /**
    * THESE ARE VARS USED BY RYAN - TO INTEGRATE
@@ -71,13 +97,11 @@ module.exports = io => {
   }
 
   function resetAllGames() {
-    activeGames = {'Default Game': {}}
+    games = {'Default Game': {}}
   }
 
   function updateLobby() {
-    io.sockets
-      .in('lobby')
-      .emit('update-lobby', userLobby, activeGames, chatHistory.Lobby)
+    io.sockets.in('Lobby').emit('update-lobby', users, games, games.Lobby.Lobby)
   }
 
   function leaveAllRooms(socket) {
@@ -87,6 +111,13 @@ module.exports = io => {
         socket.leave(socket.rooms[roomId])
       }
     }
+  }
+
+  function joinRoom(socket, room) {
+    leaveAllRooms(socket)
+    socket.join(room)
+    socket.emit('connectToRoom', room)
+    updateLobby()
   }
 
   io.on('connection', socket => {
@@ -105,51 +136,42 @@ module.exports = io => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
     socket.on('join-lobby', user => {
-      let gameUser = new User(user, socket.id)
-      userLobby[socket.id] = gameUser
-      leaveAllRooms(socket)
-      socket.join('lobby')
-      socket.emit('connectToRoom', 'Lobby')
-      updateLobby()
+      let gameUser = new User(users, user, socket.id)
+      users[socket.id] = gameUser
+      joinRoom(socket, 'Lobby')
     })
 
     socket.on('switch-room', room => {
-      leaveAllRooms(socket)
-      socket.join(room)
-
-      console.log('User Rooms: ', socket.rooms)
-
-      io.sockets.in('lobby').emit('log-server-message', 'message to lobby')
-      updateLobby()
-      io.sockets.in(room).emit('log-server-message', `message to ${room}`)
-      socket.emit('connectToRoom', room)
+      joinRoom(socket, room)
     })
 
+    /* eslint-disable camelcase */
     socket.on('join-game', async gameId => {
       console.log('join-game gameId', gameId)
-      activeGames[gameId][socket.id] = userLobby[socket.id]
+      games[gameId][socket.id] = users[socket.id]
       updateLobby()
-      const userKeys = Object.keys(activeGames[gameId])
+      const userKeys = Object.keys(games[gameId])
+
       /**
        * START NEW GAME
        */
 
       if (userKeys.length === numPlayers) {
-        const board = await Game.create({
+        const board = await GameDB.create({
           board_data: JSON.stringify(initializedBoardData)
         })
 
         let gameUsers = []
         let playerNumber = 0
         userKeys.forEach(socketId => {
-          delete activeGames[gameId][socketId]
-          let user = userLobby[socketId]
+          delete games[gameId][socketId]
+          let user = users[socketId]
           playerNumber++
           user.playerNumber = playerNumber
           gameUsers.push(user)
-          delete userLobby[socketId]
+          delete users[socketId]
 
-          socket.leave('lobby')
+          socket.leave('Lobby')
           socket.join('gameroom')
 
           io.to(socketId).emit('start-game', board.board_data, {
@@ -171,15 +193,15 @@ module.exports = io => {
 
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
-      delete userLobby[socket.id]
-      delete activeGames['Default Game'][socket.id]
+      delete users[socket.id]
+      delete games['Default Game'][socket.id]
       updateLobby()
     })
 
     socket.on('delete-user-from-game', (email, gameId) => {
       console.log('delete-user-from-game', email, gameId)
 
-      let game = activeGames[gameId]
+      let game = games[gameId]
       for (let key in game) {
         if (game[key].email === email) {
           log('deleting user from game', game[key])
@@ -191,7 +213,7 @@ module.exports = io => {
     socket.on('leave-game', gameId => {
       console.log('leave-game', gameId, socket.id)
       if (gameId) {
-        delete activeGames[gameId][socket.id]
+        delete games[gameId][socket.id]
         updateLobby()
       }
     })
@@ -200,8 +222,8 @@ module.exports = io => {
       console.log('send-message', room, message)
       if (!room) room = 'Lobby'
 
-      chatHistory[room].push({username: userLobby[socket.id].username, message})
-      io.sockets.in('lobby').emit('update-chat', chatHistory[room])
+      games[room].chatList.push({username: users[socket.id].username, message})
+      io.sockets.in('Lobby').emit('update-chat', games[room].chatList)
     })
 
     /**
