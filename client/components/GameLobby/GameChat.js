@@ -37,7 +37,15 @@ export default class GameChat extends React.Component {
           <tr>
             <td>
               <div id="scrollText" className="scrollText">
-                <pre>{this.props.chatList.join('\n')}</pre>
+                {this.props.chatList.map(entry => {
+                  return (
+                    <React.Fragment key={entry.message}>
+                      <p>
+                        <b>{entry.username}</b> : {entry.message}
+                      </p>
+                    </React.Fragment>
+                  )
+                })}
               </div>
             </td>
           </tr>
