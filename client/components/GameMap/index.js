@@ -70,8 +70,9 @@ class GameMap extends Component {
       } else if (phase === 'rob') {
         this.handleRobPlayer(e)
       } else if (
-        e.target.classList.contains('side') &&
-        phase === 'build road'
+        (e.target.classList.contains('side') && phase === 'build road') ||
+        'build road dev' ||
+        'build road dev 2'
       ) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -123,7 +124,11 @@ class GameMap extends Component {
           players={players.filter(p => p.id !== player.playerNumber)}
           playerTurn={playerTurn}
         />
-        <PlayerAlerts phase={phase} changeGamePhase={changeGamePhase} />
+        <PlayerAlerts
+          playerTurn={playerTurn}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+        />
         <Modle
           visible={visible}
           toggleModal={this.props.toggleModal}

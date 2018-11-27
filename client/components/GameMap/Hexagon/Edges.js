@@ -22,7 +22,11 @@ class Edges extends React.Component {
     if (playerTurn === player.playerNumber) {
       for (const side in sides) {
         const edge = edges[sides[side]]
-        if (phase === 'build road') {
+        if (
+          phase === 'build road' ||
+          phase === 'build road dev' ||
+          phase === 'build road dev 2'
+        ) {
           const neighbors = getEdgeNeighborsColor(edge, board)
           if (validateChangeEdge(player, edge, neighbors, board)) {
             this.setState({[side]: `build-player-${player.playerNumber}`})
@@ -39,7 +43,11 @@ class Edges extends React.Component {
     if (prevProps !== this.props && playerTurn === player.playerNumber) {
       for (const side in sides) {
         const edge = edges[sides[side]]
-        if (phase === 'build road') {
+        if (
+          phase === 'build road' ||
+          phase === 'build road dev' ||
+          phase === 'build road dev 2'
+        ) {
           const neighbors = getEdgeNeighborsColor(edge, board)
           if (validateChangeEdge(player, edge, neighbors, board)) {
             this.setState({[side]: `build-player-${player.playerNumber}`})

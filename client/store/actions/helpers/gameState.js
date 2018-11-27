@@ -34,7 +34,7 @@ export const subtractResourceCard = (card, resources) => {
   return resources.map(resource => {
     return resource.type === card
       ? {...resource, quantity: resource.quantity - 1}
-      : {...resource}
+      : resource
   })
 }
 
