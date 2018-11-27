@@ -26,7 +26,9 @@ import socket from '../../socket'
 
 export const playCard = playedCard => {
   return (dispatch, getState) => {
-    let {playerHand} = getState().playerState
+    let {playerState, gameState} = getState()
+    let {playerHand, playerNumber} = playerState
+    let {players} = gameState
     let elToRemove = playerHand.indexOf(playedCard)
     let updatedHand = playerHand.filter((card, i) => i !== elToRemove)
     if (playedCard === 'vp') {
@@ -36,13 +38,21 @@ export const playCard = playedCard => {
       dispatch(toggleModal('plenty'))
     }
     if (playedCard === 'knight') {
-      console.log('knight')
+      dispatch(changeGamePhase('moveRobber'))
+      dispatch(toggleModal(null))
+      const updatedWithArmy = players.map(
+        player =>
+          player.id === playerNumber
+            ? {...player, largestArmy: player.largestArmy + 1}
+            : player
+      )
+      dispatch(updatePlayers(updatedWithArmy))
+      socket.emit('dispatch', updatePlayers(updatedWithArmy))
     }
     if (playedCard === 'monopoly') {
       dispatch(toggleModal('monopoly'))
     }
     if (playedCard === 'road') {
-      console.log('roadbuilding')
       dispatch(toggleModal(null))
       dispatch(changeGamePhase('build road dev'))
     }
