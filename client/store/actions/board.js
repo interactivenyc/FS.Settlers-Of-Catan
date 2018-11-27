@@ -11,6 +11,12 @@ import {
   createRoad,
   createSettlement,
   getBoard,
+  changeGamePhase,
+  useResources,
+  buildCity,
+  updateScorePlayer,
+  distributeResource,
+  updateScore,
   updatePlayers
 } from './actionTypes'
 import socket from '../../socket'
@@ -25,11 +31,44 @@ export const changeVertexThunk = id => (dispatch, getState) => {
   const vertice = board.vertices[id]
   const neighbors = getVerticeNeighbors(vertice, board)
 
-  if (validateChangeVertice(neighbors)) {
+  if (validateChangeVertice(neighbors, playerState.color)) {
     dispatch(createSettlement(id, playerState.color, playerState.playerNumber))
     socket.emit(
       'dispatch',
       createSettlement(id, playerState.color, playerState.playerNumber)
+    )
+    dispatch(changeGamePhase(null))
+    dispatch(useResources(['hill', 'field', 'forest', 'pasture']))
+    dispatch(distributeResource(playerState.playerNumber, -4))
+    socket.emit('dispatch', distributeResource(playerState.playerNumber, -4))
+    dispatch(updateScorePlayer(playerState.score + 1))
+    socket.emit(
+      'dispatch',
+      updateScore(playerState.playerNumber, playerState.score + 1)
+    )
+  }
+}
+
+export const buildCityThunk = id => (dispatch, getState) => {
+  const {board, playerState} = getState()
+  const vertex = board.vertices[id]
+
+  if (
+    vertex.color === playerState.color &&
+    vertex.locationType === 'settlement'
+  ) {
+    dispatch(buildCity(id))
+    socket.emit('dispatch', buildCity(id))
+    dispatch(changeGamePhase(null))
+    dispatch(
+      useResources(['field', 'field', 'mountain', 'mountain', 'mountain'])
+    )
+    dispatch(distributeResource(playerState.playerNumber, -5))
+    socket.emit('dispatch', distributeResource(playerState.playerNumber, -5))
+    dispatch(updateScorePlayer(playerState.score + 1))
+    socket.emit(
+      'dispatch',
+      updateScore(playerState.playerNumber, playerState.score + 1)
     )
   }
 }
@@ -59,6 +98,10 @@ export const changeRoadThunk = id => (dispatch, getState) => {
       'dispatch',
       createRoad(id, playerState.color, playerState.playerNumber)
     )
+    dispatch(changeGamePhase(null))
+    dispatch(useResources(['hill', 'forest']))
+    dispatch(distributeResource(playerState.playerNumber, -2))
+    socket.emit('dispatch', distributeResource(playerState.playerNumber, -2))
 
     const newBoard = getState().board
     const newEdge = newBoard.edges[id]

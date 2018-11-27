@@ -11,10 +11,11 @@ export const CREATE_ROAD = 'CREATE_ROAD'
 export const CREATE_SETTLEMENT = 'CREATE_SETTLEMENT'
 export const ROLL_DICE = 'ROLL_DICE'
 export const MOVE_ROBBER = 'MOVE_ROBBER'
+export const BUILD_CITY = 'BUILD_CITY'
 
 export const getBoard = board => ({type: GET_BOARD, board})
 export const rollDice = dieRolls => ({type: ROLL_DICE, dieRolls})
-export const moveRobber = resource => ({type: MOVE_ROBBER, resource})
+export const moveRobber = resourceId => ({type: MOVE_ROBBER, resourceId})
 export const createRoad = (id, color, number) => ({
   type: CREATE_ROAD,
   id,
@@ -27,6 +28,7 @@ export const createSettlement = (id, color, number) => ({
   color,
   number
 })
+export const buildCity = id => ({type: BUILD_CITY, id})
 
 //Player State Action Types
 export const ASSIGN_PLAYER = 'ASSIGN_PLAYER'
@@ -34,6 +36,7 @@ export const GET_HAND = 'GET_HAND'
 export const ADD_CARD = 'ADD_CARD'
 export const DELETE_CARD = 'DELETE_CARD'
 export const UPDATE_SCORE_PLAYER = 'UPDATE_SCORE_PLAYER'
+export const USE_RESOURCES = 'USE_RESOURCES'
 export const SET_RESOURCES = 'SET_RESOURCES'
 export const ROB_PLAYER = 'ROB_PLAYER'
 
@@ -49,6 +52,7 @@ export const updateScorePlayer = updatedScore => ({
   type: UPDATE_SCORE_PLAYER,
   updatedScore
 })
+export const useResources = resources => ({type: USE_RESOURCES, resources})
 export const setResources = resources => ({
   type: SET_RESOURCES,
   resources
@@ -67,6 +71,7 @@ export const ACCEPT_OFFER = 'ACCEPT_OFFER'
 export const REJECT_OFFER = 'REJECT_OFFER'
 export const CLEAR_OFFER = 'CLEAR_OFFER'
 export const UPDATE_SCORE = 'UPDATE_SCORE'
+export const CHANGE_GAME_PHASE = 'CHANGE_GAME_PHASE'
 export const UPDATE_PLAYERS = 'UPDATE_PLAYERS'
 export const CHANGE_PHASE = 'CHANGE_PHASE'
 
@@ -81,15 +86,22 @@ export const toggleModal = view => ({
   modal: view
 })
 export const nextPlayer = playerNumber => ({type: NEXT_PLAYER, playerNumber})
-export const distributeResourcePlayer = (resource, id) => ({
+export const distributeResourcePlayer = (resource, id, quantity = 1) => ({
   type: DISTRIBUTE_RESOURCE_PLAYER,
   resource,
-  id
+  id,
+  quantity
 })
-export const distributeResource = id => ({type: DISTRIBUTE_RESOURCE, id})
+export const distributeResource = (id, quantity = 1) => ({
+  type: DISTRIBUTE_RESOURCE,
+  id,
+  quantity
+})
 export const updateScore = (playerId, updatedScore) => ({
   type: UPDATE_SCORE,
   playerId,
   updatedScore
 })
+
+export const changeGamePhase = phase => ({type: CHANGE_GAME_PHASE, phase})
 export const changePhase = phase => ({type: CHANGE_PHASE, phase})

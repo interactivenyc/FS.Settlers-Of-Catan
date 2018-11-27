@@ -8,6 +8,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../store/actions'
 import socket from '../../socket'
 import store from '../../store'
+import PlayerAlerts from './PlayerAlerts'
 
 class GameMap extends Component {
   componentDidMount() {
@@ -48,11 +49,8 @@ class GameMap extends Component {
     socket.emit('get-dev-card', 'defaultGame')
   }
 
-  handlePlayCard = event => {
-    if (event === 'vp') {
-      this.props.adjustScore(1)
-    }
-    this.props.playCard(event)
+  handlePlayCard = card => {
+    this.props.playCard(card)
   }
 
   handleClick = e => {
@@ -60,8 +58,10 @@ class GameMap extends Component {
       changeRoadThunk,
       changeVertexThunk,
       playerTurn,
-      player,
-      phase
+      moveRobberThunk,
+      phase,
+      buildCityThunk,
+      player
     } = this.props
 
     if (playerTurn === player.playerNumber) {
@@ -69,10 +69,17 @@ class GameMap extends Component {
         this.handleMoveRobber(e)
       } else if (phase === 'rob') {
         this.handleRobPlayer(e)
-      } else if (e.target.classList.contains('side')) {
+      } else if (
+        e.target.classList.contains('side') &&
+        phase === 'build road'
+      ) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
-        changeVertexThunk(e.target.id)
+        if (phase === 'build city') {
+          buildCityThunk(e.target.id)
+        } else if (phase === 'build settlement') {
+          changeVertexThunk(e.target.id)
+        }
       }
     }
   }
@@ -101,7 +108,14 @@ class GameMap extends Component {
   }
 
   render() {
-    const {players, visible, playerTurn, player} = this.props
+    const {
+      players,
+      visible,
+      playerTurn,
+      player,
+      changeGamePhase,
+      phase
+    } = this.props
 
     return (
       <div className="board-container">
@@ -109,15 +123,20 @@ class GameMap extends Component {
           players={players.filter(p => p.id !== player.playerNumber)}
           playerTurn={playerTurn}
         />
+        <PlayerAlerts phase={phase} changeGamePhase={changeGamePhase} />
         <Modle
           visible={visible}
           toggleModal={this.props.toggleModal}
           buyaCard={this.buyaCard}
           adjustScore={this.props.adjustScore}
+          changeGamePhase={changeGamePhase}
           robberDiscardThunk={this.props.robberDiscardThunk}
           player={player}
           playerHand={this.props.playerHand}
           handlePlayCard={this.handlePlayCard}
+          setResources={this.props.setResources}
+          plentyThunk={this.props.plentyThunk}
+          monopoly={this.props.monopoly}
         />
         <GameBoard
           adjust={-25}
@@ -125,6 +144,12 @@ class GameMap extends Component {
           board={this.props.board}
           die1={this.props.die1}
           die2={this.props.die2}
+          player={player}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+          playerTurn={playerTurn}
+          changeRoadThunk={this.props.changeRoadThunk}
+          changeVertexThunk={this.props.changeVertexThunk}
         />
         <PlayerControls
           distributeResources={this.props.distributeResourcesThunk}
@@ -133,6 +158,8 @@ class GameMap extends Component {
           nextPlayerThunk={this.props.nextPlayerThunk}
           toggleModal={this.props.toggleModal}
           newDiceRoll={this.props.newDiceRoll}
+          changePhase={this.props.changePhase}
+          changeGamePhase={changeGamePhase}
         />
       </div>
     )
@@ -166,6 +193,12 @@ export default connect(mapStateToProps, {
   newDiceRoll: actions.newDiceRoll,
   buyCard: actions.buyCard,
   adjustScore: actions.adjustScore,
+  changeGamePhase: actions.changeGamePhase,
+  buildCityThunk: actions.buildCityThunk,
   robberDiscardThunk: actions.robberDiscardThunk,
-  playCard: actions.playCard
+  playCard: actions.playCard,
+  changePhase: actions.changePhase,
+  setResources: actions.setResources,
+  plentyThunk: actions.plentyThunk,
+  monopoly: actions.monopoly
 })(GameMap)

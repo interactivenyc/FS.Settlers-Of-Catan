@@ -5,7 +5,10 @@ const PlayerControls = ({
   player,
   nextPlayerThunk,
   toggleModal,
-  newDiceRoll
+  newDiceRoll,
+  changePhase,
+  distributeResources,
+  changeGamePhase
 }) => {
   return (
     <div
@@ -26,7 +29,10 @@ const PlayerControls = ({
             </button>
             <button
               className="btn"
-              onClick={() => toggleModal('build')}
+              onClick={() => {
+                toggleModal('build')
+                changeGamePhase(null)
+              }}
               type="button"
             >
               Build
@@ -40,7 +46,10 @@ const PlayerControls = ({
             </button>
             <button
               className="btn"
-              onClick={() => toggleModal('showDevCards')}
+              onClick={() => {
+                changePhase('development')
+                toggleModal('showDevCards')
+              }}
               type="button"
             >
               Development Cards

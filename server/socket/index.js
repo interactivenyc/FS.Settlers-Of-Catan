@@ -48,7 +48,6 @@ module.exports = io => {
     }
     shuffle(cards)
     gameDecks.defaultGame = cards
-    // console.log(gameDecks.defaultGame)
   }
 
   function getRandomCard(gameId) {
@@ -96,7 +95,7 @@ module.exports = io => {
      *******************************************/
     socket.on('get-dev-card', gameId => {
       let card = getRandomCard(gameId)
-      io.sockets.emit('send-card-to-user', card)
+      socket.emit('send-card-to-user', card)
     })
 
     /*******************************************

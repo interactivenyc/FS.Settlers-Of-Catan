@@ -3,8 +3,6 @@
 export const getEdgeNeighborsColor = (edge, board) => {
   const obj = {[edge.id]: true}
 
-  console.log(edge)
-
   const neighbors = [...edge.vertices[0].edges, ...edge.vertices[1].edges]
 
   return neighbors.reduce((acc, val) => {
@@ -36,12 +34,15 @@ export const getEdgeNeighbors = (edge, board) => {
 export const getVerticeNeighbors = (vertice, board) => {
   const edges = vertice.edges
 
-  return edges.map(
+  const neighbors = edges.map(
     curEdge =>
       curEdge.vertices[0].id !== vertice.id
         ? board.vertices[curEdge.vertices[0].id]
         : board.vertices[curEdge.vertices[1].id]
   )
+  //make sure neighbors includes vertex itself (to check if it already has a color)
+  neighbors.push(vertice)
+  return neighbors
 }
 
 // at least one edge needs to share the current player color
@@ -57,7 +58,29 @@ export const validateChangeEdge = (playerState, edge, neighbors, board) => {
   })
 }
 
-// all adjacent vertices must have no settlements
-export const validateChangeVertice = neighbors => {
-  return neighbors.every(neighbor => neighbor.color === null)
+// all adjacent vertices must have no settlements & must be two roads of same color from vertex
+export const validateChangeVertice = (neighbors, color) => {
+  // also cannot have more than 5 total settlements (would need to upgrade to city) - need to implement this
+  const subjectVertex = neighbors[neighbors.length - 1]
+
+  let verifyConnectingRoads = false
+  subjectVertex.edges.forEach(edge => {
+    if (checkConnectingRoads(edge, subjectVertex, color))
+      verifyConnectingRoads = true
+  })
+
+  const verifyNeighbors = neighbors.every(neighbor => neighbor.color === null)
+
+  return verifyConnectingRoads && verifyNeighbors
+}
+
+const checkConnectingRoads = (edge, vertex, color) => {
+  if (edge.color !== color) return false
+  const otherVertex = edge.vertices.filter(vert => vert !== vertex)[0]
+  const nextEdges = otherVertex.edges.filter(edg => edg !== edge)
+
+  for (const e in nextEdges) {
+    if (nextEdges[e].color === color) return true
+  }
+  return false
 }

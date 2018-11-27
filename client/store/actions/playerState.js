@@ -9,7 +9,8 @@ import {
   RECEIVE_OFFER,
   ACCEPT_OFFER,
   REJECT_OFFER,
-  CLEAR_OFFER
+  CLEAR_OFFER,
+  toggleModal
 } from './actionTypes'
 
 import {
@@ -18,6 +19,8 @@ import {
   createResourceCardsArray
 } from './helpers'
 
+import {adjustScore, monopoly} from './gameState'
+
 import socket from '../../socket'
 
 export const playCard = playedCard => {
@@ -25,6 +28,21 @@ export const playCard = playedCard => {
     let {playerHand} = getState().playerState
     let elToRemove = playerHand.indexOf(playedCard)
     let updatedHand = playerHand.filter((card, i) => i !== elToRemove)
+    if (playedCard === 'vp') {
+      dispatch(adjustScore(1))
+    }
+    if (playedCard === 'plenty') {
+      dispatch(toggleModal('plenty'))
+    }
+    if (playedCard === 'knight') {
+      console.log('knight')
+    }
+    if (playedCard === 'monopoly') {
+      dispatch(toggleModal('monopoly'))
+    }
+    if (playedCard === 'road') {
+      console.log('roadbuilding')
+    }
     dispatch(deleteCard(updatedHand))
   }
 }
