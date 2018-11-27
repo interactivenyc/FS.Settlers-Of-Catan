@@ -242,3 +242,9 @@ export const monopoly = type => {
     })
   }
 }
+
+// export const checkForVictory = () =>{
+//   return(dispatch,getState) =>{
+//     let {player}
+//   }
+// }
