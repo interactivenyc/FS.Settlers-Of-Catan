@@ -15,7 +15,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transform: perspective(800px) rotateX(30deg) translateY(-15%);
+  transform: perspective(800px) rotateX(30deg) translateY(-13%);
   box-shadow: 0px 50px 50px 10px rgba(0, 0, 0, 0.3);
   clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
 }
