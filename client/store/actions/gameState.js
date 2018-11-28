@@ -6,17 +6,31 @@ import {
   rollDice,
   toggleModal,
   moveRobber,
-  updateScore,
   updateScorePlayer,
   updatePlayers,
   changePhase,
-  setResources
+  setResources,
+  changeGamePhase
 } from './actionTypes'
+
 import socket from '../../socket'
-import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
-import {get} from 'https'
+import {
+  rollDie,
+  checkforLargestArmy,
+  checkforLongestRoad
+} from '../../../client/components/GameMap/HelperFunctions'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
+
+export const initGame = users => (dispatch, getState) => {
+  const {playerState, gameState} = getState()
+
+  dispatch(setGameUsers(users))
+
+  if (playerState.playerNumber === gameState.playerTurn) {
+    dispatch(newDiceRoll())
+  }
+}
 
 export const distributeResourcesThunk = num => (dispatch, getState) => {
   const {resources, vertices} = getState().board
@@ -68,6 +82,23 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   })
 }
 
+export const checkForVictory = playerNumber => {
+  return (dispatch, getState) => {
+    let {gameState} = getState()
+    let finalScore = gameState.players[playerNumber - 1].score
+
+    if (checkforLongestRoad(playerNumber, gameState) === true) {
+      finalScore = finalScore + 2
+    }
+    if (checkforLargestArmy(playerNumber, gameState) === true) {
+      finalScore = finalScore + 2
+    }
+    if (finalScore > 9) {
+      window.alert(` Player ${playerNumber} is the Winner!!!`)
+    }
+  }
+}
+
 export const robberThunk = () => (dispatch, getState) => {
   const {playerState, gameState} = getState()
 
@@ -77,6 +108,7 @@ export const robberThunk = () => (dispatch, getState) => {
 
   if (resources > 7) {
     dispatch(toggleModal('robber'))
+    dispatch(changePhase('responding'))
   }
 }
 
@@ -96,7 +128,10 @@ export const newDiceRoll = () => {
 
     dispatch(distributeResourcesThunk(newDiceTotal))
 
+    console.log('NEW DICE', newDiceTotal)
+
     if (newDiceTotal === 7) {
+      console.log('hitting robber')
       const players = gameState.players.map(
         player =>
           player.resources > 7 ? {...player, responded: false} : player
@@ -145,6 +180,7 @@ export const adjustScore = scoreChange => {
 
     dispatch(updatePlayers(playersArr, updatedScore))
     dispatch(updateScorePlayer(updatedScore))
+    dispatch(checkForVictory(playerNumber))
   }
 }
 
@@ -240,9 +276,3 @@ export const monopoly = type => {
     })
   }
 }
-
-// export const checkForVictory = () =>{
-//   return(dispatch,getState) =>{
-//     let {player}
-//   }
-// }

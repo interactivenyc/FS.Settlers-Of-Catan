@@ -20,6 +20,7 @@ class TradeModal extends React.Component {
     this.getWantCount = this.getWantCount.bind(this)
     this.reset = this.reset.bind(this)
     this.submit = this.submit.bind(this)
+    this.getDisabled = this.getDisabled.bind(this)
   }
 
   clickOffer(e) {
@@ -110,6 +111,24 @@ class TradeModal extends React.Component {
     }
   }
 
+  getDisabled() {
+    console.log('[ TradeModal ] getDisabled', this.props.currentTrade)
+    if (this.props.currentTrade) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  getRejectCount() {
+    if (this.props.currentTrade && this.props.currentTrade.rejected) {
+      return this.props.currentTrade.rejected
+    } else {
+      return 0
+    }
+  }
+
+  /* eslint-disable no-alert */
   componentDidUpdate() {
     console.log('[ TradeModal ] componentDidUpdate')
 
@@ -138,7 +157,7 @@ class TradeModal extends React.Component {
 
   render() {
     return (
-      <div className="game-modle game-modle-active">
+      <div>
         <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
           Trade
           <button
@@ -290,20 +309,36 @@ class TradeModal extends React.Component {
               <div />
             )}
           </button>
-          <button
-            onClick={this.reset}
-            className="build-modal-button"
-            type="button"
-          >
-            Reset
-          </button>
-          <button
-            onClick={this.submit}
-            className="build-modal-button"
-            type="button"
-          >
-            Submit
-          </button>
+
+          {this.getDisabled() ? (
+            <button
+              onClick={this.submit}
+              disabled={this.getDisabled()}
+              className="build-modal-button"
+              type="button"
+            >
+              Rejected: {this.getRejectCount()}
+            </button>
+          ) : (
+            <React.Fragment>
+              <button
+                onClick={this.reset}
+                disabled={this.getDisabled()}
+                className="build-modal-button"
+                type="button"
+              >
+                Reset
+              </button>
+              <button
+                onClick={this.submit}
+                disabled={this.getDisabled()}
+                className="build-modal-button"
+                type="button"
+              >
+                Submit
+              </button>
+            </React.Fragment>
+          )}
         </div>
       </div>
     )

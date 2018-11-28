@@ -94,7 +94,7 @@ class OfferModal extends React.Component {
       const offerCards = this.props.currentTrade.offerCards
 
       return (
-        <div className="game-modle game-modle-active">
+        <div>
           <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
             Trade
             <button

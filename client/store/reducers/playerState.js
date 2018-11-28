@@ -21,7 +21,7 @@ const playerState = {
     {type: 'forest', quantity: 5},
     {type: 'field', quantity: 5},
     {type: 'hill', quantity: 5},
-    {type: 'mountain', quantity: 6},
+    {type: 'mountain', quantity: 5},
     {type: 'pasture', quantity: 5}
   ],
   currentTrade: null,
