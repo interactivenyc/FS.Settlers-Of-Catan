@@ -494,3 +494,77 @@
 .player-alert-button:hover {
   background-color: darkgrey;
 }
+
+.port {
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 10;
+  transition: opacity 0.3s;
+}
+
+.port.question {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.port.question h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.port.question.one {
+  top: 2%;
+  left: 69%;
+}
+
+.port.question.two {
+  top: 61%;
+  left: 84%;
+}
+
+.port.question.three {
+  top: 92%;
+  left: 69%;
+}
+
+.port.question.four {
+  top: 47%;
+  left: 4%;
+}
+
+.port.mountain {
+  top: 2%;
+  left: 38%;
+}
+
+.port.hill {
+  top: 92%;
+  left: 40%;
+}
+
+.port.forest {
+  top: 77%;
+  left: 19%;
+}
+
+.port.pasture {
+  top: 33%;
+  left: 85%;
+}
+
+.port.field {
+  top: 17%;
+  left: 17%;
+}
+
+.port:hover {
+  opacity: 1;
+}

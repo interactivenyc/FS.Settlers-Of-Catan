@@ -15,7 +15,28 @@ const GameBoard = ({
   const mapAdjust = 4
 
   return (
-    <div className="board ports" onClick={e => handleClick(e)}>
+    <div className="board" onClick={e => handleClick(e)}>
+      <div className="port mountain" />
+      <div className="port hill" />
+      <div className="port forest" />
+      <div className="port pasture" />
+      <div className="port field" />
+      <div className="port question one">
+        <h3>?</h3>
+        <h3>3:1</h3>
+      </div>
+      <div className="port question two">
+        <h3>?</h3>
+        <h3>3:1</h3>
+      </div>
+      <div className="port question three">
+        <h3>?</h3>
+        <h3>3:1</h3>
+      </div>
+      <div className="port question four">
+        <h3>?</h3>
+        <h3>3:1</h3>
+      </div>
       <MapRow style={{transform: `translateY(${mapAdjust * 10}%)`}}>
         <Hexagon
           gameOptions={gameOptions.row1.hex1}
