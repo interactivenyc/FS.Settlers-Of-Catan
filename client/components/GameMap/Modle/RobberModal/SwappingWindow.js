@@ -5,12 +5,13 @@ const SwappingWindow = ({
   robber,
   handleClickAdd,
   handleClickSubtract,
-  displayValue
+  displayValue,
+  classTo
 }) => {
   return (
     <div key={resource.type} className="robber-modal-group">
       <div className="robber-modal-item resource-group">
-        <h2 className="subtract-text">{robber.quantity}</h2>
+        <h2 className={classTo}>{robber.quantity}</h2>
         <div
           key={resource.type}
           className={`modal-resource ${resource.type}`}
