@@ -122,10 +122,10 @@ export const getPaths = (
             }
           })
         })
+
         let hasConnector = false
         potentialLastPaths.forEach(final => {
-          if (visited[0] !== final && visited[visited.length - 2] !== final)
-            hasConnector = true
+          if (visited[visited.length - 2] !== final) hasConnector = true
         })
         return hasConnector ? 2 : 1
       } else {
