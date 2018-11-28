@@ -1,12 +1,13 @@
 const Game = require('../db').model('game')
-const initializedBoardData = require('./initializedBoard')
+const mockBoard = require('./mockboard')
+const initializedBoard = require('./initializedBoard')
 
 module.exports = io => {
   let userLobby = {}
   let activeGames = {'Default Game': {}}
   let gameDecks = {}
   let chatHistory = []
-  const numPlayers = 2
+  const numPlayers = 1
 
   //Fisher-Yates Shuffle
   function shuffle(array) {
@@ -97,7 +98,7 @@ module.exports = io => {
 
       if (userKeys.length === numPlayers) {
         const board = await Game.create({
-          board_data: JSON.stringify(initializedBoardData)
+          board_data: JSON.stringify(initializedBoard)
         })
 
         let gameUsers = []

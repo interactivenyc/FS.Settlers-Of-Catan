@@ -18,9 +18,9 @@ const playerState = {
   color: null,
   playerNumber: null,
   resources: [
-    {type: 'forest', quantity: 5},
+    {type: 'forest', quantity: 100},
     {type: 'field', quantity: 5},
-    {type: 'hill', quantity: 5},
+    {type: 'hill', quantity: 100},
     {type: 'mountain', quantity: 6},
     {type: 'pasture', quantity: 5}
   ],

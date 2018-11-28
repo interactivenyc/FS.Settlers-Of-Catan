@@ -5,7 +5,7 @@ class Board {
   constructor(initialData) {
     console.log('new Board()')
 
-    this.initialData = initialData
+    this.initialData = initialData ? true : null
 
     this.resources = {}
     this.vertices = {}

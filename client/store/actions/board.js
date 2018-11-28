@@ -3,7 +3,9 @@ import {
   validateChangeEdge,
   getVerticeNeighbors,
   validateChangeVertice,
-  getRoadLength
+  getRoadLength,
+  getPaths,
+  checkIfFullResource
 } from './helpers'
 import Board from '../../board'
 
@@ -81,7 +83,7 @@ export const longestRoad = (edge, board, id) => (dispatch, getState) => {
   const updatedPlayers = players.map(player => {
     return player.id === id && player.longestRoad < length
       ? {...player, longestRoad: length}
-      : {...player}
+      : player
   })
 
   dispatch(updatePlayers(updatedPlayers))
@@ -101,7 +103,7 @@ export const changeRoadThunk = id => (dispatch, getState) => {
       createRoad(id, playerState.color, playerState.playerNumber)
     )
     if (gameState.phase === 'build road') {
-      dispatch(changeGamePhase(null))
+      // dispatch(changeGamePhase(null))
       dispatch(useResources(['hill', 'forest']))
       dispatch(distributeResource(playerState.playerNumber, -2))
       socket.emit('dispatch', distributeResource(playerState.playerNumber, -2))
@@ -111,8 +113,30 @@ export const changeRoadThunk = id => (dispatch, getState) => {
       dispatch(changeGamePhase(null))
     }
     const newBoard = getState().board
-    const newEdge = newBoard.edges[id]
+    // const newEdge = newBoard.edges[id]
 
-    dispatch(longestRoad(newEdge, newBoard, playerState.playerNumber))
+    dispatch(calcLongestRoad(id))
+    // dispatch(longestRoad(newEdge, newBoard, playerState.playerNumber))
   }
+}
+
+// Patrick's longest road attempt
+export const calcLongestRoad = id => (dispatch, getState) => {
+  const {board} = getState()
+  const edge = board.edges[id]
+
+  const paths = getPaths(edge, board)
+  const fullHex = checkIfFullResource(edge, board)
+
+  // if (fullHex) {
+
+  // }
+
+  console.log('LONGEST ROAD: ', paths)
+  console.log('IS FULL HEX? ', fullHex)
+
+  // const firstPaths = getPaths(edge)
+  // const visited = {0: edge}
+  // const nextPaths = firstPaths.map(e => getPaths(e, visited))
+  // console.log(nextPaths)
 }

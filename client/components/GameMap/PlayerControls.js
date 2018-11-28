@@ -8,7 +8,8 @@ const PlayerControls = ({
   newDiceRoll,
   changePhase,
   distributeResources,
-  changeGamePhase
+  changeGamePhase,
+  calcLongestRoad
 }) => {
   return (
     <div
@@ -24,6 +25,13 @@ const PlayerControls = ({
         ))}
         {playerTurn === player.playerNumber && (
           <div className="section-btns">
+            <button
+              onClick={() => calcLongestRoad('2,3')}
+              className="btn"
+              type="button"
+            >
+              Calc Road
+            </button>
             <button onClick={newDiceRoll} className="btn" type="button">
               Roll
             </button>

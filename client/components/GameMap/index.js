@@ -116,7 +116,8 @@ class GameMap extends Component {
       playerTurn,
       player,
       changeGamePhase,
-      phase
+      phase,
+      calcLongestRoad
     } = this.props
 
     return (
@@ -162,6 +163,7 @@ class GameMap extends Component {
           newDiceRoll={this.props.newDiceRoll}
           changePhase={this.props.changePhase}
           changeGamePhase={changeGamePhase}
+          calcLongestRoad={calcLongestRoad}
         />
       </div>
     )
@@ -202,5 +204,6 @@ export default connect(mapStateToProps, {
   changePhase: actions.changePhase,
   setResources: actions.setResources,
   plentyThunk: actions.plentyThunk,
-  monopoly: actions.monopoly
+  monopoly: actions.monopoly,
+  calcLongestRoad: actions.calcLongestRoad
 })(GameMap)

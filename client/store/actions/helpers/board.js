@@ -22,7 +22,7 @@ export const getEdgeNeighbors = (edge, board) => {
 
   return neighbors.reduce((acc, val) => {
     if (!obj[val.id]) {
-      acc.push({...board.edges[val.id]})
+      acc.push(board.edges[val.id])
       obj[val.id] = true
     }
 
