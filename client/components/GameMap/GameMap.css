@@ -103,8 +103,8 @@
 }
 
 .dev-card {
-  width: 90px;
-  height: 100px;
+  width: 200px;
+  height: auto;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
