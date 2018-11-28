@@ -313,19 +313,6 @@
   background-position: center;
 }
 
-.build-modal-resource {
-  width: 90px;
-  height: 100px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
-.modal-resource:hover {
-  background-color: rgba(255, 255, 255, 0.5);
-  background-blend-mode: multiply;
-}
-
 .game-controller-container {
   bottom: 1%;
   left: 50%;

@@ -79,7 +79,8 @@ export const getLongestRoad = (
         })
         let hasConnector = false
         potentialLastPaths.forEach(final => {
-          if (visited[visited.length - 2] !== final) hasConnector = true
+          if (visited[visited.length - 2] !== final && visited[0] !== final)
+            hasConnector = true
         })
         return hasConnector ? 2 : 1
       } else {

@@ -11,7 +11,8 @@ import {
   changePhase,
   setResources,
   changeGamePhase,
-  updateScore
+  updateScore,
+  updateSelf
 } from './actionTypes'
 
 import socket from '../../socket'
@@ -257,16 +258,17 @@ export const depleteResources = (type, player) => (dispatch, getState) => {
     }
   })
   let playerNumber = getState().playerState.playerNumber
-  let playersArr = getState().gameState.players.map(el => {
-    if (playerNumber === el.id) {
-      return {...el, resources: el.resources - numDepletedResources}
-    } else {
-      return el
-    }
-  })
+  let updatedPlayer = getState().gameState.players.reduce(
+    (acc, val) =>
+      playerNumber === val.id
+        ? {...val, resources: val.resources - numDepletedResources}
+        : acc,
+    {}
+  )
 
   dispatch(setResources(newResources))
-  dispatch(updatePlayers(playersArr))
+  dispatch(updateSelf(updatedPlayer))
+  socket.emit('dispatch', updateSelf(updatedPlayer))
   socket.emit('dispatchThunk', {
     action: 'sendResources',
     args: [type, numDepletedResources, player]
