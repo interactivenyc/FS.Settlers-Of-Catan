@@ -36,11 +36,10 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
+                disabled={!!phase}
                 onClick={() => {
-                  if (!phase) {
-                    toggleModal('build')
-                    changeGamePhase(null)
-                  }
+                  toggleModal('build')
+                  changeGamePhase(null)
                 }}
                 type="button"
               >
@@ -48,10 +47,9 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
+                disabled={!!phase}
                 onClick={() => {
-                  if (!phase) {
-                    toggleModal('trade')
-                  }
+                  toggleModal('trade')
                 }}
                 type="button"
               >
@@ -59,10 +57,9 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
+                disabled={!!phase}
                 onClick={() => {
-                  if (!phase) {
-                    toggleModal('showDevCards')
-                  }
+                  toggleModal('showDevCards')
                 }}
                 type="button"
               >
@@ -70,10 +67,9 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
+                disabled={!!phase}
                 onClick={() => {
-                  if (!phase) {
-                    nextPlayerThunk(player.playerNumber)
-                  }
+                  nextPlayerThunk(player.playerNumber)
                 }}
                 type="button"
               >
