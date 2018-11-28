@@ -128,7 +128,11 @@ class GameMap extends Component {
           players={players.filter(p => p.id !== player.playerNumber)}
           playerTurn={playerTurn}
         />
-        <PlayerAlerts phase={phase} changeGamePhase={changeGamePhase} />
+        <PlayerAlerts
+          playerTurn={playerTurn}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+        />
         <Modle
           visible={visible}
           toggleModal={this.props.toggleModal}
