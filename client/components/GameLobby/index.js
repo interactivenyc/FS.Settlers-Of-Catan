@@ -192,14 +192,6 @@ export class GameLobby extends React.Component {
       this.props.history.push('/map')
     })
 
-    socket.on('update-chat', chatList => {
-      console.log('update-chat', chatList)
-
-      this.setState({
-        chatList
-      })
-    })
-
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} was lost - rejoining`)
 

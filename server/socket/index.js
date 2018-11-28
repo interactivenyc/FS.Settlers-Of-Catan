@@ -43,8 +43,8 @@ module.exports = io => {
 
   function createDefaultGame() {
     console.log('createDefaultGame')
-    let lobby = new GameInstance('Default Game')
-    games['Default Game'] = lobby
+    let defaultGame = new GameInstance('Default Game')
+    games['Default Game'] = defaultGame
   }
 
   //Fisher-Yates Shuffle
@@ -102,21 +102,21 @@ module.exports = io => {
     games = {'Default Game': {}}
   }
 
-  function updateLobby(socket) {
+  function updateRoom(socket) {
     let room = Object.keys(socket.rooms)[0]
     console.log(
-      '[ server socket ] updateLobby room/rooms:',
+      // '[ server socket ] updateRoom room/rooms:',
       room,
       Object.keys(socket.rooms)
     )
     if (room && games[room] && games[room].chatList) {
       console.log(
-        '[ server socket ] updateLobby update chatList:',
+        // '[ server socket ] updateRoom update chatList:',
         games[room].chatList
       )
       io.sockets
-        .in(room)
-        .emit('update-lobby', users, games, games[room].chatList)
+        .in('Default Game')
+        .emit('update-lobby', users, games, games['Default Game'].chatList)
       io.sockets
         .in('Lobby')
         .emit('update-lobby', users, games, games.Lobby.chatList)
@@ -133,7 +133,7 @@ module.exports = io => {
   }
 
   function joinRoom(socket, room) {
-    console.log('joinRoom', room)
+    console.log('joinRoom room:', room)
 
     leaveAllRooms(socket)
     socket.join(room)
@@ -142,13 +142,34 @@ module.exports = io => {
       console.log('joinRoom create new GameInstance', room)
       games[room] = new GameInstance(room)
     }
-    updateLobby(socket)
+    console.log('joinRoom - check joined', socket.rooms)
+    updateRoom(socket)
   }
 
   io.on('connection', socket => {
+    console.log(`A socket connection to the server has been made: ${socket.id}`)
+
+    console.log('-----------------')
+
+    socket.on('disconnect', () => {
+      console.log(`disconnect ${socket.id} has left the building`)
+
+      console.log(`---------------------`)
+
+      if (socket.rooms.length > 0) {
+        console.log('disconnect from room', Object.keys(socket.rooms))
+        console.log(`---------------------`)
+
+        delete users[socket.id]
+        delete games[Object.keys(socket.rooms)[0]][socket.id]
+        updateRoom(socket)
+      }
+    })
+
     /*******************************************
      * GAME LISTENERS
      *******************************************/
+
     socket.on('get-dev-card', gameId => {
       let card = getRandomCard(gameId)
       socket.emit('send-card-to-user', card)
@@ -157,8 +178,6 @@ module.exports = io => {
     /*******************************************
      * LOBBY LISTENERS
      *******************************************/
-
-    console.log(`A socket connection to the server has been made: ${socket.id}`)
 
     socket.on('join-lobby', user => {
       let gameUser = new User(user, socket.id)
@@ -174,7 +193,7 @@ module.exports = io => {
     socket.on('join-game', async gameId => {
       console.log('join-game gameId', gameId)
       games[gameId][socket.id] = users[socket.id]
-      updateLobby(socket)
+      // updateRoom(socket)
       const userKeys = Object.keys(games[gameId])
 
       /**
@@ -206,21 +225,14 @@ module.exports = io => {
           })
         })
         io.sockets.in('gameroom').emit('set-game-users', gameUsers)
-        updateLobby(socket)
+        // updateRoom(socket)
       }
     })
 
     socket.on('reset-all-games', () => {
       log('reset-all-games')
       resetAllGames()
-      updateLobby(socket)
-    })
-
-    socket.on('disconnect', () => {
-      console.log(`Connection ${socket.id} has left the building`)
-      delete users[socket.id]
-      delete games['Default Game'][socket.id]
-      updateLobby(socket)
+      // updateRoom(socket)
     })
 
     socket.on('delete-user-from-game', (email, gameId) => {
@@ -239,22 +251,21 @@ module.exports = io => {
       console.log('leave-game', gameId, socket.id)
       if (gameId) {
         delete games[gameId][socket.id]
-        updateLobby(socket)
+        // updateRoom(socket)
       }
     })
 
     socket.on('send-message', message => {
+      console.log('send-message socket.rooms', socket.rooms)
       let room = Object.keys(socket.rooms)[0]
-      console.log('send-message', room, message)
+      console.log('send-message room / message', room, message)
 
       games[room].chatList.push({
         username: users[socket.id].username,
         message: message
       })
 
-      console.log('chatlist', games[room].chatList)
-
-      io.sockets.emit('update-chat', games[room].chatList)
+      updateRoom(socket)
     })
 
     /**
