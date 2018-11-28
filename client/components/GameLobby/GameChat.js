@@ -32,7 +32,7 @@ export default class GameChat extends React.Component {
   }
 
   render() {
-    console.log('[ GameChat ] render', this.props.activeGames)
+    console.log('[ GameChat ] render this.props.chatList', this.props.chatList)
     let keyIndex = 0
     return (
       <table className="tableDisplay">
@@ -43,7 +43,7 @@ export default class GameChat extends React.Component {
           <tr>
             <td>
               <div id="scrollText" className="scrollText">
-                {this.props.activeGames.Lobby.chatList.map(entry => {
+                {this.props.chatList.map(entry => {
                   return (
                     <React.Fragment key={keyIndex++}>
                       <p>

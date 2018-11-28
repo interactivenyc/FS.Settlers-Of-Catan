@@ -116,18 +116,18 @@ export class GameLobby extends React.Component {
                 </button>
                 <button
                   type="button"
-                  onClick={() => this.switchRoom('gameroom')}
+                  onClick={() => this.switchRoom('Default Game')}
                 >
                   Join Game Room
                 </button>
-                <button type="button" onClick={() => this.switchRoom('lobby')}>
+                <button type="button" onClick={() => this.switchRoom('Lobby')}>
                   Join Lobby
                 </button>
               </td>
             </tr>
             <tr>
               <td>
-                <GameChat activeGames={this.state.activeGames} />
+                <GameChat chatList={this.state.chatList} />
               </td>
               <td>
                 <GameState state={this.state} />

@@ -20,7 +20,7 @@ const GameList = props => {
   }
 
   function isInGame() {
-    console.log('[ GameList ]', props)
+    // console.log('[ GameList ]', props)
 
     const keys = Object.keys(props.activeGames['Default Game'])
     if (keys.includes(props.socketId)) {
