@@ -127,38 +127,35 @@ export const getPaths = (
           if (visited[0] !== final && visited[visited.length - 2] !== final)
             hasConnector = true
         })
-        console.log('got here', edge)
-        console.log('visited', visited)
-        console.log('has connector', hasConnector)
         return hasConnector ? 2 : 1
       } else {
         return 1
       }
     } else if (fullResource && !firstChecked) {
-        const lengths = paths.map(path => {
-          let otherVisited = paths.filter(p => p !== path)
-          otherVisited = otherVisited.concat(visited)
-          return 1 + getPaths(path, board, otherVisited, true, callCount + 1)
-        })
-        const longestPath = Math.max(...lengths)
-        return Math.max(6, longestPath)
-      } else if (fullResource) {
-        const lengths = paths.map(path => {
-          let otherVisited = paths.filter(p => p !== path)
-          otherVisited = otherVisited.concat(visited)
-          return 1 + getPaths(path, board, otherVisited, true, callCount + 1)
-        })
-        const longestPath = Math.max(...lengths)
-        return longestPath
-      } else {
-        const lengths = paths.map(path => {
-          let otherVisited = paths.filter(p => p !== path)
-          otherVisited = otherVisited.concat(visited)
-          return 1 + getPaths(path, board, otherVisited, false, callCount + 1)
-        })
-        const longestPath = Math.max(...lengths)
-        return longestPath
-      }
+      const lengths = paths.map(path => {
+        let otherVisited = paths.filter(p => p !== path)
+        otherVisited = otherVisited.concat(visited)
+        return 1 + getPaths(path, board, otherVisited, true, callCount + 1)
+      })
+      const longestPath = Math.max(...lengths)
+      return Math.max(6, longestPath)
+    } else if (fullResource) {
+      const lengths = paths.map(path => {
+        let otherVisited = paths.filter(p => p !== path)
+        otherVisited = otherVisited.concat(visited)
+        return 1 + getPaths(path, board, otherVisited, true, callCount + 1)
+      })
+      const longestPath = Math.max(...lengths)
+      return longestPath
+    } else {
+      const lengths = paths.map(path => {
+        let otherVisited = paths.filter(p => p !== path)
+        otherVisited = otherVisited.concat(visited)
+        return 1 + getPaths(path, board, otherVisited, false, callCount + 1)
+      })
+      const longestPath = Math.max(...lengths)
+      return longestPath
+    }
   }
 }
 
