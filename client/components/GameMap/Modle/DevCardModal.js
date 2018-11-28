@@ -4,8 +4,21 @@ const DevCardModal = ({
   buyaCard,
   adjustScore,
   playerHand,
-  handlePlayCard
+  handlePlayCard,
+  player
 }) => {
+  let btnActive = player.resources.filter(resource => {
+    return (
+      resource.type === 'pasture' ||
+      resource.type === 'field' ||
+      resource.type === 'mountain'
+    )
+  })
+
+  console.log(btnActive)
+  btnActive = btnActive.every(resource => resource.quantity > 0)
+
+  console.log(btnActive)
   return (
     <div>
       <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
@@ -30,7 +43,11 @@ const DevCardModal = ({
       <div className="build-modal">
         <div />
 
-        <button onClick={buyaCard} className="build-modal-button">
+        <button
+          disabled={!btnActive}
+          onClick={buyaCard}
+          className="build-modal-button"
+        >
           Get New Development Card = &nbsp;<div className="modal-resource pasture" />
           <div className="modal-resource field" />
           <div className="modal-resource mountain" />
