@@ -2,19 +2,23 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: #2f3542;
+  min-height: 95vh;
 }
 
 .board {
-  min-width: 1025px;
-  background-color: #1e90ff;
+  width: 1025px;
+  height: 875px;
+  background-image: url('../../../public/images/GameBoard.png');
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transform: perspective(800px) rotateX(30deg) translateY(-15%);
+  transform: perspective(800px) rotateX(30deg) translateY(-13%);
   box-shadow: 0px 50px 50px 10px rgba(0, 0, 0, 0.3);
-  /* clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); */
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
 }
 
 .hexagon-container {
@@ -119,7 +123,7 @@
 
 .side {
   flex: 1;
-  background-color: #eccc68;
+  background-color: #fad390;
 }
 
 .side-left {
@@ -134,14 +138,14 @@
   height: 30px;
   width: 30px;
   position: absolute;
-  background-color: white;
+  background-color: #fad390;
   border-radius: 50%;
   z-index: 4;
 }
 
 .city-1 {
   top: 25%;
-  transform: translate(-50%, -50%);
+  transform: translate(-35%, -35%);
 }
 
 .city-2 {
@@ -157,13 +161,13 @@
 
 .city-4 {
   top: 75%;
-  transform: translate(-50%, -50%);
+  transform: translate(-35%, -35%);
 }
 
 .city-5 {
   left: 50%;
   top: 100%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0%);
 }
 
 .city-6 {
@@ -298,12 +302,16 @@
   background-blend-mode: multiply;
 }
 
-.game-controller {
-  display: flex;
+.game-controller-container {
   bottom: 1%;
   left: 50%;
   position: absolute;
   transform: translateX(-50%);
+  display: flex;
+}
+
+.game-controller {
+  display: flex;
   border: 3px solid #ecf0f1;
   background-color: rgba(52, 73, 94, 0.5);
   border-radius: 10px;
@@ -453,7 +461,7 @@
 
 .player-alert {
   font-size: 20pt;
-  color: black;
+  color: white;
   position: absolute;
   top: 120px;
   left: 200px;
@@ -486,4 +494,78 @@
 
 .player-alert-button:hover {
   background-color: darkgrey;
+}
+
+.port {
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0;
+  z-index: 10;
+  transition: opacity 0.3s;
+}
+
+.port.question {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.port.question h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.port.question.one {
+  top: 2%;
+  left: 69%;
+}
+
+.port.question.two {
+  top: 61%;
+  left: 84%;
+}
+
+.port.question.three {
+  top: 92%;
+  left: 69%;
+}
+
+.port.question.four {
+  top: 47%;
+  left: 4%;
+}
+
+.port.mountain {
+  top: 2%;
+  left: 38%;
+}
+
+.port.hill {
+  top: 92%;
+  left: 40%;
+}
+
+.port.forest {
+  top: 77%;
+  left: 19%;
+}
+
+.port.pasture {
+  top: 33%;
+  left: 85%;
+}
+
+.port.field {
+  top: 17%;
+  left: 17%;
+}
+
+.port:hover {
+  opacity: 1;
 }

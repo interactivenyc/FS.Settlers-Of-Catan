@@ -33,9 +33,9 @@ const gameState = (state = defaultState, action) => {
         let user = {
           id: action.users[i].playerNumber,
           userProfile: action.users[i],
-          resources: 0,
+          resources: 26,
           responded: true,
-          longestRoad: 0,
+          longestRoad: 2,
           score: 0,
           largestArmy: 0
         }
