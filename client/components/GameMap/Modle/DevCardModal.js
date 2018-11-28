@@ -24,26 +24,27 @@ const DevCardModal = ({
       <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
         Development Cards
         <button
+          type="button"
           onClick={() => toggleModal(false)}
           style={{float: 'right', fontSize: '10pt'}}
         />
       </div>
-      <div>
+      <div style={{display: 'flex'}}>
         {playerHand.map((el, i) => (
-          <button
-            onClick={() => {
-              handlePlayCard('vp')
-            }}
+          <div
             key={i}
-          >
-            {el}
-          </button>
+            className={`dev-card ${el}`}
+            onClick={() => {
+              handlePlayCard(el)
+            }}
+          />
         ))}
       </div>
       <div className="build-modal">
         <div />
 
         <button
+          type="button"
           disabled={!btnActive}
           onClick={buyaCard}
           className="build-modal-button"
