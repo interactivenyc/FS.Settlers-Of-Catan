@@ -13,6 +13,10 @@ import Dice from '../Dice'
 
 class GameMap extends Component {
   componentDidMount() {
+    // if (this.props.playerTurn === this.props.player.playerNumber) {
+    //   this.props.newDiceRoll()
+    // }
+
     socket.on('dispatch', action => store.dispatch(action))
     socket.on('dispatchThunk', ({action, args}) =>
       store.dispatch(actions[action].apply(this, args))
@@ -173,6 +177,7 @@ class GameMap extends Component {
             diceTotal={diceTotal}
             die1={die1}
             die2={die2}
+            phase={phase}
           />
         </div>
       </div>
