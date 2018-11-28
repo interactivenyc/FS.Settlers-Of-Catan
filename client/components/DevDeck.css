@@ -1,0 +1,9 @@
+.die-container {
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  display: flex;
+  opacity: 1;
+  transition: opacity 2s;
+}

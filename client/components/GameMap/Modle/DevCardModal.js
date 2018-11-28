@@ -19,7 +19,7 @@ const DevCardModal = ({
         {playerHand.map((el, i) => (
           <button
             onClick={() => {
-              handlePlayCard(el)
+              handlePlayCard('vp')
             }}
             key={i}
           >
