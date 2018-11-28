@@ -3,7 +3,7 @@ import {
   validateChangeEdge,
   getVerticeNeighbors,
   validateChangeVertice,
-  getRoadLength
+  getLongestRoad
 } from './helpers'
 import Board from '../../board'
 
@@ -74,24 +74,10 @@ export const buildCityThunk = id => (dispatch, getState) => {
   }
 }
 
-export const longestRoad = (edge, board, id) => (dispatch, getState) => {
-  const length = getRoadLength(edge, board)
-  const {players} = getState().gameState
-
-  const updatedPlayers = players.map(player => {
-    return player.id === id && player.longestRoad < length
-      ? {...player, longestRoad: length}
-      : {...player}
-  })
-
-  dispatch(updatePlayers(updatedPlayers))
-  socket.emit('dispatch', updatePlayers(updatedPlayers))
-}
-
 export const changeRoadThunk = id => (dispatch, getState) => {
   const {board, playerState, gameState} = getState()
   const edge = board.edges[id]
-  console.log('the edge', edge)
+
   const neighbors = getEdgeNeighborsColor(edge, board)
 
   if (validateChangeEdge(playerState, edge, neighbors, board)) {
@@ -115,4 +101,18 @@ export const changeRoadThunk = id => (dispatch, getState) => {
 
     dispatch(longestRoad(newEdge, newBoard, playerState.playerNumber))
   }
+}
+
+export const longestRoad = (edge, board, id) => (dispatch, getState) => {
+  const length = getLongestRoad(edge, board)
+  const {players} = getState().gameState
+
+  const updatedPlayers = players.map(player => {
+    return player.id === id && player.longestRoad < length
+      ? {...player, longestRoad: length}
+      : {...player}
+  })
+
+  dispatch(updatePlayers(updatedPlayers))
+  socket.emit('dispatch', updatePlayers(updatedPlayers))
 }
