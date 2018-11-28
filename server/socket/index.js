@@ -7,7 +7,7 @@ module.exports = io => {
   const numPlayers = 2
 
   class User {
-    constructor(users, data, socketId) {
+    constructor(data, socketId) {
       this.id = data.id
       this.email = data.email
       this.username = data.username || data.email.split('@')[0]
@@ -18,7 +18,7 @@ module.exports = io => {
   }
 
   class GameInstance {
-    constructor(games, name) {
+    constructor(name) {
       console.log('GameInstance - name', name)
 
       this.name = name
@@ -117,6 +117,7 @@ module.exports = io => {
     leaveAllRooms(socket)
     socket.join(room)
     socket.emit('connectToRoom', room)
+    games[room] = new GameInstance(room)
     updateLobby()
   }
 
@@ -218,12 +219,18 @@ module.exports = io => {
       }
     })
 
-    socket.on('send-message', (message, room) => {
+    socket.on('send-message', message => {
+      let room = Object.keys(socket.rooms)[0]
       console.log('send-message', room, message)
-      if (!room) room = 'Lobby'
 
-      games[room].chatList.push({username: users[socket.id].username, message})
-      io.sockets.in('Lobby').emit('update-chat', games[room].chatList)
+      games[room].chatList.push({
+        username: users[socket.id].username,
+        message: message
+      })
+
+      console.log('chatlist', games[room])
+
+      io.sockets.emit('update-chat', games[room].chatList)
     })
 
     /**

@@ -9,6 +9,7 @@ import * as actions from '../../store/actions'
 import socket from '../../socket'
 import store from '../../store'
 import PlayerAlerts from './PlayerAlerts'
+import Dice from '../Dice'
 
 class GameMap extends Component {
   componentDidMount() {
@@ -70,8 +71,9 @@ class GameMap extends Component {
       } else if (phase === 'rob') {
         this.handleRobPlayer(e)
       } else if (
-        e.target.classList.contains('side') &&
-        phase === 'build road'
+        (e.target.classList.contains('side') && phase === 'build road') ||
+        'build road dev' ||
+        'build road dev 2'
       ) {
         changeRoadThunk(e.target.id)
       } else if (e.target.classList.contains('city')) {
@@ -114,7 +116,10 @@ class GameMap extends Component {
       playerTurn,
       player,
       changeGamePhase,
-      phase
+      phase,
+      diceTotal,
+      die1,
+      die2
     } = this.props
 
     return (
@@ -123,7 +128,11 @@ class GameMap extends Component {
           players={players.filter(p => p.id !== player.playerNumber)}
           playerTurn={playerTurn}
         />
-        <PlayerAlerts phase={phase} changeGamePhase={changeGamePhase} />
+        <PlayerAlerts
+          playerTurn={playerTurn}
+          phase={phase}
+          changeGamePhase={changeGamePhase}
+        />
         <Modle
           visible={visible}
           toggleModal={this.props.toggleModal}
@@ -142,8 +151,6 @@ class GameMap extends Component {
           adjust={-25}
           handleClick={this.handleClick}
           board={this.props.board}
-          die1={this.props.die1}
-          die2={this.props.die2}
           player={player}
           phase={phase}
           changeGamePhase={changeGamePhase}
@@ -151,16 +158,21 @@ class GameMap extends Component {
           changeRoadThunk={this.props.changeRoadThunk}
           changeVertexThunk={this.props.changeVertexThunk}
         />
-        <PlayerControls
-          distributeResources={this.props.distributeResourcesThunk}
-          playerTurn={playerTurn}
-          player={player}
-          nextPlayerThunk={this.props.nextPlayerThunk}
-          toggleModal={this.props.toggleModal}
-          newDiceRoll={this.props.newDiceRoll}
-          changePhase={this.props.changePhase}
-          changeGamePhase={changeGamePhase}
-        />
+        <div>
+          <PlayerControls
+            distributeResources={this.props.distributeResourcesThunk}
+            playerTurn={playerTurn}
+            player={player}
+            nextPlayerThunk={this.props.nextPlayerThunk}
+            toggleModal={this.props.toggleModal}
+            newDiceRoll={this.props.newDiceRoll}
+            changePhase={this.props.changePhase}
+            changeGamePhase={changeGamePhase}
+            diceTotal={diceTotal}
+            die1={die1}
+            die2={die2}
+          />
+        </div>
       </div>
     )
   }

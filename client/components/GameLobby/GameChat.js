@@ -18,7 +18,11 @@ export default class GameChat extends React.Component {
 
   onSubmit(e) {
     e.preventDefault()
-    socket.emit('send-message', document.getElementById('message').value)
+    socket.emit(
+      'send-message',
+      document.getElementById('message').value,
+      'Lobby'
+    )
     document.getElementById('message').value = ''
   }
 

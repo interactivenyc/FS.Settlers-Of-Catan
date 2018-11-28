@@ -2,7 +2,7 @@ import React from 'react'
 
 export default class PlayerAlerts extends React.Component {
   render() {
-    const {phase, changeGamePhase} = this.props
+    const {phase, changeGamePhase, playerTurn} = this.props
     return (
       <div>
         {phase === 'build road' && (
@@ -42,6 +42,26 @@ export default class PlayerAlerts extends React.Component {
             >
               Cancel Build
             </button>
+          </div>
+        )}
+        {phase === 'build road dev' && (
+          <div>
+            <div className="player-alert">Click to build a road!</div>
+          </div>
+        )}
+        {phase === 'build road dev 2' && (
+          <div>
+            <div className="player-alert">Click to build a second road!</div>
+          </div>
+        )}
+        {phase === 'moveRobber' && (
+          <div>
+            <div className="player-alert">{`player-${playerTurn} move the robber`}</div>
+          </div>
+        )}
+        {phase === 'rob' && (
+          <div>
+            <div className="player-alert">{`player-${playerTurn} select a city or settlement to rob`}</div>
           </div>
         )}
       </div>

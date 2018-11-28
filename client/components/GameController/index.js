@@ -31,7 +31,7 @@ class GameController extends Component {
         <button onClick={this.rollDice}>rollDice</button>
         <Dice />
         <DevDeck playerHand={this.props.playerHand} />
-        {/* <GameMap die1={this.props.die1} die2={this.props.die2} /> */}
+        <GameMap die1={this.props.die1} die2={this.props.die2} />
       </Fragment>
     )
   }
