@@ -6,15 +6,17 @@ import {
   rollDice,
   toggleModal,
   moveRobber,
-  updateScore,
   updateScorePlayer,
   updatePlayers,
   changePhase,
   setResources
 } from './actionTypes'
 import socket from '../../socket'
-import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
-import {get} from 'https'
+import {
+  rollDie,
+  checkforLargestArmy,
+  checkforLongestRoad
+} from '../../../client/components/GameMap/HelperFunctions'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
 
@@ -68,48 +70,15 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   })
 }
 
-export const checkforLongestRoad = playerNumber => {
-  return getState => {
-    let {gameState} = getState()
-    let playerRoad = gameState.players[playerNumber - 1].largestArmy
-    gameState.players.map(el => {
-      if (el.longestRoad > playerRoad) {
-        return false
-      }
-    })
-    if (playerRoad > 0) {
-      return true
-    }
-  }
-}
-
-export const checkforLargestArmy = playerNumber => {
-  return getState => {
-    let {gameState} = getState()
-    const playerArmy = gameState.players[playerNumber - 1].largestArmy
-    console.log(gameState.players[playerNumber - 1].id)
-    gameState.players.map(el => {
-      console.log(el)
-      if (el.largestArmy > playerArmy) {
-        return false
-      }
-    })
-    if (playerArmy > 0) {
-      return true
-    }
-  }
-}
-
 export const checkForVictory = playerNumber => {
   return (dispatch, getState) => {
     let {gameState} = getState()
     let finalScore = gameState.players[playerNumber - 1].score
-    console.log(gameState)
 
-    if (checkforLongestRoad(playerNumber)) {
+    if (checkforLongestRoad(playerNumber, gameState) === true) {
       finalScore = finalScore + 2
     }
-    if (checkforLargestArmy(playerNumber)) {
+    if (checkforLargestArmy(playerNumber, gameState) === true) {
       finalScore = finalScore + 2
     }
     if (finalScore > 9) {
