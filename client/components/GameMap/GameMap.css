@@ -1,4 +1,5 @@
 .board-container {
+  height: 95vh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -141,7 +142,7 @@
 
 .city-1 {
   top: 25%;
-  transform: translate(-50%, -50%);
+  transform: translate(-35%, -35%);
 }
 
 .city-2 {
@@ -157,13 +158,13 @@
 
 .city-4 {
   top: 75%;
-  transform: translate(-50%, -50%);
+  transform: translate(-35%, -35%);
 }
 
 .city-5 {
   left: 50%;
   top: 100%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0%);
 }
 
 .city-6 {
@@ -298,12 +299,16 @@
   background-blend-mode: multiply;
 }
 
-.game-controller {
-  display: flex;
+.game-controller-container {
   bottom: 1%;
   left: 50%;
   position: absolute;
   transform: translateX(-50%);
+  display: flex;
+}
+
+.game-controller {
+  display: flex;
   border: 3px solid #ecf0f1;
   background-color: rgba(52, 73, 94, 0.5);
   border-radius: 10px;

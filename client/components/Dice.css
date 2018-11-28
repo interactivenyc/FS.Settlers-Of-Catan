@@ -1,11 +1,12 @@
 .die-container {
-  width: 300px;
   display: flex;
+  width: 300px;
   justify-content: center;
   align-self: center;
   display: flex;
-  opacity: 1;
-  transition: opacity 2s;
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.2s;
 }
 
 .die-1 {
@@ -42,4 +43,5 @@
 
 .active {
   opacity: 1;
+  transform: scale(1);
 }
