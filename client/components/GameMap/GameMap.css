@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   background-color: #2f3542;
+  min-height: 95vh;
 }
 
 .board {
@@ -460,7 +461,7 @@
 
 .player-alert {
   font-size: 20pt;
-  color: black;
+  color: white;
   position: absolute;
   top: 120px;
   left: 200px;

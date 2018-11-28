@@ -175,7 +175,7 @@ export class GameLobby extends React.Component {
 
     socket.on('set-game-users', users => {
       console.log('[ GameLobby ] set-game-users users', users)
-      this.props.setGameUsers(users)
+      this.props.initGame(users)
     })
 
     socket.on('start-game', (board, user) => {
@@ -230,7 +230,8 @@ const mapDispatch = dispatch => {
     deserializeBoard: board => dispatch(actions.deserializeBoard(board)),
     setGameUsers: user => dispatch(actions.setGameUsers(user)),
     assignPlayer: (number, color) =>
-      dispatch(actions.assignPlayer(number, color))
+      dispatch(actions.assignPlayer(number, color)),
+    initGame: users => dispatch(actions.initGame(users))
   }
 }
 

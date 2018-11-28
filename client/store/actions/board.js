@@ -81,7 +81,7 @@ export const longestRoad = (edge, board, id) => (dispatch, getState) => {
   const updatedPlayers = players.map(player => {
     return player.id === id && player.longestRoad < length
       ? {...player, longestRoad: length}
-      : {...player}
+      : player
   })
 
   dispatch(updatePlayers(updatedPlayers))

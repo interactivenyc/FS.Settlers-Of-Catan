@@ -11,7 +11,8 @@ const PlayerControls = ({
   changeGamePhase,
   die1,
   die2,
-  diceTotal
+  diceTotal,
+  phase
 }) => {
   return (
     <div className="game-controller-container">
@@ -36,8 +37,10 @@ const PlayerControls = ({
               <button
                 className="btn"
                 onClick={() => {
-                  toggleModal('build')
-                  changeGamePhase(null)
+                  if (!phase) {
+                    toggleModal('build')
+                    changeGamePhase(null)
+                  }
                 }}
                 type="button"
               >
@@ -45,7 +48,11 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
-                onClick={() => toggleModal('trade')}
+                onClick={() => {
+                  if (!phase) {
+                    toggleModal('trade')
+                  }
+                }}
                 type="button"
               >
                 Trade
@@ -53,8 +60,9 @@ const PlayerControls = ({
               <button
                 className="btn"
                 onClick={() => {
-                  changePhase('development')
-                  toggleModal('showDevCards')
+                  if (!phase) {
+                    toggleModal('showDevCards')
+                  }
                 }}
                 type="button"
               >
@@ -62,7 +70,11 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
-                onClick={() => nextPlayerThunk(player.playerNumber)}
+                onClick={() => {
+                  if (!phase) {
+                    nextPlayerThunk(player.playerNumber)
+                  }
+                }}
                 type="button"
               >
                 Next Player

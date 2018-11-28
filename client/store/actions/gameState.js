@@ -10,13 +10,24 @@ import {
   updateScorePlayer,
   updatePlayers,
   changePhase,
-  setResources
+  setResources,
+  changeGamePhase
 } from './actionTypes'
+
 import socket from '../../socket'
 import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
-import {get} from 'https'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
+
+export const initGame = users => (dispatch, getState) => {
+  const {playerState, gameState} = getState()
+
+  dispatch(setGameUsers(users))
+
+  if (playerState.playerNumber === gameState.playerTurn) {
+    dispatch(newDiceRoll())
+  }
+}
 
 export const distributeResourcesThunk = num => (dispatch, getState) => {
   const {resources, vertices} = getState().board
@@ -77,6 +88,7 @@ export const robberThunk = () => (dispatch, getState) => {
 
   if (resources > 7) {
     dispatch(toggleModal('robber'))
+    dispatch(changePhase('responding'))
   }
 }
 
@@ -96,7 +108,10 @@ export const newDiceRoll = () => {
 
     dispatch(distributeResourcesThunk(newDiceTotal))
 
+    console.log('NEW DICE', newDiceTotal)
+
     if (newDiceTotal === 7) {
+      console.log('hitting robber')
       const players = gameState.players.map(
         player =>
           player.resources > 7 ? {...player, responded: false} : player
