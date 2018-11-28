@@ -12,10 +12,10 @@ const GameBoard = ({
   changeGamePhase,
   playerTurn
 }) => {
-  const mapAdjust = 5
+  const mapAdjust = 4
 
   return (
-    <div className="board" onClick={e => handleClick(e)}>
+    <div className="board ports" onClick={e => handleClick(e)}>
       <MapRow style={{transform: `translateY(${mapAdjust * 10}%)`}}>
         <Hexagon
           gameOptions={gameOptions.row1.hex1}
