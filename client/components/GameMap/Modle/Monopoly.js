@@ -17,11 +17,26 @@ class Monopoly extends Component {
           style={{display: 'flex', justifyContent: 'space-evenly'}}
           onClick={this.handleClick}
         >
-          <div data-resource="forest" className="modal-resource forest" />
-          <div data-resource="field" className="modal-resource field" />
-          <div data-resource="hill" className="modal-resource hill " />
-          <div data-resource="mountain" className="modal-resource mountain" />
-          <div data-resource="pasture" className="modal-resource pasture" />
+          <div
+            data-resource="forest"
+            className="modal-resource trade-modal-button forest"
+          />
+          <div
+            data-resource="field"
+            className="modal-resource trade-modal-button field"
+          />
+          <div
+            data-resource="hill"
+            className="modal-resource trade-modal-button hill "
+          />
+          <div
+            data-resource="mountain"
+            className="modal-resource trade-modal-button mountain"
+          />
+          <div
+            data-resource="pasture"
+            className="modal-resource trade-modal-button pasture"
+          />
         </div>
       </div>
     )
