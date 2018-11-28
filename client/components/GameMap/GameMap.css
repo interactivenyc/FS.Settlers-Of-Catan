@@ -1,5 +1,4 @@
 .board-container {
-  height: 95vh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -8,6 +7,7 @@
 
 .board {
   min-width: 1025px;
+  height: 900px;
   background-color: #1e90ff;
   display: flex;
   flex-direction: column;
