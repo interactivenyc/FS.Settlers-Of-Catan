@@ -18,11 +18,11 @@ const playerState = {
   color: null,
   playerNumber: null,
   resources: [
-    {type: 'forest', quantity: 0},
-    {type: 'field', quantity: 0},
-    {type: 'hill', quantity: 0},
-    {type: 'mountain', quantity: 0},
-    {type: 'pasture', quantity: 0}
+    {type: 'forest', quantity: 5},
+    {type: 'field', quantity: 5},
+    {type: 'hill', quantity: 5},
+    {type: 'mountain', quantity: 5},
+    {type: 'pasture', quantity: 5}
   ],
   currentTrade: null,
   score: 0

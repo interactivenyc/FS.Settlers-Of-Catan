@@ -11,7 +11,9 @@ import {
   REJECT_OFFER,
   CLEAR_OFFER,
   toggleModal,
-  changeGamePhase
+  changeGamePhase,
+  useResources,
+  distributeResource
 } from './actionTypes'
 
 import {
@@ -62,8 +64,11 @@ export const playCard = playedCard => {
 
 export const buyCard = cardToBuy => {
   return (dispatch, getState) => {
-    let {playerHand} = getState().playerState
+    let {playerHand, playerNumber} = getState().playerState
     dispatch(addCard([...playerHand, cardToBuy]))
+    dispatch(useResources(['mountain', 'field', 'pasture']))
+    dispatch(distributeResource(playerNumber, -3))
+    socket.emit('dispatch', distributeResource(playerNumber, -3))
   }
 }
 
