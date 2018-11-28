@@ -38,6 +38,7 @@ const Modle = ({
             adjustScore={adjustScore}
             playerHand={playerHand}
             toggleModal={toggleModal}
+            player={player}
           />
         )
       case 'robber':
