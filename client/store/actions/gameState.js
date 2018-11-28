@@ -68,6 +68,56 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   })
 }
 
+export const checkforLongestRoad = playerNumber => {
+  return getState => {
+    let {gameState} = getState()
+    let playerRoad = gameState.players[playerNumber - 1].largestArmy
+    gameState.players.map(el => {
+      if (el.longestRoad > playerRoad) {
+        return false
+      }
+    })
+    if (playerRoad > 0) {
+      return true
+    }
+  }
+}
+
+export const checkforLargestArmy = playerNumber => {
+  return getState => {
+    let {gameState} = getState()
+    const playerArmy = gameState.players[playerNumber - 1].largestArmy
+    console.log(gameState.players[playerNumber - 1].id)
+    gameState.players.map(el => {
+      console.log(el)
+      if (el.largestArmy > playerArmy) {
+        return false
+      }
+    })
+    if (playerArmy > 0) {
+      return true
+    }
+  }
+}
+
+export const checkForVictory = playerNumber => {
+  return (dispatch, getState) => {
+    let {gameState} = getState()
+    let finalScore = gameState.players[playerNumber - 1].score
+    console.log(gameState)
+
+    if (checkforLongestRoad(playerNumber)) {
+      finalScore = finalScore + 2
+    }
+    if (checkforLargestArmy(playerNumber)) {
+      finalScore = finalScore + 2
+    }
+    if (finalScore > 9) {
+      window.alert(` Player ${playerNumber} is the Winner!!!`)
+    }
+  }
+}
+
 export const robberThunk = () => (dispatch, getState) => {
   const {playerState, gameState} = getState()
 
@@ -145,6 +195,7 @@ export const adjustScore = scoreChange => {
 
     dispatch(updatePlayers(playersArr, updatedScore))
     dispatch(updateScorePlayer(updatedScore))
+    dispatch(checkForVictory(playerNumber))
   }
 }
 
@@ -240,9 +291,3 @@ export const monopoly = type => {
     })
   }
 }
-
-// export const checkForVictory = () =>{
-//   return(dispatch,getState) =>{
-//     let {player}
-//   }
-// }
