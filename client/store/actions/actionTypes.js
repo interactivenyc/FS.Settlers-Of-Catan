@@ -74,7 +74,9 @@ export const UPDATE_SCORE = 'UPDATE_SCORE'
 export const CHANGE_GAME_PHASE = 'CHANGE_GAME_PHASE'
 export const UPDATE_PLAYERS = 'UPDATE_PLAYERS'
 export const CHANGE_PHASE = 'CHANGE_PHASE'
+export const UPDATE_SELF = 'UPDATE_SELF'
 
+export const updateSelf = player => ({type: UPDATE_SELF, player})
 export const updatePlayers = players => ({type: UPDATE_PLAYERS, players})
 export const startGame = () => ({
   type: START_GAME,
