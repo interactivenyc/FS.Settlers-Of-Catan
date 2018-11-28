@@ -6,7 +6,6 @@ import {
   rollDice,
   toggleModal,
   moveRobber,
-  updateScore,
   updateScorePlayer,
   updatePlayers,
   changePhase,
@@ -15,7 +14,11 @@ import {
 } from './actionTypes'
 
 import socket from '../../socket'
-import {rollDie} from '../../../client/components/GameMap/HelperFunctions'
+import {
+  rollDie,
+  checkforLargestArmy,
+  checkforLongestRoad
+} from '../../../client/components/GameMap/HelperFunctions'
 
 export const setGameUsers = users => ({type: SET_GAME_USERS, users})
 
@@ -77,6 +80,23 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
       }
     })
   })
+}
+
+export const checkForVictory = playerNumber => {
+  return (dispatch, getState) => {
+    let {gameState} = getState()
+    let finalScore = gameState.players[playerNumber - 1].score
+
+    if (checkforLongestRoad(playerNumber, gameState) === true) {
+      finalScore = finalScore + 2
+    }
+    if (checkforLargestArmy(playerNumber, gameState) === true) {
+      finalScore = finalScore + 2
+    }
+    if (finalScore > 9) {
+      window.alert(` Player ${playerNumber} is the Winner!!!`)
+    }
+  }
 }
 
 export const robberThunk = () => (dispatch, getState) => {
@@ -160,6 +180,7 @@ export const adjustScore = scoreChange => {
 
     dispatch(updatePlayers(playersArr, updatedScore))
     dispatch(updateScorePlayer(updatedScore))
+    dispatch(checkForVictory(playerNumber))
   }
 }
 
