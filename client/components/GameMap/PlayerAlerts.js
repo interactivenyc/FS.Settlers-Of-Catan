@@ -61,7 +61,7 @@ export default class PlayerAlerts extends React.Component {
         )}
         {phase === 'rob' && (
           <div>
-            <div className="player-alert">{`${playerTurn} player select a city or settlement to rob`}</div>
+            <div className="player-alert">{`player-${playerTurn} player select a city or settlement to rob`}</div>
           </div>
         )}
         {phase === 'responding' && (
