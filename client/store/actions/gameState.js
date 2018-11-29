@@ -11,6 +11,7 @@ import {
   changePhase,
   setResources,
   changeGamePhase,
+  updateScore,
   updateSelf
 } from './actionTypes'
 
@@ -169,6 +170,7 @@ export const moveRobberThunk = id => (dispatch, getState) => {
 
 export const adjustScore = scoreChange => {
   return (dispatch, getState) => {
+    let playerState = getState().playerState
     let playerScore = getState().playerState.score
     let updatedScore = playerScore + scoreChange
     let playerNumber = getState().playerState.playerNumber
@@ -182,6 +184,10 @@ export const adjustScore = scoreChange => {
 
     dispatch(updatePlayers(playersArr, updatedScore))
     dispatch(updateScorePlayer(updatedScore))
+    socket.emit(
+      'dispatch',
+      updateScore(playerState.playerNumber, playerState.score + scoreChange)
+    )
     dispatch(checkForVictory(playerNumber))
   }
 }
