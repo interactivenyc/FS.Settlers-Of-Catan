@@ -142,12 +142,15 @@ module.exports = io => {
       console.log('joinRoom create new GameInstance', room)
       games[room] = new GameInstance(room)
     }
-    console.log('joinRoom - check joined', socket.rooms)
+    setTimeout(() => {
+      log('check room joined', socket)
+    }, 1000)
     updateRoom(socket)
   }
 
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
+    console.log('io.rooms', io.sockets.rooms)
 
     console.log('-----------------')
 
