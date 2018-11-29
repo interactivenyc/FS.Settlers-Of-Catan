@@ -356,6 +356,34 @@
 .section-btns {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.btn {
+  background-color: #fbc531;
+  border: none;
+  color: #2f3542;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #e1b12c;
+}
+
+.player-info {
+  color: white;
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  letter-spacing: 1.2;
+  margin-right: 3px;
+}
+
+.player-info p {
+  margin: 0;
+  padding: 0;
 }
 
 .player-container {
@@ -390,6 +418,12 @@
   flex-direction: column;
   justify-content: center;
   padding: 3px;
+}
+
+.score p {
+  margin: 0;
+  padding: 0;
+  letter-spacing: 1.2;
 }
 
 .player-1 {

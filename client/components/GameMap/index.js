@@ -138,6 +138,7 @@ class GameMap extends Component {
           playerTurn={playerTurn}
           phase={phase}
           changeGamePhase={changeGamePhase}
+          player={player.color}
         />
         <Modle
           visible={visible}
@@ -169,6 +170,7 @@ class GameMap extends Component {
             distributeResources={this.props.distributeResourcesThunk}
             playerTurn={playerTurn}
             player={player}
+            playerInfo={players.filter(p => p.id === player.playerNumber)[0]}
             nextPlayerThunk={this.props.nextPlayerThunk}
             toggleModal={this.props.toggleModal}
             newDiceRoll={this.props.newDiceRoll}
