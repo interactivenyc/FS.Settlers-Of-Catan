@@ -111,6 +111,7 @@ export const robberThunk = () => (dispatch, getState) => {
   if (resources > 7) {
     dispatch(toggleModal('robber'))
     dispatch(changePhase('responding'))
+    socket.emit('dispatch', changePhase('responding'))
   }
 }
 

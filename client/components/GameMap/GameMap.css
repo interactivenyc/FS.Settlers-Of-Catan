@@ -379,6 +379,7 @@
   justify-content: space-evenly;
   letter-spacing: 1.2;
   margin-right: 3px;
+  min-width: 115px;
 }
 
 .player-info p {
