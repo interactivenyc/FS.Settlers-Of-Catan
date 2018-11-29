@@ -14,7 +14,7 @@ const Players = ({players, playerTurn}) => {
             <p>{`Victory Points: ${score}`}</p>
             <p>{`Resources: ${resources}`}</p>
             <p>{`Longest Road: ${longestRoad}`}</p>
-            <p>{`Larget Army: ${largestArmy}`}</p>
+            <p>{`Largest Army: ${largestArmy}`}</p>
           </div>
         </div>
       ))}
