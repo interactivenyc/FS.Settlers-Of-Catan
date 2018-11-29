@@ -7,8 +7,7 @@ import GameMap from './components/GameMap'
 import GameLobby from './components/GameLobby'
 import {me} from './store/actions'
 import Home from './components/Home'
-import GameController from './components/GameController'
-
+import HowTo from './components/HowTo'
 /**
  * COMPONENT
  */
@@ -27,7 +26,7 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route path="/map" component={GameMap} />
         <Route path="/lobby" component={GameLobby} />
-        <Route path="/game" component={GameController} />
+        <Route path="/HowTo" component={HowTo} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
