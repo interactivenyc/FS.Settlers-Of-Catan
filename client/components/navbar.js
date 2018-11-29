@@ -12,7 +12,7 @@ const Navbar = ({isLoggedIn, handleClick}) => {
         <img src="http://www.bsbc.nb.ca/wp-content/uploads/2015/03/KolonistenVanCatan-twitter.png" />
       </div>
       <div className="navItem">
-        <Link to="/" className="navItem link">
+        <Link to="/home" className="navItem link">
           Home
         </Link>
       </div>
