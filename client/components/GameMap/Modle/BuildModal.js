@@ -115,8 +115,8 @@ class BuildModal extends React.Component {
             }`}
             disabled={this.state.road.toggle === 'inactive'}
           >
-            Road = &nbsp;<div className="build-modal-resource hill" />
-            <div className="build-modal-resource forest" />
+            Road = &nbsp;<div className="modal-resource hill" />
+            <div className="modal-resource forest" />
           </button>
           <button
             id="settlement"
@@ -125,10 +125,10 @@ class BuildModal extends React.Component {
             }`}
             disabled={this.state.settlement.toggle === 'inactive'}
           >
-            Settlement = &nbsp;<div className="build-modal-resource hill" />
-            <div className="build-modal-resource forest" />
-            <div className="build-modal-resource field" />
-            <div className="build-modal-resource pasture" />
+            Settlement = &nbsp;<div className="modal-resource hill" />
+            <div className="modal-resource forest" />
+            <div className="modal-resource field" />
+            <div className="modal-resource pasture" />
           </button>
           <button
             id="city"
@@ -137,11 +137,11 @@ class BuildModal extends React.Component {
             }`}
             disabled={this.state.city.toggle === 'inactive'}
           >
-            City = &nbsp;<div className="build-modal-resource field" />
-            <div className="build-modal-resource field" />
-            <div className="build-modal-resource mountain" />
-            <div className="build-modal-resource mountain" />
-            <div className="build-modal-resource mountain" />
+            City = &nbsp;<div className="modal-resource field" />
+            <div className="modal-resource field" />
+            <div className="modal-resource mountain" />
+            <div className="modal-resource mountain" />
+            <div className="modal-resource mountain" />
           </button>
         </div>
       </div>

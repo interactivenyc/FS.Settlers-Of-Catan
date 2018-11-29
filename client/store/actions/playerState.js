@@ -12,6 +12,7 @@ import {
   CLEAR_OFFER,
   toggleModal,
   changeGamePhase,
+  updateSelf,
   useResources,
   distributeResource
 } from './actionTypes'
@@ -76,15 +77,16 @@ export const robberDiscardThunk = ({resources, id, discard}) => (
   dispatch,
   getState
 ) => {
-  const players = getState().gameState.players.map(
-    player =>
-      player.id === id
-        ? {...player, resources: player.resources - discard, responded: true}
-        : player
+  const updatedPlayer = getState().gameState.players.reduce(
+    (acc, val) =>
+      val.id === id
+        ? {...val, resources: val.resources - discard, responded: true}
+        : acc,
+    {}
   )
-  dispatch(updatePlayers(players))
+  dispatch(updateSelf(updatedPlayer))
   dispatch(setResources(resources))
-  socket.emit('dispatch', updatePlayers(players))
+  socket.emit('dispatch', updateSelf(updatedPlayer))
 
   const allResponded = getState().gameState.players.every(
     player => player.responded
@@ -113,8 +115,8 @@ export const robPlayer = (from, to) => (dispatch, getState) => {
       socket.emit('dispatch', distributeResourcePlayer(card, to))
     }
 
-    dispatch(changePhase(''))
-    socket.emit('dispatch', changePhase(''))
+    dispatch(changePhase(null))
+    socket.emit('dispatch', changePhase(null))
   }
 }
 
