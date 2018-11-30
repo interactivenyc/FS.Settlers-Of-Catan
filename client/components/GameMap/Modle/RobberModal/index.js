@@ -93,6 +93,7 @@ class RobberModal extends Component {
               robber={robber[i]}
               handleClickAdd={this.handleClickAdd}
               handleClickSubtract={this.handleClickSubtract}
+              classTo="subtract-text"
               displayValue
             />
           ))}

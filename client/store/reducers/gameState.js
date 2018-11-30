@@ -8,7 +8,8 @@ import {
   UPDATE_SCORE,
   CHANGE_GAME_PHASE,
   CHANGE_PHASE,
-  UPDATE_PLAYERS
+  UPDATE_PLAYERS,
+  UPDATE_SELF
 } from '../actions'
 
 const defaultState = {
@@ -33,7 +34,7 @@ const gameState = (state = defaultState, action) => {
         let user = {
           id: action.users[i].playerNumber,
           userProfile: action.users[i],
-          resources: 26,
+          resources: 0,
           responded: true,
           longestRoad: 2,
           score: 0,
@@ -89,6 +90,13 @@ const gameState = (state = defaultState, action) => {
       return {...state, players: action.players}
     case CHANGE_PHASE:
       return {...state, phase: action.phase}
+    case UPDATE_SELF:
+      return {
+        ...state,
+        players: state.players.map(player => {
+          return action.player.id === player.id ? action.player : player
+        })
+      }
     default:
       return state
   }

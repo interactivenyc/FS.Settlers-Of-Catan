@@ -8,6 +8,7 @@ const PlayerControls = ({
   toggleModal,
   newDiceRoll,
   changePhase,
+  playerInfo,
   changeGamePhase,
   die1,
   die2,
@@ -29,18 +30,25 @@ const PlayerControls = ({
               <div className="counter">{quantity}</div>
             </div>
           ))}
+          {playerInfo && (
+            <div className="player-info">
+              <p>{`Victory Points: ${playerInfo.score}`}</p>
+              <p>{`Longest Road: ${playerInfo.longestRoad}`}</p>
+              <p>{`Largest Army: ${playerInfo.largestArmy}`}</p>
+              <p>{`Resources: ${playerInfo.resources}`}</p>
+            </div>
+          )}
           {playerTurn === player.playerNumber && (
             <div className="section-btns">
-              <button onClick={newDiceRoll} className="btn" type="button">
+              {/* <button onClick={newDiceRoll} className="btn" type="button">
                 Roll
-              </button>
+              </button> */}
               <button
                 className="btn"
+                disabled={!!phase}
                 onClick={() => {
-                  if (!phase) {
-                    toggleModal('build')
-                    changeGamePhase(null)
-                  }
+                  toggleModal('build')
+                  changeGamePhase(null)
                 }}
                 type="button"
               >
@@ -48,10 +56,9 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
+                disabled={!!phase}
                 onClick={() => {
-                  if (!phase) {
-                    toggleModal('trade')
-                  }
+                  toggleModal('trade')
                 }}
                 type="button"
               >
@@ -59,10 +66,9 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
+                disabled={!!phase}
                 onClick={() => {
-                  if (!phase) {
-                    toggleModal('showDevCards')
-                  }
+                  toggleModal('showDevCards')
                 }}
                 type="button"
               >
@@ -70,14 +76,13 @@ const PlayerControls = ({
               </button>
               <button
                 className="btn"
+                disabled={!!phase}
                 onClick={() => {
-                  if (!phase) {
-                    nextPlayerThunk(player.playerNumber)
-                  }
+                  nextPlayerThunk(player.playerNumber)
                 }}
                 type="button"
               >
-                Next Player
+                End Turn
               </button>
             </div>
           )}

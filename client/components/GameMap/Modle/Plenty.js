@@ -88,6 +88,7 @@ class Plenty extends Component {
               robber={this.state.choice[i]}
               handleClickAdd={this.handleClickAdd}
               handleClickSubtract={this.handleClickSubtract}
+              classTo="add-text"
             />
           ))}
         </div>

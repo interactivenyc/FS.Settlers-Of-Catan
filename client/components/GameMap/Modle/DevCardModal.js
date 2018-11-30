@@ -24,29 +24,31 @@ const DevCardModal = ({
       <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
         Development Cards
         <button
+          type="button"
           onClick={() => toggleModal(false)}
           style={{float: 'right', fontSize: '10pt'}}
         />
       </div>
-      <div>
+      <div style={{display: 'flex'}}>
         {playerHand.map((el, i) => (
-          <button
+          <div
+            key={i}
+            className={`dev-card ${el}`}
             onClick={() => {
               handlePlayCard(el)
             }}
-            key={i}
-          >
-            {el}
-          </button>
+          />
         ))}
       </div>
       <div className="build-modal">
         <div />
 
         <button
+          type="button"
           disabled={!btnActive}
           onClick={buyaCard}
-          className="build-modal-button"
+          className={`build-modal-button ${btnActive &&
+            'build-modal-button-active'}`}
         >
           Get New Development Card = &nbsp;<div className="modal-resource pasture" />
           <div className="modal-resource field" />

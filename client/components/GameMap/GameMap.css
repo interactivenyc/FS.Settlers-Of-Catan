@@ -86,6 +86,30 @@
   background-image: url('../../../public/images/resources/pasture.png');
 }
 
+.knight {
+  background-image: url('../../../public/images/devcards/knight.png');
+}
+.monopoly {
+  background-image: url('../../../public/images/devcards/monopoly.png');
+}
+.plenty {
+  background-image: url('../../../public/images/devcards/plenty.png');
+}
+.road {
+  background-image: url('../../../public/images/devcards/road.png');
+}
+.vp {
+  background-image: url('../../../public/images/devcards/vp.png');
+}
+
+.dev-card {
+  width: 120px;
+  height: 200px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
 .robber-hover {
   opacity: 1;
 }
@@ -289,19 +313,6 @@
   background-position: center;
 }
 
-.build-modal-resource {
-  width: 90px;
-  height: 100px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
-.modal-resource:hover {
-  background-color: rgba(255, 255, 255, 0.5);
-  background-blend-mode: multiply;
-}
-
 .game-controller-container {
   bottom: 1%;
   left: 50%;
@@ -345,6 +356,35 @@
 .section-btns {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.btn {
+  background-color: #fbc531;
+  border: none;
+  color: #2f3542;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #e1b12c;
+}
+
+.player-info {
+  color: white;
+  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  letter-spacing: 1.2;
+  margin-right: 3px;
+  min-width: 115px;
+}
+
+.player-info p {
+  margin: 0;
+  padding: 0;
 }
 
 .player-container {
@@ -379,6 +419,12 @@
   flex-direction: column;
   justify-content: center;
   padding: 3px;
+}
+
+.score p {
+  margin: 0;
+  padding: 0;
+  letter-spacing: 1.2;
 }
 
 .player-1 {

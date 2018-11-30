@@ -41,6 +41,10 @@
   color: var(--color-red);
 }
 
+.add-text {
+  color: var(--color-green);
+}
+
 .add-subtract-container {
   width: 100%;
   display: flex;
