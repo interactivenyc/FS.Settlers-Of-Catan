@@ -2,7 +2,7 @@ import React from 'react'
 
 export default class PlayerAlerts extends React.Component {
   render() {
-    const {phase, changeGamePhase, playerTurn} = this.props
+    const {phase, changeGamePhase, playerTurn, player} = this.props
     return (
       <div>
         {phase === 'build road' && (

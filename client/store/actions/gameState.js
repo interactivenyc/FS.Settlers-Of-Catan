@@ -10,7 +10,9 @@ import {
   updatePlayers,
   changePhase,
   setResources,
-  changeGamePhase
+  changeGamePhase,
+  updateScore,
+  updateSelf
 } from './actionTypes'
 
 import socket from '../../socket'
@@ -109,6 +111,7 @@ export const robberThunk = () => (dispatch, getState) => {
   if (resources > 7) {
     dispatch(toggleModal('robber'))
     dispatch(changePhase('responding'))
+    socket.emit('dispatch', changePhase('responding'))
   }
 }
 
@@ -167,6 +170,7 @@ export const moveRobberThunk = id => (dispatch, getState) => {
 
 export const adjustScore = scoreChange => {
   return (dispatch, getState) => {
+    let playerState = getState().playerState
     let playerScore = getState().playerState.score
     let updatedScore = playerScore + scoreChange
     let playerNumber = getState().playerState.playerNumber
@@ -180,6 +184,10 @@ export const adjustScore = scoreChange => {
 
     dispatch(updatePlayers(playersArr, updatedScore))
     dispatch(updateScorePlayer(updatedScore))
+    socket.emit(
+      'dispatch',
+      updateScore(playerState.playerNumber, playerState.score + scoreChange)
+    )
     dispatch(checkForVictory(playerNumber))
   }
 }
@@ -251,16 +259,17 @@ export const depleteResources = (type, player) => (dispatch, getState) => {
     }
   })
   let playerNumber = getState().playerState.playerNumber
-  let playersArr = getState().gameState.players.map(el => {
-    if (playerNumber === el.id) {
-      return {...el, resources: el.resources - numDepletedResources}
-    } else {
-      return el
-    }
-  })
+  let updatedPlayer = getState().gameState.players.reduce(
+    (acc, val) =>
+      playerNumber === val.id
+        ? {...val, resources: val.resources - numDepletedResources}
+        : acc,
+    {}
+  )
 
   dispatch(setResources(newResources))
-  dispatch(updatePlayers(playersArr))
+  dispatch(updateSelf(updatedPlayer))
+  socket.emit('dispatch', updateSelf(updatedPlayer))
   socket.emit('dispatchThunk', {
     action: 'sendResources',
     args: [type, numDepletedResources, player]
