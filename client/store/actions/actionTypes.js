@@ -75,6 +75,7 @@ export const CHANGE_GAME_PHASE = 'CHANGE_GAME_PHASE'
 export const UPDATE_PLAYERS = 'UPDATE_PLAYERS'
 export const CHANGE_PHASE = 'CHANGE_PHASE'
 export const UPDATE_SELF = 'UPDATE_SELF'
+export const SET_GAME_MODE = 'SET_GAME_MODE'
 
 export const updateSelf = player => ({type: UPDATE_SELF, player})
 export const updatePlayers = players => ({type: UPDATE_PLAYERS, players})
@@ -107,3 +108,4 @@ export const updateScore = (playerId, updatedScore) => ({
 
 export const changeGamePhase = phase => ({type: CHANGE_GAME_PHASE, phase})
 export const changePhase = phase => ({type: CHANGE_PHASE, phase})
+export const setGameMode = mode => ({type: SET_GAME_MODE, mode})

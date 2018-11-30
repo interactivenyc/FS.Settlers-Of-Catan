@@ -10,7 +10,8 @@ const GameBoard = ({
   player,
   phase,
   changeGamePhase,
-  playerTurn
+  playerTurn,
+  mode
 }) => {
   const mapAdjust = 4
 
@@ -46,6 +47,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust}%)`}}
@@ -56,6 +58,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 2}%)`}}
@@ -67,6 +70,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
       </MapRow>
       <MapRow style={{transform: `translateY(${mapAdjust * 5}%)`}}>
@@ -78,6 +82,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust}%)`}}
@@ -88,6 +93,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 2}%)`}}
@@ -98,6 +104,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 3}%)`}}
@@ -109,6 +116,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
       </MapRow>
       <MapRow>
@@ -121,6 +129,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust}%)`}}
@@ -132,6 +141,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 2}%)`}}
@@ -142,6 +152,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 3}%)`}}
@@ -152,6 +163,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 4}%)`}}
@@ -164,6 +176,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
       </MapRow>
       <MapRow style={{transform: `translateY(-${mapAdjust * 5}%)`}}>
@@ -176,6 +189,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust}%)`}}
@@ -186,6 +200,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 2}%)`}}
@@ -196,6 +211,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 3}%)`}}
@@ -208,6 +224,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
       </MapRow>
       <MapRow style={{transform: `translateY(-${mapAdjust * 10}%)`}}>
@@ -222,6 +239,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust}%)`}}
@@ -233,6 +251,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
         <Hexagon
           style={{transform: `translate(-${mapAdjust * 2}%)`}}
@@ -247,6 +266,7 @@ const GameBoard = ({
           phase={phase}
           changeGamePhase={changeGamePhase}
           playerTurn={playerTurn}
+          mode={mode}
         />
       </MapRow>
     </div>
