@@ -66,7 +66,9 @@ export default class PlayerAlerts extends React.Component {
         )}
         {phase === 'responding' && (
           <div>
-            <div className="player-alert">Waiting for players to discard...</div>
+            <div className="player-alert">
+              Waiting for players to discard...
+            </div>
           </div>
         )}
       </div>
