@@ -16,6 +16,9 @@ class BuildModal extends React.Component {
     }
   }
 
+  /* eslint-disable guard-for-in */
+  /* eslint-disable react/no-access-state-in-setstate */
+  /* eslint-disable no-loop-func */
   componentDidMount() {
     const {player} = this.props
     const buildKey = {...this.state}
@@ -89,18 +92,32 @@ class BuildModal extends React.Component {
           changeGamePhase('build city')
           return toggleModal(false)
         }
+        default:
       }
     }
   }
 
   render() {
     const {toggleModal} = this.props
+    console.log(
+      '[ BuildModal ] render roadToggle',
+      this.state.road.toggle === 'inactive'
+    )
+    console.log(
+      '[ BuildModal ] render settlementToggle',
+      this.state.settlement.toggle === 'inactive'
+    )
+    console.log(
+      '[ BuildModal ] render cityToggle',
+      this.state.city.toggle === 'inactive'
+    )
 
     return (
       <div onClick={event => this.handleClick(event)}>
         <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
           Build
           <button
+            type="button"
             onClick={() => toggleModal(false)}
             style={{float: 'right', fontSize: '10pt'}}
           >
@@ -109,6 +126,7 @@ class BuildModal extends React.Component {
         </div>
         <div className="build-modal">
           <button
+            type="button"
             id="road"
             className={`build-modal-button build-modal-button-${
               this.state.road.toggle
@@ -119,6 +137,7 @@ class BuildModal extends React.Component {
             <div className="modal-resource forest" />
           </button>
           <button
+            type="button"
             id="settlement"
             className={`build-modal-button build-modal-button-${
               this.state.settlement.toggle
@@ -131,6 +150,7 @@ class BuildModal extends React.Component {
             <div className="modal-resource pasture" />
           </button>
           <button
+            type="button"
             id="city"
             className={`build-modal-button build-modal-button-${
               this.state.city.toggle
