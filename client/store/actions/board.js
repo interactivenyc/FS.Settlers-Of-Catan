@@ -28,11 +28,14 @@ export const deserializeBoard = boardData => dispatch => {
 }
 
 export const changeVertexThunk = id => (dispatch, getState) => {
-  const {board, playerState} = getState()
+  const {board, playerState, gameState} = getState()
   const vertice = board.vertices[id]
   const neighbors = getVerticeNeighbors(vertice, board)
 
-  if (validateChangeVertice(neighbors, playerState.color)) {
+  if (
+    validateChangeVertice(neighbors, playerState.color) ||
+    gameState.mode === 'demo'
+  ) {
     dispatch(createSettlement(id, playerState.color, playerState.playerNumber))
     socket.emit(
       'dispatch',
@@ -43,20 +46,17 @@ export const changeVertexThunk = id => (dispatch, getState) => {
     dispatch(distributeResource(playerState.playerNumber, -4))
     socket.emit('dispatch', distributeResource(playerState.playerNumber, -4))
     dispatch(adjustScore(1))
-    socket.emit(
-      'dispatch',
-      updateScore(playerState.playerNumber, playerState.score + 1)
-    )
   }
 }
 
 export const buildCityThunk = id => (dispatch, getState) => {
-  const {board, playerState} = getState()
+  const {board, playerState, gameState} = getState()
   const vertex = board.vertices[id]
 
   if (
-    vertex.color === playerState.color &&
-    vertex.locationType === 'settlement'
+    (vertex.color === playerState.color &&
+      vertex.locationType === 'settlement') ||
+    gameState.mode === 'demo'
   ) {
     dispatch(buildCity(id))
     socket.emit('dispatch', buildCity(id))
@@ -67,10 +67,6 @@ export const buildCityThunk = id => (dispatch, getState) => {
     dispatch(distributeResource(playerState.playerNumber, -5))
     socket.emit('dispatch', distributeResource(playerState.playerNumber, -5))
     dispatch(adjustScore(1))
-    socket.emit(
-      'dispatch',
-      updateScore(playerState.playerNumber, playerState.score + 1)
-    )
   }
 }
 
@@ -80,7 +76,10 @@ export const changeRoadThunk = id => (dispatch, getState) => {
 
   const neighbors = getEdgeNeighborsColor(edge, board)
 
-  if (validateChangeEdge(playerState, edge, neighbors, board)) {
+  if (
+    validateChangeEdge(playerState, edge, neighbors, board) ||
+    gameState.mode === 'demo'
+  ) {
     dispatch(createRoad(id, playerState.color, playerState.playerNumber))
     socket.emit(
       'dispatch',

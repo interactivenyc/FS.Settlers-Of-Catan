@@ -8,12 +8,15 @@ const PlayerControls = ({
   toggleModal,
   newDiceRoll,
   changePhase,
+  playerInfo,
   changeGamePhase,
   die1,
   die2,
   diceTotal,
-  phase
+  phase,
+  mode
 }) => {
+  console.log(mode)
   return (
     <div className="game-controller-container">
       <div
@@ -29,11 +32,21 @@ const PlayerControls = ({
               <div className="counter">{quantity}</div>
             </div>
           ))}
+          {playerInfo && (
+            <div className="player-info">
+              <p>{`Victory Points: ${playerInfo.score}`}</p>
+              <p>{`Longest Road: ${playerInfo.longestRoad}`}</p>
+              <p>{`Largest Army: ${playerInfo.largestArmy}`}</p>
+              <p>{`Resources: ${playerInfo.resources}`}</p>
+            </div>
+          )}
           {playerTurn === player.playerNumber && (
             <div className="section-btns">
-              <button onClick={newDiceRoll} className="btn" type="button">
-                Roll
-              </button>
+              {mode === 'demo' && (
+                <button onClick={newDiceRoll} className="btn" type="button">
+                  Roll
+                </button>
+              )}
               <button
                 className="btn"
                 disabled={!!phase}
@@ -65,16 +78,18 @@ const PlayerControls = ({
               >
                 Development Cards
               </button>
-              <button
-                className="btn"
-                disabled={!!phase}
-                onClick={() => {
-                  nextPlayerThunk(player.playerNumber)
-                }}
-                type="button"
-              >
-                Next Player
-              </button>
+              {!mode && (
+                <button
+                  className="btn"
+                  disabled={!!phase}
+                  onClick={() => {
+                    nextPlayerThunk(player.playerNumber)
+                  }}
+                  type="button"
+                >
+                  End Turn
+                </button>
+              )}
             </div>
           )}
         </div>
