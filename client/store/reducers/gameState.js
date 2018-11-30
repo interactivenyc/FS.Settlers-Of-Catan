@@ -37,7 +37,7 @@ const gameState = (state = defaultState, action) => {
           resources: 0,
           responded: true,
           longestRoad: 2,
-          score: 0,
+          score: 7 - i,
           largestArmy: 0
         }
         console.log('PUSH_USERS', user)
