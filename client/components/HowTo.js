@@ -8,7 +8,7 @@ export default class HowTo extends Component {
   }
   render() {
     return (
-      <div>
+      <div style={{margin: '10px'}}>
         <div>
           Settlers of Fullstack, is a fully browser-based port of the popular
           board game settlers of Catan, a turn based strategy board game for
