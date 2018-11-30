@@ -36,7 +36,7 @@ module.exports = io => {
       cards.push('vp')
     }
     shuffle(cards)
-    gameDecks.defaultGame = cards
+    gameDecks.defaultGame = ['vp']
   }
 
   function getRandomCard(gameId) {

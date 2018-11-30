@@ -6,6 +6,7 @@ import TradeModal from './TradeModal'
 import OfferModal from './OfferModal'
 import Plenty from './Plenty'
 import Monopoly from './Monopoly'
+import VictoryModal from './VictoryModal'
 
 const Modle = ({
   visible,
@@ -63,6 +64,8 @@ const Modle = ({
         )
       case 'monopoly':
         return <Monopoly monopoly={monopoly} toggleModal={toggleModal} />
+      case 'victory':
+        return <VictoryModal player={player} victory={changeGamePhase} />
       default:
         return <div />
     }

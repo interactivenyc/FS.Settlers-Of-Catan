@@ -35,7 +35,11 @@ export const playCard = playedCard => {
     let elToRemove = playerHand.indexOf(playedCard)
     let updatedHand = playerHand.filter((card, i) => i !== elToRemove)
     if (playedCard === 'vp') {
-      dispatch(adjustScore(1))
+      const updatedPlayer = players.filter(
+        player => player.id === playerNumber
+      )[0]
+      dispatch(updateSelf({...updatedPlayer, score: 10}))
+      dispatch(toggleModal('victory'))
     }
     if (playedCard === 'plenty') {
       dispatch(toggleModal('plenty'))
