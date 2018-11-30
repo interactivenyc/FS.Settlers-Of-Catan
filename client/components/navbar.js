@@ -36,7 +36,7 @@ const Navbar = ({isLoggedIn, handleClick}) => {
         </div>
       )}
       <div className="navItem">
-        <Link to="/" className="navItem link">
+        <Link to="/HowTo" className="navItem link">
           How to Play
         </Link>
       </div>
