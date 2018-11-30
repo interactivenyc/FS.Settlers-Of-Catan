@@ -99,19 +99,6 @@ class BuildModal extends React.Component {
 
   render() {
     const {toggleModal} = this.props
-    console.log(
-      '[ BuildModal ] render roadToggle',
-      this.state.road.toggle === 'inactive'
-    )
-    console.log(
-      '[ BuildModal ] render settlementToggle',
-      this.state.settlement.toggle === 'inactive'
-    )
-    console.log(
-      '[ BuildModal ] render cityToggle',
-      this.state.city.toggle === 'inactive'
-    )
-
     return (
       <div onClick={event => this.handleClick(event)}>
         <div style={{fontSize: '20pt', margin: '10px', flexGrow: 1}}>
