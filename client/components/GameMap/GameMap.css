@@ -250,6 +250,11 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  opacity: 1;
+}
+
+.build-modal-button-inactive {
+  opacity: 0.5;
 }
 
 .build-modal-button-active:hover {
@@ -297,7 +302,9 @@
 .trade-table {
   width: 100%;
   height: 100%;
-  /* border: black solid 1px; */
+  text-shadow: 2px 2px #2f3542;
+  color: white;
+  font-size: 20px;
 }
 
 .trade-table td {
@@ -361,7 +368,7 @@
 
 .btn {
   background-color: #fbc531;
-  border: none;
+  border: solid 1px black;
   color: #2f3542;
   cursor: pointer;
   transition: background-color 0.2s;

@@ -47,8 +47,8 @@ const DevCardModal = ({
           type="button"
           disabled={!btnActive}
           onClick={buyaCard}
-          className={`build-modal-button ${btnActive &&
-            'build-modal-button-active'}`}
+          className={`build-modal-button ${!btnActive &&
+            'build-modal-button-inactive'}`}
         >
           Get New Development Card = &nbsp;<div className="modal-resource pasture" />
           <div className="modal-resource field" />
