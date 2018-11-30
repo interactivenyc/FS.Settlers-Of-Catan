@@ -27,6 +27,7 @@ class Routes extends Component {
         <Route path="/map" component={GameMap} />
         <Route path="/lobby" component={GameLobby} />
         <Route path="/HowTo" component={HowTo} />
+        <Route path="demo" component={Demo} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}

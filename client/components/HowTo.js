@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 
 export default class HowTo extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class HowTo extends Component {
           Settlers of Fullstack, is a fully browser-based port of the popular
           board game settlers of Catan, a turn based strategy board game for
           four players. In Catan, you play the role of a pioneer trying to
-          establish a civilization on the fictional island of Catan. You Will:
+          establish a civilization on the fictional island of Catan. You will:
         </div>
         <div>
           <h1 />
@@ -46,6 +47,12 @@ export default class HowTo extends Component {
         </div>
         <div>
           Click below to test out a single-player demo version of our game!
+          (Demo not yet implemented)
+        </div>
+        <div>
+          <Link to="/demo" className="navItem link">
+            Launch Demo
+          </Link>
         </div>
       </div>
     )
