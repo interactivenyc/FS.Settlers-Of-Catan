@@ -43,10 +43,6 @@ export const changeVertexThunk = id => (dispatch, getState) => {
     dispatch(distributeResource(playerState.playerNumber, -4))
     socket.emit('dispatch', distributeResource(playerState.playerNumber, -4))
     dispatch(adjustScore(1))
-    socket.emit(
-      'dispatch',
-      updateScore(playerState.playerNumber, playerState.score + 1)
-    )
   }
 }
 
@@ -67,10 +63,6 @@ export const buildCityThunk = id => (dispatch, getState) => {
     dispatch(distributeResource(playerState.playerNumber, -5))
     socket.emit('dispatch', distributeResource(playerState.playerNumber, -5))
     dispatch(adjustScore(1))
-    socket.emit(
-      'dispatch',
-      updateScore(playerState.playerNumber, playerState.score + 1)
-    )
   }
 }
 
