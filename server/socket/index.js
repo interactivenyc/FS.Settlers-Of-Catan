@@ -8,7 +8,7 @@ module.exports = io => {
 
   class User {
     constructor(data, socketId) {
-      console.log('[ User ] constructor', data)
+      // console.log('[ User ] constructor', data)
 
       this.id = data.id
       this.email = data.email
@@ -33,6 +33,8 @@ module.exports = io => {
     }
   }
 
+  users = {}
+  games = {}
   createLobby()
   createDefaultGame()
 
@@ -53,76 +55,87 @@ module.exports = io => {
   }
 
   function resetAllGames() {
-    games = {'Default Game': {}}
-  }
-
-  function updateRoom(socket) {
-    let room = Object.keys(socket.rooms)[0]
-    console.log('-------------------------')
-
-    console.log(
-      '[ server socket ] updateRoom room/rooms:',
-      room,
-      Object.keys(socket.rooms)
-    )
-    if (room && games[room] && games[room].chatList) {
-      console.log(
-        '[ server socket ] updateRoom update chatList:',
-        games[room].chatList
-      )
-      io.sockets
-        .in('Default Game')
-        .emit('update-lobby', users, games, games['Default Game'].chatList)
-      io.sockets
-        .in('Lobby')
-        .emit('update-lobby', users, games, games.Lobby.chatList)
-    }
+    games = {}
+    createDefaultGame()
   }
 
   function leaveAllRooms(socket) {
+    console.log('leaveAllRooms')
+
     for (let roomId in socket.rooms) {
       if (socket.rooms.hasOwnProperty(roomId)) {
+        console.log('leaving room...', roomId)
         socket.emit('log-server-message', `leaving room ${roomId}`)
         socket.leave(socket.rooms[roomId])
+        if (games[roomId]) delete games[roomId].users[socket.id]
       }
     }
   }
 
   function joinRoom(socket, room) {
-    console.log('joinRoom room:', room)
-
     leaveAllRooms(socket)
+    console.log('joinRoom room:', room)
     socket.join(room)
-    socket.emit('connectToRoom', room)
+
     if (!games[room]) {
       console.log('joinRoom create new GameInstance', room)
       games[room] = new GameInstance(room)
+    } else {
+      games[room].users[socket.id] = users[socket.id]
     }
-    setTimeout(() => {
-      log('check room joined', socket)
-    }, 1000)
+
+    socket.emit('connectToRoom', room)
     updateRoom(socket)
+    traceState()
+  }
+
+  function updateRoom(socket) {
+    let room = Object.keys(socket.rooms)[0]
+    console.log('[ server socket ] updateRoom room/rooms:', room)
+    if (room && games[room] && games[room].chatList) {
+      console.log(
+        '[ server socket ] updateRoom update chatList:',
+        games[room].chatList
+      )
+    }
+    io.sockets
+      .in('Default Game')
+      .emit('update-lobby', users, games, games['Default Game'].chatList)
+    io.sockets
+      .in('Lobby')
+      .emit('update-lobby', users, games, games.Lobby.chatList)
+  }
+
+  function traceState() {
+    console.log('-----------------------')
+    console.log('server-trace Lobby.users', games.Lobby.users)
+    console.log('server-trace Lobby.chatList', games.Lobby.chatList)
+    console.log('server-trace DefaultGame.users', games['Default Game'].users)
+    console.log(
+      'server-trace DefaultGame.chatList',
+      games['Default Game'].chatList
+    )
+    console.log('-----------------------')
   }
 
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
-    console.log('io.rooms', io.sockets.rooms)
-
     console.log('-----------------')
 
     socket.on('disconnect', () => {
+      console.log(`---------------------`)
       console.log(`disconnect ${socket.id} has left the building`)
 
-      console.log(`---------------------`)
+      console.log('disconnect from users and Lobby', Object.keys(socket.rooms))
+      delete users[socket.id]
+      delete games.Lobby.users[socket.id]
 
       if (socket.rooms.length > 0) {
-        console.log('disconnect from room', Object.keys(socket.rooms))
-        console.log(`---------------------`)
-
-        delete users[socket.id]
+        console.log('disconnect from room and game', Object.keys(socket.rooms))
         delete games[Object.keys(socket.rooms)[0]][socket.id]
         updateRoom(socket)
       }
+      console.log(`---------------------`)
     })
 
     /*******************************************
@@ -145,6 +158,10 @@ module.exports = io => {
     })
 
     socket.on('switch-room', room => {
+      console.log('-----------')
+
+      console.log('switch-room', room)
+
       joinRoom(socket, room)
     })
 
@@ -152,13 +169,13 @@ module.exports = io => {
     socket.on('join-game', async gameId => {
       console.log('join-game gameId', gameId)
       games[gameId].users[socket.id] = users[socket.id]
-      updateRoom(socket)
-      const userKeys = Object.keys(games[gameId])
+      joinRoom(socket, gameId)
 
       /**
        * START NEW GAME
        */
 
+      const userKeys = Object.keys(games[gameId])
       if (userKeys.length === numPlayers) {
         const board = await GameDB.create({
           board_data: JSON.stringify(initializedBoardData)
@@ -174,8 +191,7 @@ module.exports = io => {
           gameUsers.push(user)
           delete users[socketId]
 
-          socket.leave('Lobby')
-          socket.join('gameroom')
+          joinRoom(socket, gameId)
 
           io.to(socketId).emit('start-game', board.board_data, {
             number: playerNumber,
@@ -183,8 +199,7 @@ module.exports = io => {
             userProfile: user
           })
         })
-        io.sockets.in('gameroom').emit('set-game-users', gameUsers)
-        // updateRoom(socket)
+        io.sockets.in(gameId).emit('set-game-users', gameUsers)
       }
     })
 
@@ -194,14 +209,18 @@ module.exports = io => {
       // updateRoom(socket)
     })
 
+    /* eslint-disable guard-for-in */
     socket.on('delete-user-from-game', (email, gameId) => {
-      console.log('delete-user-from-game', email, gameId)
+      console.log('delete-user-from-game', email, gameId, socket.id)
+      console.log('game users', games[gameId].users)
 
-      let game = games[gameId]
-      for (let key in game) {
-        if (game[key].email === email) {
-          log('deleting user from game', game[key])
-          delete game[key]
+      let gameUsers = games[gameId].users
+      for (let key in gameUsers) {
+        console.log('gameUsers key', key)
+
+        if (gameUsers[key].email === email) {
+          log('deleting user from game', email)
+          delete gameUsers[key]
         }
       }
     })
@@ -225,6 +244,10 @@ module.exports = io => {
       })
 
       updateRoom(socket)
+    })
+
+    socket.on('server-trace', () => {
+      traceState()
     })
 
     /**

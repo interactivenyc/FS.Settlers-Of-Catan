@@ -27,7 +27,7 @@ export class GameLobby extends React.Component {
     this.setupSocket()
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
     this.clickUser = this.clickUser.bind(this)
-    this.clickGame = this.clickGame.bind(this)
+    this.joinGame = this.joinGame.bind(this)
     this.leaveGame = this.leaveGame.bind(this)
     this.resetAllGames = this.resetAllGames.bind(this)
     this.switchRoom = this.switchRoom.bind(this)
@@ -62,15 +62,20 @@ export class GameLobby extends React.Component {
   }
 
   switchRoom(room) {
+    console.log('[ GameLobby ] switchRoom', room)
     socket.emit('switch-room', room)
+  }
+
+  serverTrace() {
+    socket.emit('server-trace')
   }
 
   clickUser(e) {
     console.log('[ GameLobby ] clickUser', e.target.innerHTML)
   }
 
-  clickGame(e) {
-    console.log('[ GameLobby ] clickGame', e.target.getAttribute('gameid'))
+  joinGame(e) {
+    console.log('[ GameLobby ] joinGame', e.target.getAttribute('gameid'))
 
     this.setState({
       gameId: e.target.getAttribute('gameid')
@@ -79,11 +84,7 @@ export class GameLobby extends React.Component {
   }
 
   leaveGame(e) {
-    console.log('leaveGame')
-
-    this.setState({
-      gameId: 'Lobby'
-    })
+    console.log('[ GameLobby ] leaveGame', e.target.getAttribute('gameid'))
     socket.emit('leave-game', e.target.getAttribute('gameid'))
   }
 
@@ -107,7 +108,7 @@ export class GameLobby extends React.Component {
               </td>
               <td>
                 <GameList
-                  clickGame={this.clickGame}
+                  joinGame={this.joinGame}
                   leaveGame={this.leaveGame}
                   activeGames={this.state.activeGames}
                   // chatList={this.state.chatList}
@@ -122,10 +123,13 @@ export class GameLobby extends React.Component {
                   type="button"
                   onClick={() => this.switchRoom('Default Game')}
                 >
-                  Join Game Room
+                  Join Game
                 </button>
                 <button type="button" onClick={() => this.switchRoom('Lobby')}>
                   Join Lobby
+                </button>
+                <button type="button" onClick={this.serverTrace}>
+                  Server Trace
                 </button>
               </td>
             </tr>
@@ -144,7 +148,15 @@ export class GameLobby extends React.Component {
   }
 
   setupSocket() {
-    socket.on('update-lobby', (userLobby, activeGames, chatList) => {
+    socket.on('connectToRoom', gameId => {
+      console.log('[ GameLobby ] connectToRoom:', gameId)
+      this.setState({
+        gameId
+      })
+    })
+
+    socket.on('update-lobby', (userLobby, activeGames) => {
+      let chatList = activeGames[this.state.gameId].chatList
       console.log('[ GameLobby ] update-lobby chatList', chatList, activeGames)
 
       // if (!this.state.inLobby) return

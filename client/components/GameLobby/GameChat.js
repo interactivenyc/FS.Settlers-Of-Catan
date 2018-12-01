@@ -32,7 +32,7 @@ export default class GameChat extends React.Component {
   }
 
   render() {
-    console.log('[ GameChat ] render this.props.chatList', this.props.chatList)
+    // console.log('[ GameChat ] render this.props.chatList', this.props.chatList)
     let keyIndex = 0
     return (
       <table className="tableDisplay">

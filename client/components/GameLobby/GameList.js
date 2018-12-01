@@ -1,30 +1,28 @@
 import React from 'react'
 
 const GameList = props => {
-  console.log('[ GameList ] props', props)
+  // console.log('[ GameList ] props', props)
 
   let keyIndex = 0
 
-  function getButtonText() {
-    if (isInGame()) {
+  function getButtonText(gameId) {
+    if (isInGame(gameId)) {
       return 'LEAVE'
     } else {
       return 'JOIN'
     }
   }
 
-  function getClickFunction() {
-    if (isInGame()) {
+  function getClickFunction(gameId) {
+    if (isInGame(gameId)) {
       return props.leaveGame
     } else {
-      return props.clickGame
+      return props.joinGame
     }
   }
 
-  function isInGame() {
-    // console.log('[ GameList ] isInGame', props.gameId)
-
-    const keys = Object.keys(props.activeGames[props.gameId].users)
+  function isInGame(gameId) {
+    const keys = Object.keys(props.activeGames[gameId].users)
     if (keys.includes(props.socketId)) {
       return true
     } else {
@@ -45,14 +43,11 @@ const GameList = props => {
                 <button
                   type="button"
                   gameid={gameId}
-                  onClick={getClickFunction()}
+                  onClick={getClickFunction(gameId)}
                 >
-                  {getButtonText()}
+                  {getButtonText(gameId)}
                 </button>
-                <span
-                  className="gameText"
-                  onClick={props.clickGame}
-                >{`${gameId} [ ${
+                <span className="gameText">{`${gameId} [ ${
                   Object.keys(props.activeGames[gameId].users).length
                 } ]`}</span>
               </td>
