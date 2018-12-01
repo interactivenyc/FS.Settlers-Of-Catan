@@ -59,11 +59,11 @@ module.exports = io => {
     createDefaultGame()
   }
 
-  function leaveAllRooms(socket) {
-    console.log('leaveAllRooms')
+  function leaveAllRooms(socket, except) {
+    console.log('leaveAllRooms except', except)
 
     for (let roomId in socket.rooms) {
-      if (socket.rooms.hasOwnProperty(roomId)) {
+      if (socket.rooms.hasOwnProperty(roomId) && roomId !== except) {
         console.log('leaving room...', roomId)
         socket.emit('log-server-message', `leaving room ${roomId}`)
         socket.leave(socket.rooms[roomId])
@@ -73,31 +73,36 @@ module.exports = io => {
   }
 
   function joinRoom(socket, room) {
-    leaveAllRooms(socket)
     console.log('joinRoom room:', room)
-    socket.join(room)
-
-    if (!games[room]) {
-      console.log('joinRoom create new GameInstance', room)
-      games[room] = new GameInstance(room)
+    leaveAllRooms(socket, room)
+    if (socket.rooms.hasOwnProperty(room)) {
+      console.log('joinRoom room - ALREADY JOINED:', room)
     } else {
-      games[room].users[socket.id] = users[socket.id]
-    }
+      console.log('joinRoom - JOINING room:', room)
+      socket.join(room)
 
-    socket.emit('connectToRoom', room)
-    updateRoom(socket)
+      if (!games[room]) {
+        console.log('joinRoom create new GameInstance', room)
+        games[room] = new GameInstance(room)
+      } else {
+        games[room].users[socket.id] = users[socket.id]
+      }
+
+      socket.emit('connectToRoom', room)
+      updateRoom(socket)
+    }
     traceState()
   }
 
   function updateRoom(socket) {
     let room = Object.keys(socket.rooms)[0]
-    console.log('[ server socket ] updateRoom room/rooms:', room)
-    if (room && games[room] && games[room].chatList) {
-      console.log(
-        '[ server socket ] updateRoom update chatList:',
-        games[room].chatList
-      )
-    }
+    // console.log('[ server socket ] updateRoom room/rooms:', room)
+    // if (room && games[room] && games[room].chatList) {
+    //   console.log(
+    //     '[ server socket ] updateRoom update chatList:',
+    //     games[room].chatList
+    //   )
+    // }
     io.sockets
       .in('Default Game')
       .emit('update-lobby', users, games, games['Default Game'].chatList)
@@ -109,12 +114,12 @@ module.exports = io => {
   function traceState() {
     console.log('-----------------------')
     console.log('server-trace Lobby.users', games.Lobby.users)
-    console.log('server-trace Lobby.chatList', games.Lobby.chatList)
+    // console.log('server-trace Lobby.chatList', games.Lobby.chatList)
     console.log('server-trace DefaultGame.users', games['Default Game'].users)
-    console.log(
-      'server-trace DefaultGame.chatList',
-      games['Default Game'].chatList
-    )
+    // console.log(
+    //   'server-trace DefaultGame.chatList',
+    //   games['Default Game'].chatList
+    // )
     console.log('-----------------------')
   }
 
@@ -152,6 +157,7 @@ module.exports = io => {
      *******************************************/
 
     socket.on('join-lobby', user => {
+      console.log('join-lobby')
       let gameUser = new User(user, socket.id)
       users[socket.id] = gameUser
       joinRoom(socket, 'Lobby')
@@ -159,7 +165,6 @@ module.exports = io => {
 
     socket.on('switch-room', room => {
       console.log('-----------')
-
       console.log('switch-room', room)
 
       joinRoom(socket, room)
@@ -171,11 +176,13 @@ module.exports = io => {
       games[gameId].users[socket.id] = users[socket.id]
       joinRoom(socket, gameId)
 
+      if (gameId === 'Lobby') return
+
       /**
        * START NEW GAME
        */
 
-      const userKeys = Object.keys(games[gameId])
+      const userKeys = Object.keys(games[gameId].users)
       if (userKeys.length === numPlayers) {
         const board = await GameDB.create({
           board_data: JSON.stringify(initializedBoardData)
@@ -184,14 +191,12 @@ module.exports = io => {
         let gameUsers = []
         let playerNumber = 0
         userKeys.forEach(socketId => {
-          delete games[gameId][socketId]
+          delete games[gameId].users[socketId]
           let user = users[socketId]
           playerNumber++
           user.playerNumber = playerNumber
           gameUsers.push(user)
           delete users[socketId]
-
-          joinRoom(socket, gameId)
 
           io.to(socketId).emit('start-game', board.board_data, {
             number: playerNumber,
@@ -218,18 +223,19 @@ module.exports = io => {
       for (let key in gameUsers) {
         console.log('gameUsers key', key)
 
-        if (gameUsers[key].email === email) {
+        if (gameUsers[key] && gameUsers[key].email === email) {
           log('deleting user from game', email)
           delete gameUsers[key]
         }
       }
+      joinRoom(socket, 'Lobby')
     })
 
     socket.on('leave-game', gameId => {
       console.log('leave-game', gameId, socket.id)
       if (gameId) {
         delete games[gameId].users[socket.id]
-        updateRoom(socket)
+        joinRoom(socket, 'Lobby')
       }
     })
 

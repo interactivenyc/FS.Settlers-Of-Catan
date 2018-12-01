@@ -157,10 +157,6 @@ export class GameLobby extends React.Component {
 
     socket.on('update-lobby', (userLobby, activeGames) => {
       let chatList = activeGames[this.state.gameId].chatList
-      console.log('[ GameLobby ] update-lobby chatList', chatList, activeGames)
-
-      // if (!this.state.inLobby) return
-      // if (this.state.inGame) return
 
       /**
        * If the user has lost their connection accidentally, reset
@@ -171,7 +167,6 @@ export class GameLobby extends React.Component {
       if (this.state.socketId !== socket.id && this.state.socketId !== '') {
         if (this.state.gameId !== '') {
           console.log('[ GameLobby ] join-game on update-lobby')
-
           socket.emit('join-game', this.state.gameId)
         }
       }
@@ -187,7 +182,7 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('log-server-message', msg => {
-      console.log('[ GameLobby ] log-server-message', msg)
+      console.log('[ GameLobby ] serverMessage', msg)
     })
 
     socket.on('set-game-users', users => {
