@@ -86,6 +86,9 @@ export class GameLobby extends React.Component {
   leaveGame(e) {
     console.log('[ GameLobby ] leaveGame', e.target.getAttribute('gameid'))
     socket.emit('leave-game', e.target.getAttribute('gameid'))
+    this.setState({
+      gameId: 'Lobby'
+    })
   }
 
   render() {
@@ -150,13 +153,14 @@ export class GameLobby extends React.Component {
   setupSocket() {
     socket.on('connectToRoom', gameId => {
       console.log('[ GameLobby ] connectToRoom:', gameId)
-      this.setState({
-        gameId
-      })
+      // this.setState({
+      //   gameId
+      // })
     })
 
     socket.on('update-lobby', (userLobby, activeGames) => {
       let chatList = activeGames[this.state.gameId].chatList
+      console.log('[ GameLobby ] update-lobby', this.state.gameId, chatList)
 
       /**
        * If the user has lost their connection accidentally, reset
@@ -214,11 +218,7 @@ export class GameLobby extends React.Component {
        */
       this.tryJoinLobby()
       if (this.state.gameId !== '') {
-        socket.emit(
-          'delete-user-from-game',
-          this.props.user.email,
-          this.state.gameId
-        )
+        socket.emit('delete-user-from-game', this.props.user, this.state.gameId)
       }
     })
   }

@@ -4,43 +4,32 @@ const initializedBoardData = require('./initializedBoard')
 module.exports = io => {
   let games = {}
   let users = {}
-  const numPlayers = 2
+  const numPlayers = 4
 
   class User {
     constructor(data, socketId) {
-      // console.log('[ User ] constructor', data)
-
       this.id = data.id
       this.email = data.email
       this.username = data.username || data.email.split('@')[0]
       this.socketId = socketId
-      this.activeRoom = 'Lobby'
+
       users[this.socketId] = this
     }
   }
 
   class GameInstance {
     constructor(name) {
-      console.log('new GameInstance - name', name)
-
       this.name = name
       this.users = {}
       this.chatList = []
       this.deck = generateDeck(name)
 
       games[name] = this
-      // console.log('games', games);
     }
   }
 
-  users = {}
-  games = {}
   createLobby()
   createDefaultGame()
-
-  function log(msg) {
-    console.log('[ server socket ]', msg)
-  }
 
   function createLobby() {
     console.log('createLobby')
@@ -72,6 +61,20 @@ module.exports = io => {
     }
   }
 
+  function destroyUserBySocket(socketId) {
+    console.log('destroyUserBySocket', socketId)
+
+    delete users[socketId]
+
+    let gamesList = Object.keys(games)
+
+    for (let i = 0; i < gamesList.length; i++) {
+      delete games[gamesList[i]].users[socketId]
+    }
+
+    traceState()
+  }
+
   function joinRoom(socket, room) {
     console.log('joinRoom room:', room)
     leaveAllRooms(socket, room)
@@ -95,14 +98,9 @@ module.exports = io => {
   }
 
   function updateRoom(socket) {
+    // USE THIS TO BROADCAST TO SPECIFIC ROOMS LATER
     let room = Object.keys(socket.rooms)[0]
-    // console.log('[ server socket ] updateRoom room/rooms:', room)
-    // if (room && games[room] && games[room].chatList) {
-    //   console.log(
-    //     '[ server socket ] updateRoom update chatList:',
-    //     games[room].chatList
-    //   )
-    // }
+
     io.sockets
       .in('Default Game')
       .emit('update-lobby', users, games, games['Default Game'].chatList)
@@ -131,15 +129,11 @@ module.exports = io => {
       console.log(`---------------------`)
       console.log(`disconnect ${socket.id} has left the building`)
 
-      console.log('disconnect from users and Lobby', Object.keys(socket.rooms))
-      delete users[socket.id]
-      delete games.Lobby.users[socket.id]
+      destroyUserBySocket(socket.id)
 
-      if (socket.rooms.length > 0) {
-        console.log('disconnect from room and game', Object.keys(socket.rooms))
-        delete games[Object.keys(socket.rooms)[0]][socket.id]
-        updateRoom(socket)
-      }
+      //NOT SURE IF THIS IS NECESSARY
+      updateRoom(socket)
+
       console.log(`---------------------`)
     })
 
@@ -198,6 +192,8 @@ module.exports = io => {
           gameUsers.push(user)
           delete users[socketId]
 
+          console.log('START-GAME for user', socketId, user)
+
           io.to(socketId).emit('start-game', board.board_data, {
             number: playerNumber,
             color: colors[playerNumber],
@@ -209,26 +205,41 @@ module.exports = io => {
     })
 
     socket.on('reset-all-games', () => {
-      log('reset-all-games')
+      console.log('reset-all-games')
       resetAllGames()
       // updateRoom(socket)
     })
 
+    /**
+     * THIS GETS CALLED ON ACCIDENTAL DISCONNECT
+     */
+
     /* eslint-disable guard-for-in */
-    socket.on('delete-user-from-game', (email, gameId) => {
-      console.log('delete-user-from-game', email, gameId, socket.id)
-      console.log('game users', games[gameId].users)
+    socket.on('delete-user-from-game', (user, gameId) => {
+      console.log('-----------------')
+      console.log('--> RECOVER')
+      console.log('-----------------')
 
-      let gameUsers = games[gameId].users
-      for (let key in gameUsers) {
-        console.log('gameUsers key', key)
+      console.log('RECOVER FROM DISCONNECT \n', user.email, gameId, socket.id)
+      traceState()
 
-        if (gameUsers[key] && gameUsers[key].email === email) {
-          log('deleting user from game', email)
-          delete gameUsers[key]
-        }
-      }
+      // let gameUsers = games[gameId].users
+      // for (let key in gameUsers) {
+      //   console.log('gameUsers key', key)
+
+      //   if (gameUsers[key] && gameUsers[key].email === user.email) {
+      //     console.log('deleting user from game', gameId, user)
+      //     delete gameUsers[key]
+      //   }
+      // }
+
+      let gameUser = new User(user, socket.id)
+      users[socket.id] = gameUser
       joinRoom(socket, 'Lobby')
+
+      console.log('-----------------')
+      console.log('--> /RECOVER')
+      console.log('-----------------')
     })
 
     socket.on('leave-game', gameId => {
