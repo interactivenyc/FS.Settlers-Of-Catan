@@ -29,11 +29,16 @@ module.exports = io => {
       this.deck = generateDeck(name)
 
       games[name] = this
+      // console.log('games', games);
     }
   }
 
   createLobby()
   createDefaultGame()
+
+  function log(msg) {
+    console.log('[ server socket ]', msg)
+  }
 
   function createLobby() {
     console.log('createLobby')
@@ -47,71 +52,22 @@ module.exports = io => {
     games['Default Game'] = defaultGame
   }
 
-  //Fisher-Yates Shuffle
-  function shuffle(array) {
-    var currentIndex = array.length,
-      temporaryValue,
-      randomIndex
-
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex -= 1
-
-      temporaryValue = array[currentIndex]
-      array[currentIndex] = array[randomIndex]
-      array[randomIndex] = temporaryValue
-    }
-
-    return array
-  }
-
-  function generateDeck(gameName) {
-    console.log('generate deck', gameName)
-    const cards = ['monopoly', 'monopoly', 'road', 'road', 'plenty', 'plenty']
-    for (let i = 0; i < 14; i++) {
-      cards.push('knight')
-    }
-    for (let i = 0; i < 5; i++) {
-      cards.push('vp')
-    }
-    shuffle(cards)
-
-    // console.log('generate cards', cards)
-    return cards
-  }
-
-  function getRandomCard(gameName) {
-    return games[gameName].deck.pop()
-  }
-
-  /**
-   * THESE ARE VARS USED BY RYAN - TO INTEGRATE
-   */
-  let colors = {
-    1: 'red',
-    2: 'green',
-    3: 'blue',
-    4: 'orange'
-  }
-
-  function log(msg) {
-    console.log('[ server socket ]', msg)
-  }
-
   function resetAllGames() {
     games = {'Default Game': {}}
   }
 
   function updateRoom(socket) {
     let room = Object.keys(socket.rooms)[0]
+    console.log('-------------------------')
+
     console.log(
-      // '[ server socket ] updateRoom room/rooms:',
+      '[ server socket ] updateRoom room/rooms:',
       room,
       Object.keys(socket.rooms)
     )
     if (room && games[room] && games[room].chatList) {
       console.log(
-        // '[ server socket ] updateRoom update chatList:',
+        '[ server socket ] updateRoom update chatList:',
         games[room].chatList
       )
       io.sockets
@@ -195,8 +151,8 @@ module.exports = io => {
     /* eslint-disable camelcase */
     socket.on('join-game', async gameId => {
       console.log('join-game gameId', gameId)
-      games[gameId][socket.id] = users[socket.id]
-      // updateRoom(socket)
+      games[gameId].users[socket.id] = users[socket.id]
+      updateRoom(socket)
       const userKeys = Object.keys(games[gameId])
 
       /**
@@ -253,14 +209,14 @@ module.exports = io => {
     socket.on('leave-game', gameId => {
       console.log('leave-game', gameId, socket.id)
       if (gameId) {
-        delete games[gameId][socket.id]
-        // updateRoom(socket)
+        delete games[gameId].users[socket.id]
+        updateRoom(socket)
       }
     })
 
     socket.on('send-message', message => {
       console.log('send-message socket.rooms', socket.rooms)
-      let room = Object.keys(socket.rooms)[0]
+      let room = Object.keys(socket.rooms)[0] || 'Lobby'
       console.log('send-message room / message', room, message)
 
       games[room].chatList.push({
@@ -270,6 +226,16 @@ module.exports = io => {
 
       updateRoom(socket)
     })
+
+    /**
+     * THESE ARE VARS USED BY RYAN - TO INTEGRATE
+     */
+    let colors = {
+      1: 'red',
+      2: 'green',
+      3: 'blue',
+      4: 'orange'
+    }
 
     /**
      * THESE ARE NEW FUNCTIONS FROM RYAN TO INTEGRATE
@@ -296,4 +262,45 @@ module.exports = io => {
       })
     })
   })
+
+  /**
+   * THESE ARE FUNCTIONS USED BY FRANK TO SHUFFLE DECK
+   */
+
+  //Fisher-Yates Shuffle
+  function shuffle(array) {
+    var currentIndex = array.length,
+      temporaryValue,
+      randomIndex
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
+    }
+
+    return array
+  }
+
+  function generateDeck(gameName) {
+    console.log('generate deck', gameName)
+    const cards = ['monopoly', 'monopoly', 'road', 'road', 'plenty', 'plenty']
+    for (let i = 0; i < 14; i++) {
+      cards.push('knight')
+    }
+    for (let i = 0; i < 5; i++) {
+      cards.push('vp')
+    }
+    shuffle(cards)
+
+    // console.log('generate cards', cards)
+    return cards
+  }
+
+  function getRandomCard(gameName) {
+    return games[gameName].deck.pop()
+  }
 }

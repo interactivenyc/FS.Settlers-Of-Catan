@@ -16,9 +16,12 @@ export class GameLobby extends React.Component {
       inLobby: false,
       inGame: false,
       socketId: '',
-      gameId: '',
+      gameId: 'Lobby',
       userLobby: {},
-      activeGames: {Lobby: {chatList: []}, 'Default Game': {}},
+      activeGames: {
+        Lobby: {chatList: [], users: {}},
+        'Default Game': {chatList: [], users: {}}
+      },
       chatList: []
     }
     this.setupSocket()
@@ -67,7 +70,7 @@ export class GameLobby extends React.Component {
   }
 
   clickGame(e) {
-    console.log('clickGame', e.target.getAttribute('gameid'))
+    console.log('[ GameLobby ] clickGame', e.target.getAttribute('gameid'))
 
     this.setState({
       gameId: e.target.getAttribute('gameid')
@@ -79,7 +82,7 @@ export class GameLobby extends React.Component {
     console.log('leaveGame')
 
     this.setState({
-      gameId: ''
+      gameId: 'Lobby'
     })
     socket.emit('leave-game', e.target.getAttribute('gameid'))
   }
@@ -107,6 +110,7 @@ export class GameLobby extends React.Component {
                   clickGame={this.clickGame}
                   leaveGame={this.leaveGame}
                   activeGames={this.state.activeGames}
+                  // chatList={this.state.chatList}
                   socketId={this.state.socketId}
                   gameId={this.state.gameId}
                 />
@@ -141,7 +145,7 @@ export class GameLobby extends React.Component {
 
   setupSocket() {
     socket.on('update-lobby', (userLobby, activeGames, chatList) => {
-      console.log('[ GameLobby ] update-lobby chatList', chatList)
+      console.log('[ GameLobby ] update-lobby chatList', chatList, activeGames)
 
       // if (!this.state.inLobby) return
       // if (this.state.inGame) return
