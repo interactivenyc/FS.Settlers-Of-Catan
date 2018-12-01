@@ -159,8 +159,10 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('update-lobby', (userLobby, activeGames) => {
+      console.log('[ GameLobby ] update-lobby', this.state.gameId)
+      if (!this.state.gameId) return
+
       let chatList = activeGames[this.state.gameId].chatList
-      console.log('[ GameLobby ] update-lobby', this.state.gameId, chatList)
 
       /**
        * If the user has lost their connection accidentally, reset
