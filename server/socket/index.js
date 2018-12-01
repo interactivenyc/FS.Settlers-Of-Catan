@@ -99,7 +99,7 @@ module.exports = io => {
 
   function updateRoom(socket) {
     // USE THIS TO BROADCAST TO SPECIFIC ROOMS LATER
-    let room = Object.keys(socket.rooms)[0]
+    // let room = Object.keys(socket.rooms)[0]
 
     io.sockets
       .in('Default Game')
@@ -204,6 +204,7 @@ module.exports = io => {
             })
         })
         io.sockets.in(gameId).emit('set-game-users', gameUsers)
+        updateRoom()
       }
     })
 
