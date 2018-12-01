@@ -4,7 +4,7 @@ const initializedBoardData = require('./initializedBoard')
 module.exports = io => {
   let games = {}
   let users = {}
-  const numPlayers = 4
+  const numPlayers = 2
 
   class User {
     constructor(data, socketId) {
@@ -194,11 +194,14 @@ module.exports = io => {
 
           console.log('START-GAME for user', socketId, user)
 
-          io.to(socketId).emit('start-game', board.board_data, {
-            number: playerNumber,
-            color: colors[playerNumber],
-            userProfile: user
-          })
+          io
+            .in(gameId)
+            .to(socketId)
+            .emit('start-game', board.board_data, {
+              number: playerNumber,
+              color: colors[playerNumber],
+              userProfile: user
+            })
         })
         io.sockets.in(gameId).emit('set-game-users', gameUsers)
       }
