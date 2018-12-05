@@ -194,14 +194,11 @@ module.exports = io => {
 
           console.log('START-GAME for user', socketId, user)
 
-          io
-            .in(gameId)
-            .to(socketId)
-            .emit('start-game', board.board_data, {
-              number: playerNumber,
-              color: colors[playerNumber],
-              userProfile: user
-            })
+          io.sockets.connected[socketId].emit('start-game', board.board_data, {
+            number: playerNumber,
+            color: colors[playerNumber],
+            userProfile: user
+          })
         })
         io.sockets.in(gameId).emit('set-game-users', gameUsers)
         updateRoom()
