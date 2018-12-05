@@ -15,6 +15,7 @@ class Demo extends Component {
       {type: 'pasture', quantity: 3}
     ])
     this.props.setGameUsers([{playerNumber: 1, resources: 15}])
+    this.props.toggleModal('demo')
   }
 
   render() {
@@ -33,5 +34,6 @@ export default connect(mapState, {
   assignPlayer: actions.assignPlayer,
   setResources: actions.setResources,
   setGameMode: actions.setGameMode,
-  setGameUsers: actions.setGameUsers
+  setGameUsers: actions.setGameUsers,
+  toggleModal: actions.toggleModal
 })(Demo)
