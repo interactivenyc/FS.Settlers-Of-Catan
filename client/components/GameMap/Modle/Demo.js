@@ -31,18 +31,18 @@ export default class Demo extends Component {
         </div>
         <div style={{margin: '5px'}}>
           In Demo Mode move verification is turned off, so roads settlements and
-          cities can be placed anywhere,
+          cities can be placed anywhere.
         </div>
 
         <div style={{margin: '5px'}}>
-          but we still want to show off some game logic, so all moves still
+          But, we still want to show off some game logic, so all moves still
           require the correct resources!
         </div>
         <div>
           <h1 />
         </div>
         <div style={{margin: '5px'}}>
-          A full game requires four logged in users to join a game in the game
+          A full game requires four logged-in users to join a game via the game
           lobby. If you would like to experience all our game has to offer,
           bring along some friends!
         </div>
