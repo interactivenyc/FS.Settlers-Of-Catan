@@ -113,7 +113,8 @@ module.exports = io => {
           io.to(socketId).emit('start-game', board.board_data, {
             number: playerNumber,
             color: colors[playerNumber],
-            userProfile: user
+            userProfile: user,
+            longestRoad: 2
           })
         })
         io.sockets.emit('set-game-users', gameUsers)
