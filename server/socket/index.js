@@ -12,6 +12,7 @@ module.exports = io => {
       this.email = data.email
       this.username = data.username || data.email.split('@')[0]
       this.socketId = socketId
+      this.gameId = ''
 
       users[this.socketId] = this
     }
@@ -19,10 +20,12 @@ module.exports = io => {
 
   class GameInstance {
     constructor(name) {
+      console.log('[ GameInstance ] constructor:', name)
+
       this.name = name
       this.users = {}
       this.chatList = []
-      this.deck = generateDeck(name)
+      // this.deck = generateDeck(name)
 
       games[name] = this
     }
@@ -111,14 +114,30 @@ module.exports = io => {
 
   function traceState() {
     console.log('-----------------------')
-    console.log('server-trace Lobby.users', games.Lobby.users)
+    // console.log('server-trace Lobby.users', games.Lobby.users)
     // console.log('server-trace Lobby.chatList', games.Lobby.chatList)
-    console.log('server-trace DefaultGame.users', games['Default Game'].users)
+    // console.log('server-trace DefaultGame.users', games['Default Game'].users)
     // console.log(
     //   'server-trace DefaultGame.chatList',
     //   games['Default Game'].chatList
     // )
+
+    // traceAllRooms()
+    // console.log('-----------------------')
+
+    console.log(games)
     console.log('-----------------------')
+  }
+
+  function traceAllRooms() {
+    console.log('traceAllRooms - start')
+
+    for (let roomId in io.sockets.adapter.rooms) {
+      if (io.sockets.adapter.rooms.hasOwnProperty(roomId)) {
+        console.log('-->', roomId, '<--')
+        console.log(io.sockets.adapter.rooms[roomId].sockets)
+      }
+    }
   }
 
   io.on('connection', socket => {
@@ -172,27 +191,35 @@ module.exports = io => {
 
       if (gameId === 'Lobby') return
 
-      /**
-       * START NEW GAME
-       */
-
       const userKeys = Object.keys(games[gameId].users)
       if (userKeys.length === numPlayers) {
+        /**
+         * START NEW GAME
+         */
+
         const board = await GameDB.create({
           board_data: JSON.stringify(initializedBoardData)
         })
 
         let gameUsers = []
         let playerNumber = 0
+
+        let gameName = 'game_' + new Date().getTime()
+        let game = new GameInstance(gameName)
+        games[gameName] = game
+
         userKeys.forEach(socketId => {
           delete games[gameId].users[socketId]
           let user = users[socketId]
           playerNumber++
           user.playerNumber = playerNumber
+          user.gameId = gameName
           gameUsers.push(user)
-          delete users[socketId]
+          games[gameName].users[socketId] = user
+          // delete users[socketId]
 
           console.log('START-GAME for user', socketId, user)
+          joinRoom(socket, gameName)
 
           io.sockets.connected[socketId].emit('start-game', board.board_data, {
             number: playerNumber,
@@ -203,12 +230,6 @@ module.exports = io => {
         io.sockets.in(gameId).emit('set-game-users', gameUsers)
         updateRoom()
       }
-    })
-
-    socket.on('reset-all-games', () => {
-      console.log('reset-all-games')
-      resetAllGames()
-      // updateRoom(socket)
     })
 
     /**
@@ -223,16 +244,6 @@ module.exports = io => {
 
       console.log('RECOVER FROM DISCONNECT \n', user.email, gameId, socket.id)
       traceState()
-
-      // let gameUsers = games[gameId].users
-      // for (let key in gameUsers) {
-      //   console.log('gameUsers key', key)
-
-      //   if (gameUsers[key] && gameUsers[key].email === user.email) {
-      //     console.log('deleting user from game', gameId, user)
-      //     delete gameUsers[key]
-      //   }
-      // }
 
       let gameUser = new User(user, socket.id)
       users[socket.id] = gameUser
@@ -283,16 +294,14 @@ module.exports = io => {
      */
 
     socket.on('dispatch', value => {
-      console.log('dispatch - this is an opportunity to update state on server')
+      console.log('dispatch - to', socket.rooms)
       console.log(value)
-      socket.broadcast.emit('dispatch', value)
+      socket.to(socket.rooms[0]).emit('dispatch', value)
     })
     socket.on('dispatchThunk', action => {
-      console.log(
-        'dispatchThunk - this is an opportunity to update state on server'
-      )
+      console.log('dispatchThunk - to', socket.rooms)
       console.log(action)
-      socket.broadcast.emit('dispatchThunk', action)
+      socket.to(socket.rooms[0]).emit('dispatchThunk', action)
     })
 
     socket.on('startGame', () => {
