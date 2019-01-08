@@ -1,22 +1,11 @@
 const GameDB = require('../db').model('game')
 const initializedBoardData = require('./initializedBoard')
+const User = require('./User')
 
 module.exports = io => {
   let games = {}
   let users = {}
   const numPlayers = 2
-
-  class User {
-    constructor(data, socketId) {
-      this.id = data.id
-      this.email = data.email
-      this.username = data.username || data.email.split('@')[0]
-      this.socketId = socketId
-      this.gameId = ''
-
-      users[this.socketId] = this
-    }
-  }
 
   class GameInstance {
     constructor(name) {
@@ -104,12 +93,15 @@ module.exports = io => {
     // USE THIS TO BROADCAST TO SPECIFIC ROOMS LATER
     // let room = Object.keys(socket.rooms)[0]
 
+    console.log('updateRoom rooms:', io.sockets.adapter.rooms)
+    let rooms = JSON.stringify(io.sockets.adapter.rooms)
+
     io.sockets
       .in('Default Game')
-      .emit('update-lobby', users, games, games['Default Game'].chatList)
+      .emit('update-lobby', users, games, io.sockets.adapter.rooms)
     io.sockets
       .in('Lobby')
-      .emit('update-lobby', users, games, games.Lobby.chatList)
+      .emit('update-lobby', users, games, io.sockets.adapter.rooms)
   }
 
   function traceState() {
@@ -126,6 +118,8 @@ module.exports = io => {
     // console.log('-----------------------')
 
     console.log(games)
+    console.log('-----------------------')
+    traceAllRooms()
     console.log('-----------------------')
   }
 
@@ -171,7 +165,7 @@ module.exports = io => {
 
     socket.on('join-lobby', user => {
       console.log('join-lobby')
-      let gameUser = new User(user, socket.id)
+      let gameUser = new User(user, socket.id, users)
       users[socket.id] = gameUser
       joinRoom(socket, 'Lobby')
     })
@@ -186,6 +180,7 @@ module.exports = io => {
     /* eslint-disable camelcase */
     socket.on('join-game', async gameId => {
       console.log('join-game gameId', gameId)
+      console.debug('join-game', users, games)
       games[gameId].users[socket.id] = users[socket.id]
       joinRoom(socket, gameId)
 
@@ -218,7 +213,7 @@ module.exports = io => {
           games[gameName].users[socketId] = user
           // delete users[socketId]
 
-          console.log('START-GAME for user', socketId, user)
+          console.log('START-GAME for user', socketId, user, gameName)
           joinRoom(socket, gameName)
 
           io.sockets.connected[socketId].emit('start-game', board.board_data, {
@@ -227,6 +222,7 @@ module.exports = io => {
             userProfile: user
           })
         })
+
         io.sockets.in(gameId).emit('set-game-users', gameUsers)
         updateRoom()
       }
@@ -245,7 +241,7 @@ module.exports = io => {
       console.log('RECOVER FROM DISCONNECT \n', user.email, gameId, socket.id)
       traceState()
 
-      let gameUser = new User(user, socket.id)
+      let gameUser = new User(user, socket.id, users)
       users[socket.id] = gameUser
       joinRoom(socket, 'Lobby')
 
