@@ -39,6 +39,7 @@ export const UPDATE_SCORE_PLAYER = 'UPDATE_SCORE_PLAYER'
 export const USE_RESOURCES = 'USE_RESOURCES'
 export const SET_RESOURCES = 'SET_RESOURCES'
 export const ROB_PLAYER = 'ROB_PLAYER'
+export const SET_GAME_ID = 'SET_GAME_ID'
 
 export const assignPlayer = (number, color) => ({
   type: ASSIGN_PLAYER,

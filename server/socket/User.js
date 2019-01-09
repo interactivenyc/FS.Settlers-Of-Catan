@@ -4,7 +4,9 @@ class User {
     this.email = data.email
     this.username = data.username || data.email.split('@')[0]
     this.socketId = socketId
-    this.gameId = ''
+    this.gameId = 'none'
+    this.color = 'none'
+    this.playerNumber = 0
 
     users[this.socketId] = this
   }

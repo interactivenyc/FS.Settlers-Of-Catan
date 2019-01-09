@@ -10,7 +10,8 @@ import {
   ACCEPT_OFFER,
   REJECT_OFFER,
   CLEAR_OFFER,
-  USE_RESOURCES
+  USE_RESOURCES,
+  SET_GAME_ID
 } from '../actions'
 
 const playerState = {
@@ -25,7 +26,8 @@ const playerState = {
     {type: 'pasture', quantity: 0}
   ],
   currentTrade: null,
-  score: 0
+  score: 0,
+  gameId: 'none'
 }
 
 const getResource = (state, type) => {
@@ -146,7 +148,12 @@ export default function(state = playerState, action) {
           }
         }
       })
+      return newPlayerState
     }
+    case SET_GAME_ID:
+      console.log('SET_GAME_ID', action)
+      return {...state, gameId: action.gameId}
+
     default:
       return state
   }

@@ -6,6 +6,7 @@ module.exports = io => {
   let games = {}
   let users = {}
   const numPlayers = 2
+  let gameIndex = 0
 
   class GameInstance {
     constructor(name) {
@@ -68,7 +69,7 @@ module.exports = io => {
   }
 
   function joinRoom(socket, room) {
-    console.log('joinRoom room:', room)
+    console.log('joinRoom room:', room, socket.id)
     leaveAllRooms(socket, room)
     if (socket.rooms.hasOwnProperty(room)) {
       console.log('joinRoom room - ALREADY JOINED:', room)
@@ -89,12 +90,33 @@ module.exports = io => {
     traceState()
   }
 
+  // function joinRoomById(socketId, room) {
+  //   console.log('joinRoomById room:', room, socketId)
+  //   leaveAllRooms(socket, room)
+  //   if (socket.rooms.hasOwnProperty(room)) {
+  //     console.log('joinRoomById room - ALREADY JOINED:', room)
+  //   } else {
+  //     console.log('joinRoomById - JOINING room:', room)
+  //     socket.join(room)
+
+  //     if (!games[room]) {
+  //       console.log('joinRoomById create new GameInstance', room)
+  //       games[room] = new GameInstance(room)
+  //     } else {
+  //       games[room].users[socket.id] = users[socket.id]
+  //     }
+
+  //     socket.emit('connectToRoom', room)
+  //     updateRoom(socket)
+  //   }
+  //   traceState()
+  // }
+
   function updateRoom(socket) {
     // USE THIS TO BROADCAST TO SPECIFIC ROOMS LATER
     // let room = Object.keys(socket.rooms)[0]
 
     console.log('updateRoom rooms:', io.sockets.adapter.rooms)
-    let rooms = JSON.stringify(io.sockets.adapter.rooms)
 
     io.sockets
       .in('Default Game')
@@ -102,6 +124,31 @@ module.exports = io => {
     io.sockets
       .in('Lobby')
       .emit('update-lobby', users, games, io.sockets.adapter.rooms)
+  }
+
+  function removeEmptyGames() {
+    console.log('--------------------')
+    console.log('removeEmptyGames')
+    console.log('--------------------')
+
+    let keys = Object.keys(games)
+    let gameUsers
+
+    for (let key in keys) {
+      if (
+        keys.hasOwnProperty(key) &&
+        key !== 'Lobby' &&
+        key !== 'Default Game'
+      ) {
+        console.log('checking key:', keys[key])
+
+        gameUsers = Object.keys(games[keys[key]].users)
+        if (gameUsers.length === 0) {
+          console.log('removeEmptyGame', keys[key])
+          delete games[keys[key]]
+        }
+      }
+    }
   }
 
   function traceState() {
@@ -180,14 +227,14 @@ module.exports = io => {
     /* eslint-disable camelcase */
     socket.on('join-game', async gameId => {
       console.log('join-game gameId', gameId)
-      console.debug('join-game', users, games)
+      // console.debug('join-game', users, games)
       games[gameId].users[socket.id] = users[socket.id]
       joinRoom(socket, gameId)
 
       if (gameId === 'Lobby') return
 
       const userKeys = Object.keys(games[gameId].users)
-      if (userKeys.length === numPlayers) {
+      if (userKeys.length === numPlayers && gameId === 'Default Game') {
         /**
          * START NEW GAME
          */
@@ -199,7 +246,7 @@ module.exports = io => {
         let gameUsers = []
         let playerNumber = 0
 
-        let gameName = 'game_' + new Date().getTime()
+        let gameName = 'game_' + gameIndex++
         let game = new GameInstance(gameName)
         games[gameName] = game
 
@@ -209,18 +256,20 @@ module.exports = io => {
           playerNumber++
           user.playerNumber = playerNumber
           user.gameId = gameName
+          user.color = colors[playerNumber]
           gameUsers.push(user)
           games[gameName].users[socketId] = user
           // delete users[socketId]
 
           console.log('START-GAME for user', socketId, user, gameName)
-          joinRoom(socket, gameName)
+          // removeEmptyGames()
+          joinRoom(io.sockets.connected[socketId], gameName)
 
-          io.sockets.connected[socketId].emit('start-game', board.board_data, {
-            number: playerNumber,
-            color: colors[playerNumber],
-            userProfile: user
-          })
+          io.sockets.connected[socketId].emit(
+            'start-game',
+            board.board_data,
+            user
+          )
         })
 
         io.sockets.in(gameId).emit('set-game-users', gameUsers)
@@ -290,14 +339,18 @@ module.exports = io => {
      */
 
     socket.on('dispatch', value => {
-      console.log('dispatch - to', socket.rooms)
+      let room = Object.keys(socket.rooms)[0]
+      console.log('dispatch - to', room)
       console.log(value)
-      socket.to(socket.rooms[0]).emit('dispatch', value)
+      socket.to(room).emit('dispatch', value)
+      socket.to(room).emit('log-server-message', 'testing dispatch')
     })
     socket.on('dispatchThunk', action => {
-      console.log('dispatchThunk - to', socket.rooms)
+      let room = Object.keys(socket.rooms)[0]
+      console.log('dispatchThunk - to', room)
       console.log(action)
-      socket.to(socket.rooms[0]).emit('dispatchThunk', action)
+      socket.to(room).emit('dispatchThunk', action)
+      socket.to(room).emit('log-server-message', 'testing dispatchThunk')
     })
 
     socket.on('startGame', () => {
