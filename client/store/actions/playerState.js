@@ -14,7 +14,8 @@ import {
   changeGamePhase,
   updateSelf,
   useResources,
-  distributeResource
+  distributeResource,
+  SET_GAME_ID
 } from './actionTypes'
 
 import {
@@ -118,6 +119,10 @@ export const robPlayer = (from, to) => (dispatch, getState) => {
     dispatch(changePhase(null))
     socket.emit('dispatch', changePhase(null))
   }
+}
+
+export const setGameId = gameId => {
+  return {type: SET_GAME_ID, gameId}
 }
 
 export const makeOffer = currentTrade => {

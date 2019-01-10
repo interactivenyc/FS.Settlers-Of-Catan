@@ -10,44 +10,68 @@ import * as actions from '../../store/actions'
 
 export class GameLobby extends React.Component {
   constructor(props) {
+    console.log('[ GameLobby ] ---------------------------')
+    console.log('[ GameLobby ] constructor')
+    console.log('[ GameLobby ] ---------------------------')
+
     super(props)
 
     this.state = {
-      inLobby: false,
+      lobbyInitialized: false,
       inGame: false,
       socketId: '',
-      gameId: '',
       userLobby: {},
-      activeGames: {},
+      activeGames: {
+        Lobby: {chatList: [], users: {}},
+        'Default Game': {chatList: [], users: {}}
+      },
       chatList: []
     }
     this.setupSocket()
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
     this.clickUser = this.clickUser.bind(this)
-    this.clickGame = this.clickGame.bind(this)
+    this.joinGame = this.joinGame.bind(this)
     this.leaveGame = this.leaveGame.bind(this)
     this.resetAllGames = this.resetAllGames.bind(this)
+    this.switchRoom = this.switchRoom.bind(this)
   }
 
   componentDidMount() {
-    this.tryJoinLobby()
+    console.log('[ GameLobby ] componentDidMount', this.props)
+
+    // if returning to Lobby from a game
+    if (this.props.gameId !== 'Lobby') {
+      this.tryJoinLobby()
+    }
   }
+
   componentDidUpdate() {
-    this.tryJoinLobby()
+    if (!this.state.lobbyInitialized) {
+      this.tryJoinLobby()
+    }
   }
 
   componentWillUnmount() {
-    socket.emit('leave-game', this.state.gameId)
+    console.log('[ GameLobby ] ---------------------------')
+    console.log('[ GameLobby ] componentWillUnmount')
+    console.log('[ GameLobby ] ---------------------------')
+
+    // socket.emit('leave-game', this.props.gameId)
+
+    socket.removeAllListeners()
   }
 
   tryJoinLobby() {
+    console.log('[ GameLobby ] ---------------------------')
+    console.log('[ GameLobby ] tryJoinLobby')
+    console.log('[ GameLobby ] ---------------------------')
     if (
       this.props.user.email &&
-      this.state.inLobby === false &&
+      this.state.lobbyInitialized === false &&
       this.state.inGame === false
     ) {
       this.setState({
-        inLobby: true
+        lobbyInitialized: true
       })
       socket.emit('join-lobby', this.props.user)
     }
@@ -57,29 +81,34 @@ export class GameLobby extends React.Component {
     socket.emit('reset-all-games')
   }
 
-  clickUser(e) {
-    // console.log('[ GameLobby ] clickUser', e.target.innerHTML)
+  switchRoom(room) {
+    console.log('[ GameLobby ] switchRoom', room)
+    socket.emit('switch-room', room)
   }
 
-  clickGame(e) {
-    console.log('clickGame')
+  serverTrace() {
+    socket.emit('server-trace')
+  }
 
-    this.setState({
-      gameId: e.target.getAttribute('gameid')
-    })
+  clickUser(e) {
+    console.log('[ GameLobby ] clickUser', e.target.innerHTML)
+  }
+
+  joinGame(e) {
+    console.log('[ GameLobby ] joinGame', e.target.getAttribute('gameid'))
+    // this.props.setGameId(e.target.getAttribute('gameid'))
     socket.emit('join-game', e.target.getAttribute('gameid'))
   }
 
   leaveGame(e) {
-    console.log('leaveGame')
-
-    this.setState({
-      gameId: ''
-    })
+    console.log('[ GameLobby ] leaveGame', e.target.getAttribute('gameid'))
     socket.emit('leave-game', e.target.getAttribute('gameid'))
+    this.props.setGameId('Lobby')
   }
 
   render() {
+    // console.log('[ GameLobby ] render', this.props, this.state)
+
     return (
       <React.Fragment>
         <h3>
@@ -97,16 +126,31 @@ export class GameLobby extends React.Component {
               </td>
               <td>
                 <GameList
-                  clickGame={this.clickGame}
+                  joinGame={this.joinGame}
                   leaveGame={this.leaveGame}
                   activeGames={this.state.activeGames}
+                  // chatList={this.state.chatList}
                   socketId={this.state.socketId}
-                  gameId={this.state.gameId}
+                  gameId={this.props.gameId}
                 />
-                <p />
+
+                {/* Disabled Testing Buttons */}
+                {/* <p />
                 <button type="button" onClick={this.resetAllGames}>
                   Reset All Games
                 </button>
+                <button
+                  type="button"
+                  onClick={() => this.switchRoom('Default Game')}
+                >
+                  Join Game
+                </button>
+                <button type="button" onClick={() => this.switchRoom('Lobby')}>
+                  Join Lobby
+                </button>
+                <button type="button" onClick={this.serverTrace}>
+                  Server Trace
+                </button> */}
               </td>
             </tr>
             <tr>
@@ -124,22 +168,34 @@ export class GameLobby extends React.Component {
   }
 
   setupSocket() {
-    socket.on('player-joined', () => {})
+    console.log('[ GameLobby ] setupSocket listeners')
 
-    socket.on('update-lobby', (userLobby, activeGames, chatList) => {
-      if (!this.state.inLobby) return
-      if (this.state.inGame) return
+    socket.on('connectToRoom', gameId => {
+      console.log('[ GameLobby ] connectToRoom:', gameId)
+      this.props.setGameId(gameId)
+    })
+
+    socket.on('update-lobby', (userLobby, activeGames, rooms) => {
+      console.log('[ GameLobby ] update-lobby', this.props.gameId)
+      // console.log('[ GameLobby ] update-lobby rooms', rooms)
+
+      if (!this.props.gameId) return
+
+      let chatList = activeGames[this.props.gameId].chatList
 
       /**
        * If the user has lost their connection accidentally, reset
        * their socketId, and re-join a game if they had
        * previously selected one
        */
-      if (this.state.socketId !== socket.id && this.state.socketId !== '') {
-        if (this.state.gameId !== '') {
-          console.log('join-game on update-lobby')
 
-          socket.emit('join-game', this.state.gameId)
+      if (this.state.socketId !== socket.id && this.state.socketId !== '') {
+        if (this.props.gameId !== '') {
+          console.log('[ GameLobby ] ---------------------------')
+          console.log('[ GameLobby ] join-game on update-lobby')
+          console.log('[ GameLobby ] ---------------------------')
+
+          socket.emit('join-game', this.props.gameId)
         }
       }
 
@@ -149,52 +205,25 @@ export class GameLobby extends React.Component {
         socketId: socket.id,
         userLobby,
         activeGames,
-        chatList
+        chatList,
+        rooms
       })
     })
 
-    socket.on('game-joined', activeGames => {
-      this.setState({
-        activeGames
-      })
-    })
-
-    socket.on('games-reset', activeGames => {
-      this.setState({
-        activeGames
-      })
-    })
-
-    socket.on('lobby-left', userLobby => {
-      if (!this.state.inGame) {
-        this.setState({
-          userLobby
-        })
-      }
-    })
-
-    socket.on('set-game-users', users => {
-      console.log('[ GameLobby ] set-game-users users', users)
-      this.props.initGame(users)
+    socket.on('log-server-message', msg => {
+      console.log('[ GameLobby ] ------------')
+      console.log('[ GameLobby ] serverMessage', msg)
+      console.log('[ GameLobby ] ------------')
     })
 
     socket.on('start-game', (board, user) => {
       console.log('[ GameLobby ] start-game user', user)
 
-      this.setState({
-        gameId: '',
-        inGame: true
-      })
+      this.props.setGameId(user.gameId)
 
       this.props.deserializeBoard(board)
-      this.props.assignPlayer(user.number, user.color)
+      this.props.assignPlayer(user.playerNumber, user.color)
       this.props.history.push('/map')
-    })
-
-    socket.on('update-chat', chatList => {
-      this.setState({
-        chatList
-      })
     })
 
     socket.on('disconnect', () => {
@@ -206,13 +235,9 @@ export class GameLobby extends React.Component {
        * the user from the active game. Game will be rejoined
        * automatically if this.state.gameId exists.
        */
-      socket.emit('join-lobby', this.props.user)
-      if (this.state.gameId !== '') {
-        socket.emit(
-          'delete-user-from-game',
-          this.props.user.email,
-          this.state.gameId
-        )
+      this.tryJoinLobby()
+      if (this.props.gameId !== '') {
+        socket.emit('delete-user-from-game', this.props.user, this.props.gameId)
       }
     })
   }
@@ -221,7 +246,8 @@ export class GameLobby extends React.Component {
 const mapState = state => {
   return {
     user: state.user,
-    board: state.board
+    board: state.board,
+    gameId: state.playerState.gameId
   }
 }
 
@@ -231,7 +257,8 @@ const mapDispatch = dispatch => {
     setGameUsers: user => dispatch(actions.setGameUsers(user)),
     assignPlayer: (number, color) =>
       dispatch(actions.assignPlayer(number, color)),
-    initGame: users => dispatch(actions.initGame(users))
+    initGame: users => dispatch(actions.initGame(users)),
+    setGameId: gameId => dispatch(actions.setGameId(gameId))
   }
 }
 

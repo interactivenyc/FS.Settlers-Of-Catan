@@ -18,7 +18,11 @@ export default class GameChat extends React.Component {
 
   onSubmit(e) {
     e.preventDefault()
-    socket.emit('send-message', document.getElementById('message').value)
+    socket.emit(
+      'send-message',
+      document.getElementById('message').value,
+      'Lobby'
+    )
     document.getElementById('message').value = ''
   }
 
@@ -28,6 +32,8 @@ export default class GameChat extends React.Component {
   }
 
   render() {
+    // console.log('[ GameChat ] render this.props.chatList', this.props.chatList)
+    let keyIndex = 0
     return (
       <table className="tableDisplay">
         <tbody>
@@ -37,7 +43,15 @@ export default class GameChat extends React.Component {
           <tr>
             <td>
               <div id="scrollText" className="scrollText">
-                <pre>{this.props.chatList.join('\n\r')}</pre>
+                {this.props.chatList.map(entry => {
+                  return (
+                    <React.Fragment key={keyIndex++}>
+                      <p>
+                        <b>{entry.username}</b> : {entry.message}
+                      </p>
+                    </React.Fragment>
+                  )
+                })}
               </div>
             </td>
           </tr>

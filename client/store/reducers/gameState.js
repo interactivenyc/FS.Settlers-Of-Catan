@@ -18,7 +18,6 @@ const defaultState = {
   modle: false,
   players: [
     // These objects are defined in case SET_GAME_USERS below
-    // {id: 1, userProfile: {}, score:0}
   ],
   die1: 0,
   die2: 0,

@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'test') {
 const socket = io(window.location.origin)
 
 socket.on('connect', () => {
-  console.log('Connected!')
+  console.log('[ Socket ] Connected!')
 })
 
 export default socket

@@ -10,20 +10,38 @@ import socket from '../../socket'
 import store from '../../store'
 import PlayerAlerts from './PlayerAlerts'
 import Dice from '../Dice'
+import {log} from 'util'
 
 class GameMap extends Component {
   componentDidMount() {
-    // if (this.props.playerTurn === this.props.player.playerNumber) {
-    //   this.props.newDiceRoll()
-    // }
+    socket.on('dispatch', action => {
+      // console.log('receiving dispatch via SocketIO', action)
+      store.dispatch(action)
+    })
 
-    socket.on('dispatch', action => store.dispatch(action))
-    socket.on('dispatchThunk', ({action, args}) =>
+    socket.on('dispatchThunk', ({action, args}) => {
+      // console.log('receiving dispatchThunk via SocketIO', action, args)
       store.dispatch(actions[action].apply(this, args))
-    )
+    })
 
     socket.on('send-card-to-user', card => {
       this.props.buyCard(card)
+    })
+
+    socket.on('set-game-users', users => {
+      console.log('[ GameMap ] set-game-users users', users)
+      this.props.initGame(users)
+    })
+
+    socket.on('log-server-message', msg => {
+      console.log('[ GameMap ] ------------')
+      console.log('[ GameMap ] serverMessage', msg)
+      console.log('[ GameMap ] ------------')
+    })
+
+    socket.on('disconnect', () => {
+      console.log(`Connection ${socket.id} was lost - rejoining`)
+      this.rejoinGameAfterDisconnect()
     })
   }
 
@@ -50,14 +68,24 @@ class GameMap extends Component {
     }
   }
 
-  buyaCard() {
-    socket.emit('get-dev-card', 'defaultGame')
+  rejoinGameAfterDisconnect() {
+    console.log('[ GameMap ] ------------')
+    console.log('[ GameMap ] rejoinGameAfterDisconnect', this.props.gameId)
+    console.log('[ GameMap ] ------------')
+
+    socket.emit('switch-room', this.props.gameId)
+  }
+
+  buyaCard = () => {
+    console.log('[ GameMap ] buyaCard gameId: ', this.props.gameId)
+    socket.emit('get-dev-card', this.props.gameId)
   }
 
   handlePlayCard = card => {
     this.props.playCard(card)
   }
 
+  /* eslint-disable complexity */
   handleClick = e => {
     const {
       changeRoadThunk,
@@ -203,7 +231,8 @@ const mapStateToProps = state => {
     diceTotal: gameState.die1 + gameState.die2,
     phase: gameState.phase,
     currentTrade: playerState.currentTrade,
-    mode: gameState.mode
+    mode: gameState.mode,
+    gameId: playerState.gameId
   }
 }
 
@@ -224,5 +253,6 @@ export default connect(mapStateToProps, {
   changePhase: actions.changePhase,
   setResources: actions.setResources,
   plentyThunk: actions.plentyThunk,
-  monopoly: actions.monopoly
+  monopoly: actions.monopoly,
+  initGame: actions.initGame
 })(GameMap)

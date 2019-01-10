@@ -42,6 +42,22 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
     .filter(resource => resource.diceTarget === num)
 
   newResources.forEach(resource => {
+    /* eslint-disable no-debugger */
+    if (!resource.vertices) {
+      // debugger
+      console.log(
+        '[ gameState] ERROR - RESOURCE.VERTICES resource:',
+        resource,
+        newResources
+      )
+    } else {
+      console.log(
+        '[ gameState] distributeResourcesThunk normal resource:',
+        resource,
+        newResources
+      )
+    }
+
     resource.vertices.forEach(vertex => {
       if (vertices[vertex.id].player) {
         if (vertices[vertex.id].locationType === 'city') {
@@ -131,10 +147,10 @@ export const newDiceRoll = () => {
 
     dispatch(distributeResourcesThunk(newDiceTotal))
 
-    console.log('NEW DICE', newDiceTotal)
+    console.log('[ gameState] NEW DICE', newDiceTotal)
 
     if (newDiceTotal === 7) {
-      console.log('hitting robber')
+      console.log('[ gameState] hitting robber')
       const players = gameState.players.map(
         player =>
           player.resources > 7 ? {...player, responded: false} : player
@@ -193,6 +209,8 @@ export const adjustScore = scoreChange => {
 }
 
 export const startTurnThunk = () => (dispatch, getState) => {
+  console.log('[ gameState] receiving startTurnThunk', getState())
+
   const {playerState, gameState} = getState()
 
   if (playerState.playerNumber === gameState.playerTurn) {

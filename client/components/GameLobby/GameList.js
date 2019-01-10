@@ -1,24 +1,28 @@
 import React from 'react'
 
 const GameList = props => {
-  function getButtonText() {
-    if (isInGame()) {
+  // console.log('[ GameList ] props', props)
+
+  let keyIndex = 0
+
+  function getButtonText(gameId) {
+    if (isInGame(gameId)) {
       return 'LEAVE'
     } else {
       return 'JOIN'
     }
   }
 
-  function getClickFunction() {
-    if (isInGame()) {
+  function getClickFunction(gameId) {
+    if (isInGame(gameId)) {
       return props.leaveGame
     } else {
-      return props.clickGame
+      return props.joinGame
     }
   }
 
-  function isInGame() {
-    const keys = Object.keys(props.activeGames['Default Game'])
+  function isInGame(gameId) {
+    const keys = Object.keys(props.activeGames[gameId].users)
     if (keys.includes(props.socketId)) {
       return true
     } else {
@@ -32,18 +36,19 @@ const GameList = props => {
         <tr>
           <th colSpan="2">Active Games Waiting For Players</th>
         </tr>
-        {Object.keys(props.activeGames).map(key => {
+        {Object.keys(props.activeGames).map(gameId => {
           return (
-            <tr key={key}>
-              <td gameid={key}>
-                <button type="button" gameid={key} onClick={getClickFunction()}>
-                  {getButtonText()}
+            <tr key={keyIndex++}>
+              <td gameid={gameId}>
+                <button
+                  type="button"
+                  gameid={gameId}
+                  onClick={getClickFunction(gameId)}
+                >
+                  {getButtonText(gameId)}
                 </button>
-                <span
-                  className="gameText"
-                  onClick={props.clickGame}
-                >{`${key} [ ${
-                  Object.keys(props.activeGames[key]).length
+                <span className="gameText">{`${gameId} [ ${
+                  Object.keys(props.activeGames[gameId].users).length
                 } ]`}</span>
               </td>
               <td />

@@ -2,7 +2,7 @@ import React from 'react'
 import './Dice.css'
 
 const Dice = props => {
-  console.log(props)
+  // console.log(props)
   return (
     <div className={`die-container ${props.diceTotal && 'active'}`}>
       <div className={`die die-${props.die1}`} />
