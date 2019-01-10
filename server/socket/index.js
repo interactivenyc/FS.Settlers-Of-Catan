@@ -5,7 +5,7 @@ const User = require('./User')
 module.exports = io => {
   let games = {}
   let users = {}
-  const numPlayers = 2
+  const numPlayers = 4
   let gameIndex = 0
 
   class GameInstance {
@@ -15,7 +15,10 @@ module.exports = io => {
       this.name = name
       this.users = {}
       this.chatList = []
-      // this.deck = generateDeck(name)
+
+      if (name !== 'Lobby' && name !== 'Default Game') {
+        this.deck = generateDeck(name)
+      }
 
       games[name] = this
     }
@@ -90,7 +93,7 @@ module.exports = io => {
     // traceState()
   }
 
-  function updateRoom(socket) {
+  function updateRoom() {
     console.log('updateRoom rooms:', io.sockets.adapter.rooms)
     removeEmptyGames()
 
@@ -103,10 +106,6 @@ module.exports = io => {
   }
 
   function removeEmptyGames() {
-    console.log('--------------------')
-    console.log('removeEmptyGames')
-    console.log('--------------------')
-
     let keys = Object.keys(games)
     let gameUsers
 
@@ -354,7 +353,10 @@ module.exports = io => {
   }
 
   function generateDeck(gameName) {
+    console.log('--------------------')
     console.log('generate deck', gameName)
+    console.log('--------------------')
+
     const cards = ['monopoly', 'monopoly', 'road', 'road', 'plenty', 'plenty']
     for (let i = 0; i < 14; i++) {
       cards.push('knight')

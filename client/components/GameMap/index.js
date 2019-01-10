@@ -70,14 +70,15 @@ class GameMap extends Component {
 
   rejoinGameAfterDisconnect() {
     console.log('[ GameMap ] ------------')
-    console.log('[ GameMap ] rejoinGameAfterDisconnect - need to implement!')
+    console.log('[ GameMap ] rejoinGameAfterDisconnect', this.props.gameId)
     console.log('[ GameMap ] ------------')
 
     socket.emit('switch-room', this.props.gameId)
   }
 
-  buyaCard() {
-    socket.emit('get-dev-card', 'defaultGame')
+  buyaCard = () => {
+    console.log('[ GameMap ] buyaCard gameId: ', this.props.gameId)
+    socket.emit('get-dev-card', this.props.gameId)
   }
 
   handlePlayCard = card => {
