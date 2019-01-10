@@ -25,8 +25,7 @@ export class GameLobby extends React.Component {
         Lobby: {chatList: [], users: {}},
         'Default Game': {chatList: [], users: {}}
       },
-      chatList: [],
-      rooms: {}
+      chatList: []
     }
     this.setupSocket()
     this.tryJoinLobby = this.tryJoinLobby.bind(this)
@@ -97,7 +96,7 @@ export class GameLobby extends React.Component {
 
   joinGame(e) {
     console.log('[ GameLobby ] joinGame', e.target.getAttribute('gameid'))
-    this.props.setGameId(e.target.getAttribute('gameid'))
+    // this.props.setGameId(e.target.getAttribute('gameid'))
     socket.emit('join-game', e.target.getAttribute('gameid'))
   }
 
@@ -173,11 +172,11 @@ export class GameLobby extends React.Component {
 
     socket.on('connectToRoom', gameId => {
       console.log('[ GameLobby ] connectToRoom:', gameId)
-      // this.props.setGameId(gameId)
+      this.props.setGameId(gameId)
     })
 
     socket.on('update-lobby', (userLobby, activeGames, rooms) => {
-      // console.log('[ GameLobby ] update-lobby', this.props.gameId)
+      console.log('[ GameLobby ] update-lobby', this.props.gameId)
       // console.log('[ GameLobby ] update-lobby rooms', rooms)
 
       if (!this.props.gameId) return
