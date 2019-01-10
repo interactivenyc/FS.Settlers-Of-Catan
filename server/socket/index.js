@@ -272,7 +272,11 @@ module.exports = io => {
           )
         })
 
-        io.sockets.in(gameId).emit('set-game-users', gameUsers)
+        userKeys.forEach(socketId => {
+          io.sockets.connected[socketId].emit('set-game-users', gameUsers)
+        })
+        // io.in(gameId).emit('set-game-users', gameUsers)
+
         updateRoom()
       }
     })
