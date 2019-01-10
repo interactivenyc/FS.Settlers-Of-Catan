@@ -27,7 +27,7 @@ const playerState = {
   ],
   currentTrade: null,
   score: 0,
-  gameId: 'none'
+  gameId: 'Lobby'
 }
 
 const getResource = (state, type) => {
@@ -82,16 +82,16 @@ export default function(state = playerState, action) {
         currentTrade: null
       }
     case RECEIVE_OFFER:
-      console.log('RECEIVE_OFFER', action.currentTrade)
+      console.log('[ playerState ] RECEIVE_OFFER', action.currentTrade)
       return {
         ...state,
         currentTrade: action.currentTrade
       }
     case ACCEPT_OFFER:
-      console.log('ACCEPT_OFFER', state.playerNumber, action)
+      console.log('[ playerState ] ACCEPT_OFFER', state.playerNumber, action)
       if (state.currentTrade) {
         if (state.currentTrade.playerNumber === state.playerNumber) {
-          console.log('Your offer has been accepted')
+          console.log('[ playerState ] Your offer has been accepted')
           const wantCards = state.currentTrade.wantCards
           for (let i = 0; i < wantCards.length; i++) {
             let resource = getResource(state, wantCards[i].type)
@@ -108,7 +108,9 @@ export default function(state = playerState, action) {
             resources: [...state.resources]
           }
         } else if (action.playerNumber === state.playerNumber) {
-          console.log('finalize transfer for the person who accepted')
+          console.log(
+            '[ playerState ] finalize transfer for the person who accepted'
+          )
           const wantCards = state.currentTrade.wantCards
           for (let i = 0; i < wantCards.length; i++) {
             let resource = getResource(state, wantCards[i].type)
@@ -120,12 +122,12 @@ export default function(state = playerState, action) {
             resource.quantity += offerCards[i].quantity
           }
         } else {
-          console.log('ignore this transaction')
+          console.log('[ playerState ] ignore this transaction')
         }
       }
       return {...state, currentTrade: null}
     case REJECT_OFFER:
-      console.log('REJECT_OFFER', action)
+      console.log('[ playerState ] REJECT_OFFER', action)
       if (action.playerNumber === state.playerNumber) {
         // if you're the player who rejected the offer
         return {...state, currentTrade: null}
@@ -151,7 +153,7 @@ export default function(state = playerState, action) {
       return newPlayerState
     }
     case SET_GAME_ID:
-      console.log('SET_GAME_ID', action)
+      console.log('[ playerState ] SET_GAME_ID', action)
       return {...state, gameId: action.gameId}
 
     default:

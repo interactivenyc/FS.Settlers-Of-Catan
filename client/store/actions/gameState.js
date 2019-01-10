@@ -44,7 +44,18 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
   newResources.forEach(resource => {
     /* eslint-disable no-debugger */
     if (!resource.vertices) {
-      debugger
+      // debugger
+      console.log(
+        '[ gameState] ERROR - RESOURCE.VERTICES resource:',
+        resource,
+        newResources
+      )
+    } else {
+      console.log(
+        '[ gameState] distributeResourcesThunk normal resource:',
+        resource,
+        newResources
+      )
     }
 
     resource.vertices.forEach(vertex => {
@@ -136,10 +147,10 @@ export const newDiceRoll = () => {
 
     dispatch(distributeResourcesThunk(newDiceTotal))
 
-    console.log('NEW DICE', newDiceTotal)
+    console.log('[ gameState] NEW DICE', newDiceTotal)
 
     if (newDiceTotal === 7) {
-      console.log('hitting robber')
+      console.log('[ gameState] hitting robber')
       const players = gameState.players.map(
         player =>
           player.resources > 7 ? {...player, responded: false} : player
@@ -198,7 +209,7 @@ export const adjustScore = scoreChange => {
 }
 
 export const startTurnThunk = () => (dispatch, getState) => {
-  console.log('[ gameState ] receiving startTurnThunk', getState())
+  console.log('[ gameState] receiving startTurnThunk', getState())
 
   const {playerState, gameState} = getState()
 

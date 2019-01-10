@@ -32,6 +32,17 @@ class GameMap extends Component {
       console.log('[ GameMap ] set-game-users users', users)
       this.props.initGame(users)
     })
+
+    socket.on('log-server-message', msg => {
+      console.log('[ GameMap ] ------------')
+      console.log('[ GameMap ] serverMessage', msg)
+      console.log('[ GameMap ] ------------')
+    })
+
+    socket.on('disconnect', () => {
+      console.log(`Connection ${socket.id} was lost - rejoining`)
+      this.rejoinGameAfterDisconnect()
+    })
   }
 
   componentDidUpdate() {
@@ -55,6 +66,14 @@ class GameMap extends Component {
       )
       console.log(error)
     }
+  }
+
+  rejoinGameAfterDisconnect() {
+    console.log('[ GameMap ] ------------')
+    console.log('[ GameMap ] rejoinGameAfterDisconnect - need to implement!')
+    console.log('[ GameMap ] ------------')
+
+    socket.emit('switch-room', this.props.gameId)
   }
 
   buyaCard() {
@@ -208,7 +227,8 @@ const mapStateToProps = state => {
     playerHand: playerState.playerHand,
     diceTotal: gameState.die1 + gameState.die2,
     phase: gameState.phase,
-    currentTrade: playerState.currentTrade
+    currentTrade: playerState.currentTrade,
+    gameId: playerState.gameId
   }
 }
 

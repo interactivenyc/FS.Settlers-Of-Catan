@@ -41,7 +41,7 @@ export class GameLobby extends React.Component {
     console.log('[ GameLobby ] componentDidMount', this.props)
 
     // if returning to Lobby from a game
-    if (this.props.gameId !== 'none') {
+    if (this.props.gameId !== 'Lobby') {
       this.tryJoinLobby()
     }
   }
@@ -173,7 +173,7 @@ export class GameLobby extends React.Component {
 
     socket.on('connectToRoom', gameId => {
       console.log('[ GameLobby ] connectToRoom:', gameId)
-      this.props.setGameId(gameId)
+      // this.props.setGameId(gameId)
     })
 
     socket.on('update-lobby', (userLobby, activeGames, rooms) => {
