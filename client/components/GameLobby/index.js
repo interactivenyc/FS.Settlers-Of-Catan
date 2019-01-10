@@ -10,6 +10,10 @@ import * as actions from '../../store/actions'
 
 export class GameLobby extends React.Component {
   constructor(props) {
+    console.log('[ GameLobby ] ---------------------------')
+    console.log('[ GameLobby ] constructor')
+    console.log('[ GameLobby ] ---------------------------')
+
     super(props)
 
     this.state = {
@@ -33,9 +37,15 @@ export class GameLobby extends React.Component {
     this.switchRoom = this.switchRoom.bind(this)
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.tryJoinLobby()
+  }
+
   componentDidUpdate() {
-    if (!this.state.lobbyInitialized) this.tryJoinLobby()
+    if (!this.state.lobbyInitialized) {
+      this.setupSocket()
+      this.tryJoinLobby()
+    }
   }
 
   componentWillUnmount() {
@@ -44,7 +54,10 @@ export class GameLobby extends React.Component {
     console.log('[ GameLobby ] ---------------------------')
 
     // socket.emit('leave-game', this.props.gameId)
-    // socket.removeAllListeners()
+    this.setState({
+      lobbyInitialized: false
+    })
+    socket.removeAllListeners()
   }
 
   tryJoinLobby() {
@@ -152,6 +165,8 @@ export class GameLobby extends React.Component {
   }
 
   setupSocket() {
+    console.log('[ GameLobby ] setupSocket listeners')
+
     socket.on('connectToRoom', gameId => {
       console.log('[ GameLobby ] connectToRoom:', gameId)
       this.props.setGameId(gameId)
@@ -193,12 +208,9 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('log-server-message', msg => {
+      console.log('[ GameLobby ] ------------')
       console.log('[ GameLobby ] serverMessage', msg)
-    })
-
-    socket.on('set-game-users', users => {
-      console.log('[ GameLobby ] set-game-users users', users)
-      this.props.initGame(users)
+      console.log('[ GameLobby ] ------------')
     })
 
     socket.on('start-game', (board, user) => {

@@ -14,12 +14,6 @@ import {log} from 'util'
 
 class GameMap extends Component {
   componentDidMount() {
-    // if (this.props.playerTurn === this.props.player.playerNumber) {
-    //   this.props.newDiceRoll()
-    // }
-
-    // console.log('[ GameMap ] initializing Socket.IO')
-
     socket.on('dispatch', action => {
       // console.log('receiving dispatch via SocketIO', action)
       store.dispatch(action)
@@ -32,6 +26,11 @@ class GameMap extends Component {
 
     socket.on('send-card-to-user', card => {
       this.props.buyCard(card)
+    })
+
+    socket.on('set-game-users', users => {
+      console.log('[ GameMap ] set-game-users users', users)
+      this.props.initGame(users)
     })
   }
 
@@ -229,5 +228,6 @@ export default connect(mapStateToProps, {
   changePhase: actions.changePhase,
   setResources: actions.setResources,
   plentyThunk: actions.plentyThunk,
-  monopoly: actions.monopoly
+  monopoly: actions.monopoly,
+  initGame: actions.initGame
 })(GameMap)
