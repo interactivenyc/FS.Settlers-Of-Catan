@@ -7,6 +7,7 @@ class User {
     this.gameId = 'none'
     this.color = 'none'
     this.playerNumber = 0
+    this.longestRoad = 0
 
     users[this.socketId] = this
   }

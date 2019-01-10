@@ -27,7 +27,9 @@ const DevCardModal = ({
           type="button"
           onClick={() => toggleModal(false)}
           style={{float: 'right', fontSize: '10pt'}}
-        />
+        >
+          X
+        </button>
       </div>
       <div style={{display: 'flex'}}>
         {playerHand.map((el, i) => (

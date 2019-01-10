@@ -24,6 +24,7 @@ export const createResourceCardsArray = resources => {
   }, [])
 }
 
+/* eslint-disable complexity */
 export const getLongestRoad = (
   edge,
   board,

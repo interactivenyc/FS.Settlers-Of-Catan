@@ -192,6 +192,7 @@ class GameMap extends Component {
           playerTurn={playerTurn}
           changeRoadThunk={this.props.changeRoadThunk}
           changeVertexThunk={this.props.changeVertexThunk}
+          mode={this.props.mode}
         />
         <div>
           <PlayerControls
@@ -208,6 +209,7 @@ class GameMap extends Component {
             die1={die1}
             die2={die2}
             phase={phase}
+            mode={this.props.mode}
           />
         </div>
       </div>
@@ -229,6 +231,7 @@ const mapStateToProps = state => {
     diceTotal: gameState.die1 + gameState.die2,
     phase: gameState.phase,
     currentTrade: playerState.currentTrade,
+    mode: gameState.mode,
     gameId: playerState.gameId
   }
 }

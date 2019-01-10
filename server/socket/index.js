@@ -221,6 +221,7 @@ module.exports = io => {
           user.playerNumber = playerNumber
           user.gameId = gameName
           user.color = colors[playerNumber]
+          user.longestRoad = 2
           gameUsers.push(user)
           games[gameName].users[socketId] = user
           // delete users[socketId]

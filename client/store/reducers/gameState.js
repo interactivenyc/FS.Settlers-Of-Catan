@@ -9,7 +9,8 @@ import {
   CHANGE_GAME_PHASE,
   CHANGE_PHASE,
   UPDATE_PLAYERS,
-  UPDATE_SELF
+  UPDATE_SELF,
+  SET_GAME_MODE
 } from '../actions'
 
 const defaultState = {
@@ -20,7 +21,8 @@ const defaultState = {
   ],
   die1: 0,
   die2: 0,
-  phase: null
+  phase: null,
+  mode: null
 }
 
 /* eslint-disable complexity */
@@ -32,9 +34,10 @@ const gameState = (state = defaultState, action) => {
       for (let i = 0; i < action.users.length; i++) {
         let user = {
           id: action.users[i].playerNumber,
-          resources: 0,
+          userProfile: action.users[i],
+          resources: action.users[i].resources || 0,
           responded: true,
-          longestRoad: 2,
+          longestRoad: action.users[i].longestRoad || 0,
           score: 0,
           largestArmy: 0
         }
@@ -95,6 +98,8 @@ const gameState = (state = defaultState, action) => {
           return action.player.id === player.id ? action.player : player
         })
       }
+    case SET_GAME_MODE:
+      return {...state, mode: action.mode}
     default:
       return state
   }

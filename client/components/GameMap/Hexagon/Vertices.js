@@ -26,20 +26,21 @@ class Vertices extends React.Component {
   }
 
   handleMouseEnter = event => {
-    const {vertices, player, playerTurn, phase} = this.props
+    const {vertices, player, playerTurn, phase, mode} = this.props
     if (playerTurn === player.playerNumber) {
       const vertex = vertices[event.target.id]
       const targetVertId = event.target.getAttribute('stateid')
 
       if (
-        phase === 'build city' &&
-        vertex.color === player.color &&
-        vertex.locationType === 'settlement'
+        (phase === 'build city' &&
+          vertex.color === player.color &&
+          vertex.locationType === 'settlement') ||
+        (phase === 'build city' && mode === 'demo')
       ) {
         this.setState({city: {...this.state.city, [targetVertId]: 'valid'}})
       } else if (phase === 'build settlement') {
         const neighbors = getVerticeNeighbors(vertex, this.props.board)
-        if (validateChangeVertice(neighbors, player.color)) {
+        if (validateChangeVertice(neighbors, player.color) || mode === 'demo') {
           this.setState({[targetVertId]: player.color})
         }
       }

@@ -7,7 +7,7 @@ import {
 } from '../actions'
 import Board from '../../board'
 
-const defaultBoard = {}
+const defaultBoard = new Board()
 
 export default function(state = defaultBoard, action) {
   switch (action.type) {

@@ -18,7 +18,8 @@ class Edges extends React.Component {
   }
 
   componentDidMount() {
-    const {sides, edges, board, player, playerTurn, phase} = this.props
+    const {sides, edges, board, player, playerTurn, phase, mode} = this.props
+
     if (playerTurn === player.playerNumber) {
       for (const side in sides) {
         const edge = edges[sides[side]]
@@ -28,7 +29,11 @@ class Edges extends React.Component {
           phase === 'build road dev 2'
         ) {
           const neighbors = getEdgeNeighborsColor(edge, board)
-          if (validateChangeEdge(player, edge, neighbors, board)) {
+
+          if (
+            validateChangeEdge(player, edge, neighbors, board) ||
+            mode === 'demo'
+          ) {
             this.setState({[side]: `build-player-${player.playerNumber}`})
           }
         } else {
@@ -39,7 +44,7 @@ class Edges extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {sides, edges, board, player, playerTurn, phase} = this.props
+    const {sides, edges, board, player, playerTurn, phase, mode} = this.props
     if (prevProps !== this.props && playerTurn === player.playerNumber) {
       for (const side in sides) {
         const edge = edges[sides[side]]
@@ -49,7 +54,10 @@ class Edges extends React.Component {
           phase === 'build road dev 2'
         ) {
           const neighbors = getEdgeNeighborsColor(edge, board)
-          if (validateChangeEdge(player, edge, neighbors, board)) {
+          if (
+            validateChangeEdge(player, edge, neighbors, board) ||
+            mode === 'demo'
+          ) {
             this.setState({[side]: `build-player-${player.playerNumber}`})
           }
         } else {
