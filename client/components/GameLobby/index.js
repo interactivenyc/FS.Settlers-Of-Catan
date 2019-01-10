@@ -158,8 +158,8 @@ export class GameLobby extends React.Component {
     })
 
     socket.on('update-lobby', (userLobby, activeGames, rooms) => {
-      console.log('[ GameLobby ] update-lobby', this.props.gameId)
-      console.log('[ GameLobby ] update-lobby rooms', rooms)
+      // console.log('[ GameLobby ] update-lobby', this.props.gameId)
+      // console.log('[ GameLobby ] update-lobby rooms', rooms)
 
       if (!this.props.gameId) return
 

@@ -24,7 +24,7 @@ class TradeModal extends React.Component {
   }
 
   clickOffer(e) {
-    console.log('[ TradeModal ] clickOffer', e.currentTarget.id)
+    // console.log('[ TradeModal ] clickOffer', e.currentTarget.id)
     const type = e.currentTarget.id
     let found = this.state.offerCards.find(element => {
       return element.type === type
@@ -45,7 +45,7 @@ class TradeModal extends React.Component {
     }
   }
   clickWant(e) {
-    console.log('[ TradeModal ] clickWant', e.currentTarget.id)
+    // console.log('[ TradeModal ] clickWant', e.currentTarget.id)
     const type = e.currentTarget.id
     let found = this.state.wantCards.find(element => {
       return element.type === type
@@ -62,7 +62,7 @@ class TradeModal extends React.Component {
     }
   }
   reset(e) {
-    console.log('[ TradeModal ] reset state', e.target)
+    // console.log('[ TradeModal ] reset state', e.target)
     this.setState({
       offerCards: [],
       wantCards: []
@@ -112,7 +112,7 @@ class TradeModal extends React.Component {
   }
 
   getDisabled() {
-    console.log('[ TradeModal ] getDisabled', this.props.currentTrade)
+    // console.log('[ TradeModal ] getDisabled', this.props.currentTrade)
     if (this.props.currentTrade) {
       return true
     } else {

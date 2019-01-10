@@ -65,7 +65,7 @@ module.exports = io => {
       delete games[gamesList[i]].users[socketId]
     }
 
-    traceState()
+    // traceState()
   }
 
   function joinRoom(socket, room) {
@@ -87,30 +87,8 @@ module.exports = io => {
       socket.emit('connectToRoom', room)
       updateRoom(socket)
     }
-    traceState()
+    // traceState()
   }
-
-  // function joinRoomById(socketId, room) {
-  //   console.log('joinRoomById room:', room, socketId)
-  //   leaveAllRooms(socket, room)
-  //   if (socket.rooms.hasOwnProperty(room)) {
-  //     console.log('joinRoomById room - ALREADY JOINED:', room)
-  //   } else {
-  //     console.log('joinRoomById - JOINING room:', room)
-  //     socket.join(room)
-
-  //     if (!games[room]) {
-  //       console.log('joinRoomById create new GameInstance', room)
-  //       games[room] = new GameInstance(room)
-  //     } else {
-  //       games[room].users[socket.id] = users[socket.id]
-  //     }
-
-  //     socket.emit('connectToRoom', room)
-  //     updateRoom(socket)
-  //   }
-  //   traceState()
-  // }
 
   function updateRoom(socket) {
     // USE THIS TO BROADCAST TO SPECIFIC ROOMS LATER
@@ -153,17 +131,6 @@ module.exports = io => {
 
   function traceState() {
     console.log('-----------------------')
-    // console.log('server-trace Lobby.users', games.Lobby.users)
-    // console.log('server-trace Lobby.chatList', games.Lobby.chatList)
-    // console.log('server-trace DefaultGame.users', games['Default Game'].users)
-    // console.log(
-    //   'server-trace DefaultGame.chatList',
-    //   games['Default Game'].chatList
-    // )
-
-    // traceAllRooms()
-    // console.log('-----------------------')
-
     console.log(games)
     console.log('-----------------------')
     traceAllRooms()
@@ -272,9 +239,11 @@ module.exports = io => {
           )
         })
 
+        // this has to happen AFTER all gameUsers have been added
         userKeys.forEach(socketId => {
           io.sockets.connected[socketId].emit('set-game-users', gameUsers)
         })
+        // not sure why this isn't working
         // io.in(gameId).emit('set-game-users', gameUsers)
 
         updateRoom()
@@ -292,7 +261,7 @@ module.exports = io => {
       console.log('-----------------')
 
       console.log('RECOVER FROM DISCONNECT \n', user.email, gameId, socket.id)
-      traceState()
+      // traceState()
 
       let gameUser = new User(user, socket.id, users)
       users[socket.id] = gameUser
@@ -347,14 +316,12 @@ module.exports = io => {
       console.log('dispatch - to', room)
       console.log(value)
       socket.to(room).emit('dispatch', value)
-      socket.to(room).emit('log-server-message', 'testing dispatch')
     })
     socket.on('dispatchThunk', action => {
       let room = Object.keys(socket.rooms)[0]
       console.log('dispatchThunk - to', room)
       console.log(action)
       socket.to(room).emit('dispatchThunk', action)
-      socket.to(room).emit('log-server-message', 'testing dispatchThunk')
     })
 
     socket.on('startGame', () => {

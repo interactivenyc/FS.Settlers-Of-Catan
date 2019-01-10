@@ -18,15 +18,15 @@ class GameMap extends Component {
     //   this.props.newDiceRoll()
     // }
 
-    console.log('[ GameMap ] initializing Socket.IO')
+    // console.log('[ GameMap ] initializing Socket.IO')
 
     socket.on('dispatch', action => {
-      console.log('receiving dispatch via SocketIO', action)
+      // console.log('receiving dispatch via SocketIO', action)
       store.dispatch(action)
     })
 
     socket.on('dispatchThunk', ({action, args}) => {
-      console.log('receiving dispatchThunk via SocketIO', action, args)
+      // console.log('receiving dispatchThunk via SocketIO', action, args)
       store.dispatch(actions[action].apply(this, args))
     })
 
