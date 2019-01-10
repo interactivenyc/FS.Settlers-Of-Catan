@@ -91,10 +91,8 @@ module.exports = io => {
   }
 
   function updateRoom(socket) {
-    // USE THIS TO BROADCAST TO SPECIFIC ROOMS LATER
-    // let room = Object.keys(socket.rooms)[0]
-
     console.log('updateRoom rooms:', io.sockets.adapter.rooms)
+    removeEmptyGames()
 
     io.sockets
       .in('Default Game')
@@ -115,8 +113,8 @@ module.exports = io => {
     for (let key in keys) {
       if (
         keys.hasOwnProperty(key) &&
-        key !== 'Lobby' &&
-        key !== 'Default Game'
+        keys[key] !== 'Lobby' &&
+        keys[key] !== 'Default Game'
       ) {
         console.log('checking key:', keys[key])
 
@@ -229,7 +227,7 @@ module.exports = io => {
           // delete users[socketId]
 
           console.log('START-GAME for user', socketId, user, gameName)
-          // removeEmptyGames()
+
           joinRoom(io.sockets.connected[socketId], gameName)
 
           io.sockets.connected[socketId].emit(

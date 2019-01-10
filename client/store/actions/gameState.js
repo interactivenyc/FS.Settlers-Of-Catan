@@ -42,6 +42,11 @@ export const distributeResourcesThunk = num => (dispatch, getState) => {
     .filter(resource => resource.diceTarget === num)
 
   newResources.forEach(resource => {
+    /* eslint-disable no-debugger */
+    if (!resource.vertices) {
+      debugger
+    }
+
     resource.vertices.forEach(vertex => {
       if (vertices[vertex.id].player) {
         if (vertices[vertex.id].locationType === 'city') {

@@ -45,8 +45,6 @@ const gameState = (state = defaultState, action) => {
     case START_GAME:
       return {...state, playerTurn: action.playerTurn, modle: action.modle}
     case NEXT_PLAYER:
-      console.log('[ gameState ] receiving NEXT_PLAYER action')
-
       return {
         ...state,
         playerTurn:

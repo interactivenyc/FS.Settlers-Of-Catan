@@ -38,12 +38,16 @@ export class GameLobby extends React.Component {
   }
 
   componentDidMount() {
-    this.tryJoinLobby()
+    console.log('[ GameLobby ] componentDidMount', this.props)
+
+    // if returning to Lobby from a game
+    if (this.props.gameId !== 'none') {
+      this.tryJoinLobby()
+    }
   }
 
   componentDidUpdate() {
     if (!this.state.lobbyInitialized) {
-      this.setupSocket()
       this.tryJoinLobby()
     }
   }
@@ -54,9 +58,7 @@ export class GameLobby extends React.Component {
     console.log('[ GameLobby ] ---------------------------')
 
     // socket.emit('leave-game', this.props.gameId)
-    this.setState({
-      lobbyInitialized: false
-    })
+
     socket.removeAllListeners()
   }
 
@@ -132,7 +134,9 @@ export class GameLobby extends React.Component {
                   socketId={this.state.socketId}
                   gameId={this.props.gameId}
                 />
-                <p />
+
+                {/* Disabled Testing Buttons */}
+                {/* <p />
                 <button type="button" onClick={this.resetAllGames}>
                   Reset All Games
                 </button>
@@ -147,7 +151,7 @@ export class GameLobby extends React.Component {
                 </button>
                 <button type="button" onClick={this.serverTrace}>
                   Server Trace
-                </button>
+                </button> */}
               </td>
             </tr>
             <tr>
@@ -215,10 +219,6 @@ export class GameLobby extends React.Component {
 
     socket.on('start-game', (board, user) => {
       console.log('[ GameLobby ] start-game user', user)
-
-      this.setState({
-        inGame: true
-      })
 
       this.props.setGameId(user.gameId)
 

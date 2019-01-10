@@ -65,6 +65,7 @@ class GameMap extends Component {
     this.props.playCard(card)
   }
 
+  /* eslint-disable complexity */
   handleClick = e => {
     const {
       changeRoadThunk,
