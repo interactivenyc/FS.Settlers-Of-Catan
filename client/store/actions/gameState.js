@@ -193,6 +193,8 @@ export const adjustScore = scoreChange => {
 }
 
 export const startTurnThunk = () => (dispatch, getState) => {
+  console.log('[ gameState ] receiving startTurnThunk', getState())
+
   const {playerState, gameState} = getState()
 
   if (playerState.playerNumber === gameState.playerTurn) {

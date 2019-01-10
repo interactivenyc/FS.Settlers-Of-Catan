@@ -10,6 +10,7 @@ import socket from '../../socket'
 import store from '../../store'
 import PlayerAlerts from './PlayerAlerts'
 import Dice from '../Dice'
+import {log} from 'util'
 
 class GameMap extends Component {
   componentDidMount() {
@@ -17,10 +18,17 @@ class GameMap extends Component {
     //   this.props.newDiceRoll()
     // }
 
-    socket.on('dispatch', action => store.dispatch(action))
-    socket.on('dispatchThunk', ({action, args}) =>
+    console.log('[ GameMap ] initializing Socket.IO')
+
+    socket.on('dispatch', action => {
+      console.log('receiving dispatch via SocketIO', action)
+      store.dispatch(action)
+    })
+
+    socket.on('dispatchThunk', ({action, args}) => {
+      console.log('receiving dispatchThunk via SocketIO', action, args)
       store.dispatch(actions[action].apply(this, args))
-    )
+    })
 
     socket.on('send-card-to-user', card => {
       this.props.buyCard(card)
