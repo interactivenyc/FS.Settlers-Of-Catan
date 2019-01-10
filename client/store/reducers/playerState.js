@@ -131,6 +131,9 @@ export default function(state = playerState, action) {
       if (action.playerNumber === state.playerNumber) {
         // if you're the player who rejected the offer
         return {...state, currentTrade: null}
+      } else if (state.currentTrade === null) {
+        // you have already rejected the offer
+        return state
       } else {
         // if you're the person who made the offer
         return {
