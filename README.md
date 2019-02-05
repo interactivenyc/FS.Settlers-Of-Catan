@@ -2,7 +2,7 @@ This app can be viewed at:
 
 http://settlers-of-fullstack.herokuapp.com/
 
-###Settlers of Fullstack
+# Settlers of Fullstack
 
 Thank you for visiting Settlers of Fullstack, a digital port of the popular strategy board game Settlers of Catan.
 
