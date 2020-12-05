@@ -12,6 +12,8 @@ const app = express()
 const socketio = require('socket.io')
 module.exports = app
 
+console.log('STARTING SERVER')
+
 // This is a global Mocha hook, used for resource cleanup.
 // Otherwise, Mocha v4+ never quits after tests.
 if (process.env.NODE_ENV === 'test') {
@@ -43,6 +45,8 @@ passport.deserializeUser(async (id, done) => {
 const createApp = () => {
   // logging middleware
   // app.use(morgan('dev'))
+
+  console.log('SERVER : createApp')
 
   // body parsing middleware
   app.use(express.json())
@@ -95,6 +99,8 @@ const createApp = () => {
 }
 
 const startListening = () => {
+  console.log('SERVER : startListening')
+
   // start listening (and create a 'server' object representing our server)
   const server = app.listen(PORT, () => {
     console.log(`Mixing it up on port ${PORT}`)
@@ -109,8 +115,16 @@ const startListening = () => {
 const syncDb = () => db.sync()
 
 async function bootApp() {
-  await sessionStore.sync()
+  console.log('SERVER : bootApp')
+
+  //await sessionStore.sync()
+
+  console.log('SERVER : bootApp : sync sessionStore')
+
   await syncDb()
+
+  console.log('SERVER : bootApp : syncDb')
+
   await createApp()
   await startListening()
 }

@@ -38,19 +38,19 @@
   "author": "Fullstack Academy of Code",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.21.0",
     "compression": "^1.7.3",
-    "connect-session-sequelize": "^4.1.0",
-    "express": "^4.16.3",
-    "express-session": "^1.15.1",
+    "connect-session-sequelize": "^7.0.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "gulp": "^3.9.1",
     "history": "^4.6.3",
     "ignore-styles": "^5.0.1",
     "morgan": "^1.9.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
-    "pg": "^6.1.2",
-    "pg-hstore": "^2.3.2",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -60,8 +60,8 @@
     "redux": "^3.6.0",
     "redux-logger": "^2.8.1",
     "redux-thunk": "^2.3.0",
-    "sequelize": "^4.38.0",
-    "socket.io": "^2.1.1"
+    "sequelize": "^4.44.4",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",
@@ -84,7 +84,7 @@
     "chai": "^3.5.0",
     "css-loader": "^1.0.1",
     "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.0.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^4.19.1",
     "eslint-config-fullstack": "^5.1.0",
     "eslint-config-prettier": "^2.9.0",
@@ -94,7 +94,7 @@
     "mini-css-extract-plugin": "^0.4.4",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.3",
-    "npm-merge-driver": "^2.3.5",
+    "npm-merge-driver": "^2.3.6",
     "prettier": "1.11.1",
     "react-test-renderer": "^16.6.3",
     "redux-devtools-extension": "^2.13.7",
@@ -102,7 +102,7 @@
     "style-loader": "^0.23.1",
     "supertest": "^3.1.0",
     "url-loader": "^1.1.2",
-    "webpack": "^4.16.4",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   }
 }

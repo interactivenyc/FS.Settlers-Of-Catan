@@ -4,6 +4,8 @@ const db = require('../server/db')
 const {User} = require('../server/db/models')
 
 async function seed() {
+  console.log('SEED START SYNC')
+
   await db.sync({force: true})
   console.log('db synced!')
 
@@ -22,8 +24,12 @@ async function seed() {
 async function runSeed() {
   console.log('seeding...')
   try {
+    console.log('await seed 1')
     await seed()
+    console.log('await seed 2')
   } catch (err) {
+    console.log('ERROR' + err)
+
     console.error(err)
     process.exitCode = 1
   } finally {
